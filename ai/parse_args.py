@@ -6,7 +6,7 @@ from typing import List
 from .errors import Error, HelpError, Result
 from .zappy_ai import ZappyAIArgs
 
-def integer_between(argument: str, *, port_min: int, port_max: int) -> int:
+def integer_between(argument: str, port_min: int, port_max: int) -> int:
     try:
         value: int = int(argument)
     except ValueError:
