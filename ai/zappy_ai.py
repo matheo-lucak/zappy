@@ -3,10 +3,10 @@
 
 from typing import NamedTuple
 
-class ZappyAI(NamedTuple):
+class ZappyAIArgs(NamedTuple):
     machine: str
     port: int
     name: str
 
-def zappy_ai(args: ZappyAI) -> None:
+def zappy_ai(args: ZappyAIArgs) -> None:
     pass

@@ -4,13 +4,13 @@
 from sys import exit
 from ai.parse_args import parse_args
 from ai.errors import Result, Error, HelpError
-from ai.zappy_ai import ZappyAI, zappy_ai
+from ai.zappy_ai import ZappyAIArgs, zappy_ai
 
 EPITECH_EXIT_SUCCESS = 0
 EPITECH_EXIT_FAILURE = 84
 
 def main() -> int:
-    args: Result[ZappyAI] = parse_args()
+    args: Result[ZappyAIArgs] = parse_args()
     if isinstance(args, Error):
         if isinstance(args, HelpError):
             return EPITECH_EXIT_SUCCESS
