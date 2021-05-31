@@ -30,7 +30,8 @@ SRC				=	$(SRC_PROJECT) $(MAIN)
 LIBRARIES_PATH		=	./libs/
 
 LIBRARIES			=	my		\
-						epinet
+						mylist	\
+						epinet	\
 
 override LDFLAGS	+=	$(addprefix -L, $(LIBRARIES_PATH))
 
