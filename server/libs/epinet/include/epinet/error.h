@@ -1,0 +1,40 @@
+/*
+** EPITECH PROJECT, 2021
+** Epinet
+** File description:
+** error
+*/
+
+#ifndef ERROR_H_
+#define ERROR_H_
+
+#define MAX_ERROR_LEN 1024
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Epinet's perror equivalent (public)
+///
+/// Display the message on stderr, perror-style:
+/// "message: error\\n".
+///
+/// \param message Message to display (NOT '\\n'-terminated)
+///////////////////////////////////////////////////////////////////////////////
+void epinet_perror(const char *message);
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Getter used by perror to retrieve message (private)
+///
+/// \return Pointer to the error string.
+///////////////////////////////////////////////////////////////////////////////
+char *get_error(void);
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Setter for the error message (private)
+///
+/// Message should be formatted the following way:
+/// "where: what"
+///
+/// \param message Error message (MAX_ERROR_LEN-1 chars max) (without '\\n')
+///////////////////////////////////////////////////////////////////////////////
+void set_error(const char *message);
+
+#endif /* !ERROR_H_ */
