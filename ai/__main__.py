@@ -1,13 +1,13 @@
-#! /usr/bin/env python3
 # -*- coding: Utf-8 -*
 
 from sys import exit
-from ai.parse_args import parse_args
-from ai.errors import Result, Error, HelpError
-from ai.zappy_ai import ZappyAIArgs, zappy_ai
 
-EPITECH_EXIT_SUCCESS = 0
-EPITECH_EXIT_FAILURE = 84
+from src.parse_args import parse_args
+from src.errors import Result, Error, HelpError
+from src.zappy_ai import ZappyAIArgs, zappy_ai
+
+EPITECH_EXIT_SUCCESS: int = 0
+EPITECH_EXIT_FAILURE: int = 84
 
 def main() -> int:
     args: Result[ZappyAIArgs] = parse_args()
@@ -18,5 +18,4 @@ def main() -> int:
     zappy_ai(args)
     return EPITECH_EXIT_SUCCESS
 
-if __name__ == "__main__":
-    exit(main())
+exit(main())

@@ -22,11 +22,11 @@ def parse_args(arguments: List[str] = argv[1:]) -> Result[ZappyAIArgs]:
     parser.add_argument("-n", metavar="name", required=True, help="is the name of the team")
     parser.add_argument("-h", metavar="machine", default="localhost", help="is the name of the machine; localhost by default")
     try:
-        args: Namespace = parser.parse_args(args=arguments)
-    except SystemExit as exception:
         if "-help" in arguments:
             parser.print_help()
             return HelpError("Help Error")
+        args: Namespace = parser.parse_args(args=arguments)
+    except SystemExit as exception:
         return Error(str(exception))
     if args.help:
         parser.print_help()
