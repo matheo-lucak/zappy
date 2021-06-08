@@ -6,6 +6,7 @@
 */
 
 #include <criterion/criterion.h>
+
 #include "arg_parser/arg_setter.h"
 #include "arg_parser/arg_checker.h"
 

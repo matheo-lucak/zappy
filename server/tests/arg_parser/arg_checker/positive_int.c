@@ -6,6 +6,7 @@
 */
 
 #include <criterion/criterion.h>
+
 #include "arg_parser/arg_checker.h"
 
 Test(arg_checker_positive_int, success)

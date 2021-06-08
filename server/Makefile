@@ -95,6 +95,12 @@ TESTS_PATH		=	./tests/
 
 TESTS_SRC		=	$(addprefix $(TESTS_PATH), arg_parser/arg_checker/positive_int.c)	\
 					$(addprefix $(TESTS_PATH), arg_parser/arg_setter/get_from_option.c)	\
+					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_c.c)	\
+					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_n.c)	\
+					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_p.c)	\
+					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_x.c)	\
+					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_y.c)	\
+					$(addprefix $(TESTS_PATH), arg_parser/parse.c)	\
 
 TESTS_OBJ		=	$(TESTS_SRC:.c=.o)
 
