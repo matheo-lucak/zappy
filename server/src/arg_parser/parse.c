@@ -5,6 +5,8 @@
 ** parse
 */
 
+#include <unistd.h>
+
 #include "arg_parser/arg_options.h"
 #include "arg_parser/arg_setter.h"
 #include "arg_parser.h"
@@ -20,7 +22,7 @@ static int parse_non_positional_args(int ac, char * const * av,
         option = getopt_long(ac, av, short_options, long_options, NULL);
         if (option == -1)
             break;
-        setter = get_arg_setter_from_option(option);
+        setter = arg_setter_get_from_option(option);
         if (!setter)
             return -1;
         error = setter(args);

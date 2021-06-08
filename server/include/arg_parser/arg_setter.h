@@ -21,10 +21,15 @@ typedef struct arg_setter_map
 } arg_setter_map_t;
 
 extern const arg_setter_map_t argument_setters[];
-//= {
-//    {.option = 0, .setter = NULL}
-//};
 
-arg_setter_t get_arg_setter_from_option(int option);
+arg_setter_t arg_setter_get_from_option(int option);
+
+
+/********** SETTERS **********/
+int arg_setter_port(arguments_t *arg);
+int arg_setter_width(arguments_t *arg);
+int arg_setter_height(arguments_t *arg);
+int arg_setter_frequency(arguments_t *arg);
+int arg_setter_clients_nb(arguments_t *arg);
 
 #endif /* !ARG_SETTER_H_ */

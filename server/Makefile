@@ -17,11 +17,16 @@ SRC_PATH		=	./src/
 
 MAIN			=	$(addprefix $(SRC_PATH), main.c)
 
-SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		\
-					$(addprefix $(SRC_PATH), arg_parser/arg_options/options.c)			\
-					$(addprefix $(SRC_PATH), arg_parser/arg_setter/get_from_option.c)	\
-					$(addprefix $(SRC_PATH), arg_parser/arg_setter/map.c)				\
-					$(addprefix $(SRC_PATH), arg_parser/parse.c)						\
+SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)			\
+					$(addprefix $(SRC_PATH), arg_parser/arg_options/options.c)				\
+					$(addprefix $(SRC_PATH), arg_parser/arg_setter/setters/clients_nb.c)	\
+					$(addprefix $(SRC_PATH), arg_parser/arg_setter/setters/frequency.c)		\
+					$(addprefix $(SRC_PATH), arg_parser/arg_setter/setters/height.c)		\
+					$(addprefix $(SRC_PATH), arg_parser/arg_setter/setters/port.c)			\
+					$(addprefix $(SRC_PATH), arg_parser/arg_setter/setters/width.c)			\
+					$(addprefix $(SRC_PATH), arg_parser/arg_setter/get_from_option.c)		\
+					$(addprefix $(SRC_PATH), arg_parser/arg_setter/setters.c)				\
+					$(addprefix $(SRC_PATH), arg_parser/parse.c)							\
 
 SRC				=	$(SRC_PROJECT) $(MAIN)
 
