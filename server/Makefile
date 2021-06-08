@@ -17,7 +17,11 @@ SRC_PATH		=	./src/
 
 MAIN			=	$(addprefix $(SRC_PATH), main.c)
 
-SRC_PROJECT		=	\
+SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		\
+					$(addprefix $(SRC_PATH), arg_parser/arg_options/options.c)			\
+					$(addprefix $(SRC_PATH), arg_parser/arg_setter/get_from_option.c)	\
+					$(addprefix $(SRC_PATH), arg_parser/arg_setter/map.c)				\
+					$(addprefix $(SRC_PATH), arg_parser/parse.c)						\
 
 SRC				=	$(SRC_PROJECT) $(MAIN)
 
@@ -49,7 +53,10 @@ override CFLAGS		+=	-W -Wall -Wextra
 
 override CPPFLAGS	+=	-I$(INCLUDE_PATH)
 
+PROJECT_OBJ			=	$(SRC_PROJECT:.c=.o)
 OBJ					=	$(SRC:.c=.o)
+
+COV_PROJECT_OBJ		=	$(SRC_PROJECT:.c=.gcda) $(SRC_PROJECT:.c=.gcno)
 
 PATH_TO_INSTANTIATE	?=	./
 
@@ -80,7 +87,11 @@ debug:	fclean $(NAME)
 
 TESTS_PATH		=	./tests/
 
-TESTS_SRC		=	\
+TESTS_SRC		=	$(addprefix $(TESTS_PATH), arg_parser/arg_checker/positive_int.c)	\
+
+TESTS_OBJ		=	$(TESTS_SRC:.c=.o)
+
+COV_TEST_OBJ	=	$(TESTS_SRC:.c=.gcda) $(TESTS_SRC:.c=.gcno)
 
 COVERAGE_PATH	=	./coverage/
 
@@ -90,13 +101,9 @@ TESTS_NAME		=	unit_tests
 
 tests_run:	CFLAGS += --coverage
 tests_run:	LDLIBS += -lcriterion
-tests_run:	$(LIBRARIES)
-	@find -name "*.gcno" -name "*.gcda" -delete
-	$(CC) -o $(TESTS_NAME) $(SRC_PROJECT) $(TESTS_SRC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
+tests_run:	clean $(LIBRARIES) $(PROJECT_OBJ) $(TESTS_OBJ)
+	$(CC) -o $(TESTS_NAME) $(PROJECT_OBJ) $(TESTS_OBJ) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 	./$(TESTS_NAME) --verbose --always-succeed
-	$(RM) $(TESTS_NAME) test*.gcno test*.gcda
-	mkdir -p $(COVERAGE_PATH)
-	mv *.gcno *.gcda $(COVERAGE_PATH)
 .PHONY:	tests_run
 
 coverage:
@@ -106,8 +113,9 @@ coverage:
 
 clean:
 	for lib in $(LIBRARIES); do $(MAKE) $@ -C $(LIBRARIES_PATH)/$$lib; done;
-	$(RM) $(OBJ)
-	$(RM) $(TESTS_NAME) *.gcno *.gcda
+	$(RM) $(OBJ) $(PROJECT_OBJ) $(TESTS_OBJ)
+	$(RM) $(TESTS_NAME)
+	$(RM) $(COV_PROJECT_OBJ) $(COV_TEST_OBJ)
 .PHONY:	clean
 
 fclean:	clean
