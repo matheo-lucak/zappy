@@ -22,6 +22,7 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), arg_parser/arg_setter/setters/clients_nb.c)	\
 					$(addprefix $(SRC_PATH), arg_parser/arg_setter/setters/frequency.c)		\
 					$(addprefix $(SRC_PATH), arg_parser/arg_setter/setters/height.c)		\
+					$(addprefix $(SRC_PATH), arg_parser/arg_setter/setters/name.c)			\
 					$(addprefix $(SRC_PATH), arg_parser/arg_setter/setters/port.c)			\
 					$(addprefix $(SRC_PATH), arg_parser/arg_setter/setters/width.c)			\
 					$(addprefix $(SRC_PATH), arg_parser/arg_setter/get_from_option.c)		\
@@ -93,6 +94,7 @@ debug:	fclean $(NAME)
 TESTS_PATH		=	./tests/
 
 TESTS_SRC		=	$(addprefix $(TESTS_PATH), arg_parser/arg_checker/positive_int.c)	\
+					$(addprefix $(TESTS_PATH), arg_parser/arg_setter/get_from_option.c)	\
 
 TESTS_OBJ		=	$(TESTS_SRC:.c=.o)
 

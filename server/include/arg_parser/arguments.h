@@ -17,6 +17,7 @@ typedef struct arguments
     unsigned int    height;
     size_t          clients_nb;
     size_t          freq;
+    void *          team_names;
 } arguments_t;
 
 #endif /* !ARGUMENTS_H_ */

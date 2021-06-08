@@ -29,6 +29,7 @@ arg_setter_t arg_setter_get_from_option(int option);
 int arg_setter_port(arguments_t *arg);
 int arg_setter_width(arguments_t *arg);
 int arg_setter_height(arguments_t *arg);
+int arg_setter_name(arguments_t *arg);
 int arg_setter_frequency(arguments_t *arg);
 int arg_setter_clients_nb(arguments_t *arg);
 
