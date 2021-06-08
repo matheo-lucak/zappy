@@ -17,7 +17,7 @@ SRC_PATH		=	./src/
 
 MAIN			=	$(addprefix $(SRC_PATH), main.c)
 
-SRC_PROJECT		=	\
+SRC_PROJECT		=	$(addprefix $(SRC_PATH), foo.c)
 
 SRC				=	$(SRC_PROJECT) $(MAIN)
 
