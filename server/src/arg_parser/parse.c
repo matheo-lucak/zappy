@@ -26,7 +26,7 @@ static int parse_non_positional_args(int ac, char * const * av,
         if (!setter)
             return -1;
         error = setter(args);
-    } while (error != 0);
+    } while (error == 0);
     return error;
 }
 
