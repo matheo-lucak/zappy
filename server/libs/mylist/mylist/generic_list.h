@@ -36,11 +36,19 @@ struct generic_linked_list
     void (*const rotate_begin)(list_t *this);
     void (*const rotate_end)(list_t *this);
 
+    int (*const empty)(const list_t *this);
     const node_t *(*const get)(const list_t *this, long index);
+
+    size_t (*const __len__)(const list_t *this);
+    const node_t *(*const __begin__)(const list_t *this);
+    const node_t *(*const __end__)(const list_t *this);
+    node_dtor_t (*const __get_dtor__)(const list_t *this);
+
     const node_t *(*const find)(const list_t *this,
                                 const void *data, size_t size);
     const node_t *(*const find_cmp)(const list_t *this,
                                     const void *data, node_cmp_t comparator);
+    int (*const contains)(const list_t *this, const void *data, size_t size);
 
     const container_list_t __c;
 };
@@ -136,7 +144,7 @@ list_t *array_to_generic_list(
 // Check if a data is in a generic list
 // Return 1 if it's 1, 0 otherwise
 #define generic_list_contains(list, data, type)    \
-    ((list)->find((list), _FMT_DATA(data, type), sizeof(type)) != NULL)
+    (list)->contains((list), _FMT_DATA(data, type), sizeof(type))
 //////////////////////////////////////////////////
 
 #endif /* !GENERIC_LIST_H_ */

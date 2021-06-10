@@ -54,25 +54,28 @@
 ///////////// List informations /////////////
 
 // Get the list's length (the number of nodes)
-#define list_len(list) ((list)->__c.size)
+#define list_len(list) \
+    (list)->__len__((list))
 
 // Check if the list is empty
 // Returns 1 if the list is empty else 0
-#define list_empty(list) ((list)->__c.size == 0)
+#define list_empty(list) \
+    (list)->empty((list))
 
 // Get the list's node data destructor function pointer
-#define list_destructor(list) ((list)->__c.__dtor__)
+#define list_destructor(list) \
+    (list)->__get_dtor__((list))
 //////////////////////////////////////////////////
 
 ///////////// Get/Find node in list /////////////
 
 // Get the first node pointer
 #define list_begin(list)    \
-    ((list)->__c.start)
+    (list)->__begin__((list))
 
 // Get the last node pointer
 #define list_end(list)    \
-    ((list)->__c.end)
+    (list)->__end__((list))
 
 // Get the node pointer at index, returning NULL if none was found
 // (If 'index' is negative the search will begin at the end)

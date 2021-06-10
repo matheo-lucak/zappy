@@ -63,9 +63,29 @@ void intern_ptr_list_rotate_end(
     ptr_list_t *this
 );
 
+int intern_ptr_list_empty(
+    const ptr_list_t *this
+);
+
 const node_t *intern_ptr_list_get(
     const ptr_list_t *this,
     long index
+);
+
+size_t intern_ptr_list_length(
+    const ptr_list_t *this
+);
+
+const node_t *intern_ptr_list_begin(
+    const ptr_list_t *this
+);
+
+const node_t *intern_ptr_list_end(
+    const ptr_list_t *this
+);
+
+node_dtor_t intern_ptr_list_get_dtor(
+    const ptr_list_t *this
 );
 
 const node_t *intern_ptr_list_find(
@@ -77,6 +97,11 @@ const node_t *intern_ptr_list_find_cmp(
     const ptr_list_t *this,
     const void *ptr,
     node_cmp_t comparator
+);
+
+int intern_ptr_list_contains(
+    const ptr_list_t *this,
+    const void *ptr
 );
 
 static const ptr_list_t PTR_LIST_MODEL =
@@ -93,9 +118,15 @@ static const ptr_list_t PTR_LIST_MODEL =
     .reverse = &intern_ptr_list_reverse,
     .rotate_begin = &intern_ptr_list_rotate_begin,
     .rotate_end = &intern_ptr_list_rotate_end,
+    .empty = &intern_ptr_list_empty,
     .get = &intern_ptr_list_get,
+    .__len__ = &intern_ptr_list_length,
+    .__begin__ = &intern_ptr_list_begin,
+    .__end__ = &intern_ptr_list_end,
+    .__get_dtor__ = &intern_ptr_list_get_dtor,
     .ptr_find = &intern_ptr_list_find,
     .ptr_find_cmp = &intern_ptr_list_find_cmp,
+    .ptr_contains = &intern_ptr_list_contains
 };
 
 static void ptr_list_init(ptr_list_t *list, node_dtor_t destructor)
