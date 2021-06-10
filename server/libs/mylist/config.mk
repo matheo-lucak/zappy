@@ -52,5 +52,5 @@ SRC_LIB		=	array/array_to_generic_list.c			\
 				string_list/string_list_reverse.c		\
 				string_list/string_list_rotate.c		\
 
-HEADER		=	mylist.h								\
+HEADERS		=	mylist.h								\
 				mylist/

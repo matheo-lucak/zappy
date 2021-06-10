@@ -7,6 +7,14 @@
 
 include		config.mk
 
+LIB_DIR_PATH		=	../
+
+ROOT_DIR_PATH		=	../../
+
+PATH_TO_COPY		=	$(ROOT_DIR_PATH)include/
+
+COPIED_HEADERS		=	$(addprefix $(PATH_TO_COPY), $(HEADERS))
+
 OBJ					=	$(SRC_LIB:.c=.o)
 
 ARFLAGS				=	rc
@@ -28,11 +36,12 @@ $(NAME):	$(OBJ)
 	cp -u $(NAME) ../
 
 header:
-	mkdir -p ../../include/
-	cp -r $(HEADER) ../../include/
+	mkdir -p $(PATH_TO_COPY)
+	cp -r $(HEADERS) $(PATH_TO_COPY)
 
 clean:
 	$(RM) $(OBJ)
+	$(RM) -r $(COPIED_HEADERS)
 
 fclean:	clean
 	$(RM) $(NAME) ../$(NAME)
