@@ -17,7 +17,7 @@ SRC_PATH		=	./src/
 
 MAIN			=	$(addprefix $(SRC_PATH), main.c)
 
-SRC_PROJECT		=	$(addprefix $(SRC_PATH), foo.c)
+SRC_PROJECT		=
 
 SRC				=	$(SRC_PROJECT) $(MAIN)
 
@@ -30,8 +30,8 @@ SRC				=	$(SRC_PROJECT) $(MAIN)
 LIBRARIES_PATH		=	./libs/
 
 LIBRARIES			=	my		\
-						mylist	\
 						epinet	\
+						mylist
 
 override LDFLAGS	+=	$(addprefix -L, $(LIBRARIES_PATH))
 
