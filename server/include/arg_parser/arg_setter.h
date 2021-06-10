@@ -12,7 +12,11 @@
 
 #include "arg_parser.h"
 
-typedef int (*arg_setter_t)(arguments_t *);
+// Type of a classic arg_setter
+// The arguments_t is the structure to fill 
+// If the option requires an argument, use optarg
+// The '...' parameters are : int ac, char **av 
+typedef int (*arg_setter_t)(arguments_t *, ...);
 
 typedef struct arg_setter_map
 {
@@ -26,11 +30,11 @@ arg_setter_t arg_setter_get_from_option(int option);
 
 
 /********** SETTERS **********/
-int arg_setter_port(arguments_t *arg);
-int arg_setter_width(arguments_t *arg);
-int arg_setter_height(arguments_t *arg);
-int arg_setter_name(arguments_t *arg);
-int arg_setter_frequency(arguments_t *arg);
-int arg_setter_clients_nb(arguments_t *arg);
+int arg_setter_port(arguments_t *arg, ...);
+int arg_setter_width(arguments_t *arg, ...);
+int arg_setter_height(arguments_t *arg, ...);
+int arg_setter_name(arguments_t *arg, ...);
+int arg_setter_frequency(arguments_t *arg, ...);
+int arg_setter_clients_nb(arguments_t *arg, ...);
 
 #endif /* !ARG_SETTER_H_ */

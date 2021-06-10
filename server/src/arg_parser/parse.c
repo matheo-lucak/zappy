@@ -25,7 +25,7 @@ static int parse_non_positional_args(int ac, char * const * av,
         setter = arg_setter_get_from_option(option);
         if (!setter)
             return -1;
-        error = setter(args);
+        error = setter(args, ac, av);
     } while (error == 0);
     return error;
 }

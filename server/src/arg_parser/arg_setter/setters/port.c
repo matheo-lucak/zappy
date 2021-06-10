@@ -18,7 +18,7 @@ static int arg_setter_port_error(void)
     return 1;
 }
 
-int arg_setter_port(arguments_t *arg)
+int arg_setter_port(arguments_t *arg, ...)
 {
     if (!optarg)
         return 1;

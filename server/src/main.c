@@ -5,7 +5,13 @@
 ** main
 */
 
-int main(int ac, char **av, char **env)
+#include "arg_parser.h"
+
+int main(int ac, char **av)
 {
+    arguments_t args;
+
+    if (parse_arguments(ac, av, &args))
+        return 84;
     return 0;
 }

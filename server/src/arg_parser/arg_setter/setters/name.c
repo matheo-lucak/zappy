@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdarg.h>
 
 #include "arg_parser/arg_checker.h"
 #include "arg_parser/arg_setter.h"
@@ -18,10 +19,30 @@ static int arg_setter_name_error(void)
     return 1;
 }
 
-int arg_setter_name(arguments_t *arg)
+int arg_setter_name_set_all_names(arguments_t *arg, int ac, char **av)
 {
-    if (!optarg)
-        return 1;
-    arg->team_names = NULL;
+    int index = optind - 1;
+
+    for (; index < ac; index++) {
+        if (!av[index] || av[index][0] == '-')
+            break;
+        printf("Arg: %s\n", av[index]);
+    }
+    optind = index - 1;
     return 0;
+}
+
+int arg_setter_name(arguments_t *arg, ...)
+{
+    va_list ap;
+    int ac = 0;
+    char **av = NULL;
+
+    va_start(ap, arg);
+    ac = va_arg(ap, int);
+    av = va_arg(ap, char **);
+    va_end(ap);
+    if (!ac || !av)
+        return 1;
+    return arg_setter_name_set_all_names(arg, ac, av);    
 }
