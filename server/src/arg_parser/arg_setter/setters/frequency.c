@@ -25,8 +25,8 @@ int arg_setter_frequency(arguments_t *arg, ...)
         return 1;
     if (arg_checker_positive_int(optarg))
         return arg_setter_frequency_error();
-    arg->clients_nb = atoi(optarg);
-    if (arg->clients_nb < 2 || arg->clients_nb > 10000)
+    arg->freq = atoi(optarg);
+    if (arg->freq < 2 || arg->freq > 10000)
         return arg_setter_frequency_error();
     return 0;
 }

@@ -9,58 +9,62 @@
 
 #include "arg_parser.h"
 
-//Test(parse_arguments, success_basic_n)
-//{
-//    int ac = sizeof(av) / sizeof(*av);
+Test(parse_arguments, success_basic_n_one_name)
+{
+    char * av[] = {
+        "./a.out",
+        "-n",
+        "Team name 1"
+    };
+    int ac = sizeof(av) / sizeof(*av);
+    arguments_t args = {0};
 
-//    char * av[] = {
-//        "./a.out",
-//        "-p",
-//        "4242"
-//    };
-//    arguments_t args = {0};
-//
-//    cr_assert(parse_arguments(ac, av, &args) == 0);
-//    cr_assert(args.port == 4242);
-//}
-//
-//Test(parse_arguments, fail_n_no_arg)
-//{
-//    int ac = sizeof(av) / sizeof(*av);
+    cr_assert(parse_arguments(ac, av, &args) == 0);
+    cr_assert(args.team_names);
+    cr_assert(string_list_contains(args.team_names, "Team name 1"));
+}
 
-//    char * av[] = {
-//        "./a.out",
-//        "-p"
-//    };
-//    arguments_t args = {0};
-//
-//    cr_assert(parse_arguments(ac, av, &args));
-//}
-//
-//Test(parse_arguments, fail_n_bad_arg_1)
-//{
-//    int ac = sizeof(av) / sizeof(*av);
+Test(parse_arguments, success_basic_n_two_name)
+{
+    char * av[] = {
+        "./a.out",
+        "-n",
+        "Team name 1",
+        "Team name 2"
+    };
+    int ac = sizeof(av) / sizeof(*av);
+    arguments_t args = {0};
 
-//    char * av[] = {
-//        "./a.out",
-//        "-p",
-//        "-142"
-//    };
-//    arguments_t args = {0};
-//
-//    cr_assert(parse_arguments(ac, av, &args));
-//}
-//
-//Test(parse_arguments, fail_n_bad_arg_2)
-//{
-//    int ac = sizeof(av) / sizeof(*av);
+    cr_assert(parse_arguments(ac, av, &args) == 0);
+    cr_assert(args.team_names);
+    cr_assert(string_list_contains(args.team_names, "Team name 1"));
+    cr_assert(string_list_contains(args.team_names, "Team name 2"));
+    cr_assert(list_len(args.team_names));
+}
 
-//    char * av[] = {
-//        "./a.out",
-//        "-p",
-//        "42sda42"
-//    };
-//    arguments_t args = {0};
-//
-//    cr_assert(parse_arguments(ac, av, &args));
-//}
+Test(parse_arguments, fail_n_no_arg)
+{
+    char * av[] = {
+        "./a.out",
+        "-n"
+    };
+    int ac = sizeof(av) / sizeof(*av);
+    arguments_t args = {0};
+
+    cr_assert(parse_arguments(ac, av, &args));
+}
+
+Test(parse_arguments, fail_n_duplicated_names)
+{
+    char * av[] = {
+        "./a.out",
+        "-n",
+        "Team name 1",
+        "Team name 2",
+        "Team name 1",
+    };
+    int ac = sizeof(av) / sizeof(*av);
+    arguments_t args = {0};
+
+    cr_assert(parse_arguments(ac, av, &args));
+}

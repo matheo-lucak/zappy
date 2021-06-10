@@ -91,10 +91,11 @@ debug:	fclean $(NAME)
 # Tests #
 #########
 
-TESTS_PATH		=	./tests/
+TESTS_PATH		=	tests/
 
 TESTS_SRC		=	$(addprefix $(TESTS_PATH), arg_parser/arg_checker/positive_int.c)	\
 					$(addprefix $(TESTS_PATH), arg_parser/arg_setter/get_from_option.c)	\
+					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_f.c)	\
 					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_c.c)	\
 					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_n.c)	\
 					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_p.c)	\
@@ -117,11 +118,12 @@ tests_run:	LDLIBS += -lcriterion
 tests_run:	clean $(LIBRARIES) $(PROJECT_OBJ) $(TESTS_OBJ)
 	$(CC) -o $(TESTS_NAME) $(PROJECT_OBJ) $(TESTS_OBJ) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 	./$(TESTS_NAME) --verbose --always-succeed
+	$(RM) $(TESTS_NAME)
 .PHONY:	tests_run
 
 coverage:
-	gcovr --exclude $(PATH_TESTS)
-	gcovr --exclude $(PATH_TESTS) --branches
+	gcovr --exclude $(TESTS_PATH)
+	gcovr --exclude $(TESTS_PATH) --branches
 .PHONY:	coverage
 
 clean:
