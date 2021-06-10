@@ -36,10 +36,18 @@ struct string_linked_list
     void (*const rotate_begin)(string_list_t *this);
     void (*const rotate_end)(string_list_t *this);
 
+    int (*const empty)(const string_list_t *this);
     const node_t *(*const get)(const string_list_t *this, long index);
+
+    size_t (*const __len__)(const string_list_t *this);
+    const node_t *(*const __begin__)(const string_list_t *this);
+    const node_t *(*const __end__)(const string_list_t *this);
+    node_dtor_t (*const __get_dtor__)(const string_list_t *this);
+
     const node_t *(*const str_find)(const string_list_t *this, const char *str);
     const node_t *(*const str_find_cmp)(const string_list_t *this,
                                         const char *str, node_cmp_t comparator);
+    int (*const str_contains)(const string_list_t *this, const char *str);
 
     const container_list_t __c;
 };
@@ -136,7 +144,7 @@ char *string_list_concat(
 // Check if a string is in a generic list
 // Return 1 if it's 1, 0 otherwise
 #define string_list_contains(list, str)    \
-    ((list)->str_find((list), (str)) != NULL)
+    (list)->str_contains((list), (str))
 /////////////////////////////////////////////////
 
 // Get the string data inside the node (string_list_t)

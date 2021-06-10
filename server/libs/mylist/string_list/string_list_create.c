@@ -79,9 +79,29 @@ void intern_string_list_rotate_end(
     string_list_t *this
 );
 
+int intern_string_list_empty(
+    const string_list_t *this
+);
+
 const node_t *intern_string_list_get(
     const string_list_t *this,
     long index
+);
+
+size_t intern_string_list_length(
+    const string_list_t *this
+);
+
+const node_t *intern_string_list_begin(
+    const string_list_t *this
+);
+
+const node_t *intern_string_list_end(
+    const string_list_t *this
+);
+
+node_dtor_t intern_string_list_get_dtor(
+    const string_list_t *this
 );
 
 const node_t *intern_string_list_find(
@@ -93,6 +113,11 @@ const node_t *intern_string_list_find_cmp(
     const string_list_t *this,
     const char *str,
     node_cmp_t comparator
+);
+
+int intern_string_list_contains(
+    const string_list_t *this,
+    const char *str
 );
 
 static const string_list_t STRING_LIST_MODEL =
@@ -112,9 +137,15 @@ static const string_list_t STRING_LIST_MODEL =
     .reverse = &intern_string_list_reverse,
     .rotate_begin = &intern_string_list_rotate_begin,
     .rotate_end = &intern_string_list_rotate_end,
+    .empty = &intern_string_list_empty,
     .get = &intern_string_list_get,
+    .__len__ = &intern_string_list_length,
+    .__begin__ = &intern_string_list_begin,
+    .__end__ = &intern_string_list_end,
+    .__get_dtor__ = &intern_string_list_get_dtor,
     .str_find = &intern_string_list_find,
     .str_find_cmp = &intern_string_list_find_cmp,
+    .str_contains = &intern_string_list_contains
 };
 
 static void string_list_init(string_list_t *list)

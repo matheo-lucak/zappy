@@ -17,23 +17,27 @@ SRC_LIB		=	array/array_to_generic_list.c			\
 				container/destroy_node.c				\
 				generic_list/generic_list_clear.c		\
 				generic_list/generic_list_create.c		\
+				generic_list/generic_list_contains.c	\
 				generic_list/generic_list_destroy.c		\
 				generic_list/generic_list_dup.c			\
 				generic_list/generic_list_emplace.c		\
 				generic_list/generic_list_find.c		\
 				generic_list/generic_list_get.c			\
 				generic_list/generic_list_insert.c		\
+				generic_list/generic_list_infos.c		\
 				generic_list/generic_list_merge.c		\
 				generic_list/generic_list_pop.c			\
 				generic_list/generic_list_reverse.c		\
 				generic_list/generic_list_rotate.c		\
 				ptr_list/ptr_list_clear.c				\
 				ptr_list/ptr_list_create.c				\
+				ptr_list/ptr_list_contains.c			\
 				ptr_list/ptr_list_destroy.c				\
 				ptr_list/ptr_list_dup.c					\
 				ptr_list/ptr_list_find.c				\
 				ptr_list/ptr_list_get.c					\
 				ptr_list/ptr_list_insert.c				\
+				ptr_list/ptr_list_infos.c				\
 				ptr_list/ptr_list_merge.c				\
 				ptr_list/ptr_list_pop.c					\
 				ptr_list/ptr_list_reverse.c				\
@@ -41,12 +45,14 @@ SRC_LIB		=	array/array_to_generic_list.c			\
 				string_list/string_list_clear.c			\
 				string_list/string_list_concat.c		\
 				string_list/string_list_create.c		\
+				string_list/string_list_contains.c		\
 				string_list/string_list_destroy.c		\
 				string_list/string_list_dup.c			\
 				string_list/string_list_emplace.c		\
 				string_list/string_list_find.c			\
 				string_list/string_list_get.c			\
 				string_list/string_list_insert.c		\
+				string_list/string_list_infos.c			\
 				string_list/string_list_merge.c			\
 				string_list/string_list_pop.c			\
 				string_list/string_list_reverse.c		\
