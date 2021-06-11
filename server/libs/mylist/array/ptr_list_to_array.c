@@ -17,7 +17,7 @@ void *ptr_list_to_array(const ptr_list_t *list, size_t *length)
 
     if (array) {
         list_foreach(node, list) {
-            array[start++] = *((void **)(node->data.ptr));
+            array[start++] = node->data.ptr;
         }
     } else {
         nmemb = 0;

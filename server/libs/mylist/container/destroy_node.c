@@ -11,21 +11,12 @@
 
 void destroy_node(node_t *node, node_dtor_t destructor)
 {
-    void *data = NULL;
-
     if (!node)
         return;
-    if (node->data.hold_ptr) {
-        data = *((void **)(node->data.ptr));
-        if (destructor && data)
-            destructor(data);
+    if (destructor && node->data.ptr) {
+        destructor(node->data.ptr);
+    } else if (!(node->data.hold_ptr)) {
         free(node->data.ptr);
-    } else {
-        data = node->data.ptr;
-        if (destructor && data)
-            destructor(data);
-        else
-            free(data);
     }
     memset(node, 0, sizeof(*node));
     free(node);

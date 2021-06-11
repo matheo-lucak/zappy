@@ -13,7 +13,7 @@ static int duplicate_nodes(container_list_t *dest, const container_list_t *src)
     const node_t *src_node = src->start;
 
     for (; src_node; src_node = src_node->next) {
-        dest_node = create_ptr_node(*((void **)(src_node->data.ptr)));
+        dest_node = create_ptr_node(src_node->data.ptr);
         if (container_add_node_at_end(dest, dest_node) == LIST_ERROR)
             return LIST_ERROR;
     }
