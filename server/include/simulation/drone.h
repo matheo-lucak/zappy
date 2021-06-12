@@ -17,5 +17,7 @@ typedef struct drone_s
     unsigned int    y;
 } drone_t;
 
+drone_t *drone_create(int x, int y);
+void drone_destroy(drone_t *d);
 
 #endif /* !DRONE_H_ */
