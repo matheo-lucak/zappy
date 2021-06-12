@@ -26,7 +26,7 @@ char **string_list_to_array(const string_list_t *list, size_t *length)
     if (!array)
         return set_size_and_returns(NULL, 0, length);
     list_foreach(node, list) {
-        array[start] = strdup(node->data.ptr);
+        array[start] = strdup(NODE_STR(node));
         if (!(array[start])) {
             free_2d_array(array);
             return set_size_and_returns(NULL, 0, length);

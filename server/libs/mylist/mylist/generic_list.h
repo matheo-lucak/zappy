@@ -86,9 +86,9 @@ list_t *array_to_generic_list(
 );
 
 // Create a generic list with default values
-#define make_generic_list(destructor, type, value1, values...)    \
-    array_to_generic_list(_FMT_ARRAY(type, value1, values), sizeof(type),   \
-                        _FMT_ARRAY_SIZE(type, value1, values), destructor)
+#define make_generic_list(destructor, type, values...)    \
+    array_to_generic_list(_FMT_ARRAY(type, values), sizeof(type),   \
+                        _FMT_ARRAY_SIZE(type, values), destructor)
 ///////////////////////////////////////////////////////////////
 
 ///////////// Add data to linked lists ///////////

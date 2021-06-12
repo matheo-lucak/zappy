@@ -68,7 +68,7 @@ int container_add_node(container_list_t *list, node_t *node, long index)
     } else {
         if (index == -1)
             return (container_add_node_at_end(list, node));
-        if ((long)(list->size + index) <= 0)
+        if ((long)(list->size + index) < 0)
             return (container_add_node_at_start(list, node));
     }
     idx = (index < 0) ? list->size + 1 + index : (size_t)index;
