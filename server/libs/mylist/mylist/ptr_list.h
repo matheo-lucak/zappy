@@ -68,15 +68,18 @@ void ptr_list_destroy(ptr_list_t *list);
 
 // Create a NULL-terminated array of pointer from a pointer list
 // If length is not NULL, the array length is stored
-// Each pointer is the one stored in the list, so don't free them
+// Each pointer is the one stored in the list, so use free() to free the array
+// if the list has a destructor instead of free_2d_array()
 void *ptr_list_to_array(const ptr_list_t *list, size_t *length);
 
 // Create a pointer list from a NULL-terminated array of pointers
+// If destructor is not NULL, the ptr_list grabs the ownership of the pointers
 ptr_list_t *array_to_ptr_list(const void *array, node_dtor_t destructor);
 
 // Create a pointer list with default values
-#define make_ptr_list(destructor, value1, values...)    \
-    array_to_ptr_list(_FMT_ARRAY(void *, value1, values, NULL), destructor)
+// If destructor is not NULL, the ptr_list grabs the ownership of the pointers
+#define make_ptr_list(destructor, values...)    \
+    array_to_ptr_list(_FMT_ARRAY(const void *, values, NULL), destructor)
 ///////////////////////////////////////////////////////////////
 
 ///////////// Add data to linked lists ///////////

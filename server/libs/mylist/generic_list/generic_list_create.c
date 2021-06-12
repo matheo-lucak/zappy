@@ -116,6 +116,7 @@ const node_t *intern_generic_list_find(
 const node_t *intern_generic_list_find_cmp(
     const list_t *this,
     const void *data,
+    size_t size,
     node_cmp_t comparator
 );
 
