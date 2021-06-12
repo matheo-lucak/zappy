@@ -8,7 +8,7 @@
 #ifndef ARG_PARSER_H_
 #define ARG_PARSER_H_
 
-#include "arg_parser/arguments.h"
+#include "arguments.h"
 
 int parse_arguments(int ac, char * const * av, arguments_t * args);
 

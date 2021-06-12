@@ -6,12 +6,13 @@
 */
 
 #include "arg_parser.h"
+#include "zappy/server.h"
 
 int main(int ac, char **av)
 {
-    arguments_t args;
+    arguments_t args = arguments_default_values();
 
     if (parse_arguments(ac, av, &args))
         return 84;
-    return 0;
+    return launch_server(&args);
 }

@@ -17,13 +17,18 @@ typedef enum resource_type_s
     RESOURCE_MENDIANE,
     RESOURCE_PHIRAS,
     RESOURCE_THYSTAME,
+
+    // This enumerate must stay the last
+    RESOURCE_NB
 } resource_type_t;
+
+typedef float density_t;
 
 typedef struct resource_info_s
 {
     char *          name;
     resource_type_t type;
-    float           density;
+    density_t       density;
 } resource_info_t;
 
 //extern const resource_info_t resource_INFOS[];

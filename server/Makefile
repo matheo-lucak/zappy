@@ -28,6 +28,8 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), arg_parser/arg_setter/get_from_option.c)		\
 					$(addprefix $(SRC_PATH), arg_parser/arg_setter/setters.c)				\
 					$(addprefix $(SRC_PATH), arg_parser/parse.c)							\
+					$(addprefix $(SRC_PATH), arguments_default_values.c)					\
+					$(addprefix $(SRC_PATH), launch_server.c)								\
 
 SRC				=	$(SRC_PROJECT) $(MAIN)
 

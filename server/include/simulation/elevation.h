@@ -10,7 +10,7 @@
 
 #include <stddef.h>
 
-#include "resource.h"
+#include "simulation/resources.h"
 
 typedef struct elevation_requirement_s
 {

@@ -33,7 +33,7 @@ static int parse_non_positional_args(int ac, char * const * av,
 static int parse_positional_args(int old_ac, char * const * old_av,
                                                 arguments_t * args)
 {
-//    int ac = old_ac - optind; 
+//    int ac = old_ac - optind;
 //    char * const * av = old_av + optind;
 
     return 0;

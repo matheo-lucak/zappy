@@ -21,4 +21,6 @@ typedef struct arguments
     string_list_t   *team_names;
 } arguments_t;
 
+arguments_t arguments_default_values(void);
+
 #endif /* !ARGUMENTS_H_ */
