@@ -10,6 +10,6 @@
 
 #include "arguments.h"
 
-int launch_server(const arguments_t *args);
+int server_launch(const arguments_t *args);
 
 #endif /* !ZAPPY_SERVER_H_ */

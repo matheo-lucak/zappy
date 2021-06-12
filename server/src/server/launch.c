@@ -5,15 +5,17 @@
 ** launch
 */
 
+#include "server/server.h"
 #include "arguments.h"
 
-int launch_server(const arguments_t *args)
+int server_launch(const arguments_t *args)
 {
     server_t s;
-    int error = 0;
+    int error = server_start(args, &s);
 
-    if (start_server(args, &s))
-        return 1;
-    stop_server(&s);
+    if (error != SERVER_SUCCESS)
+        return error;
+    error = server_run(&s);
+    server_stop(&s);
     return error;
 }

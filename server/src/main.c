@@ -6,7 +6,7 @@
 */
 
 #include "arg_parser.h"
-#include "zappy/server.h"
+#include "server/server.h"
 
 int main(int ac, char **av)
 {
@@ -14,5 +14,5 @@ int main(int ac, char **av)
 
     if (parse_arguments(ac, av, &args))
         return 84;
-    return launch_server(&args);
+    return server_launch(&args);
 }
