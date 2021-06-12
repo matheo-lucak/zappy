@@ -46,8 +46,8 @@ struct generic_linked_list
 
     const node_t *(*const find)(const list_t *this,
                                 const void *data, size_t size);
-    const node_t *(*const find_cmp)(const list_t *this,
-                                    const void *data, node_cmp_t comparator);
+    const node_t *(*const find_cmp)(const list_t *this, const void *data,
+                                    size_t size, node_cmp_t comparator);
     int (*const contains)(const list_t *this, const void *data, size_t size);
 
     const container_list_t __c;
@@ -139,7 +139,8 @@ list_t *array_to_generic_list(
 // Returns the node, or NULL if the data was not found
 // Returns NULL for NULL comparator
 #define generic_list_find_cmp(list, data, type, comparator)    \
-    (list)->find_cmp((list), _FMT_DATA(data, type), (node_cmp_t)(comparator))
+    (list)->find_cmp((list), _FMT_DATA(data, type), sizeof(type), \
+                    (node_cmp_t)(comparator))
 
 // Check if a data is in a generic list
 // Return 1 if it's 1, 0 otherwise

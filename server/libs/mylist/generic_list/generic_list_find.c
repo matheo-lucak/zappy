@@ -24,11 +24,14 @@ const node_t *intern_generic_list_find(const list_t *this,
 
 const node_t *intern_generic_list_find_cmp(const list_t *this,
                                         const void *data,
+                                        size_t size,
                                         node_cmp_t comparator)
 {
     if (!data || !comparator)
         return NULL;
     list_foreach(node, this) {
+        if (node->data.size != size)
+            continue;
         if (comparator(node->data.ptr, data) == 0)
             return node;
     }
