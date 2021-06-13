@@ -17,5 +17,6 @@ drone_t *drone_create(int x, int y)
         return NULL;
     new_drone->x = x;
     new_drone->y = y;
+    new_drone->facing_direction = direction_get_random();
     return new_drone;
 }

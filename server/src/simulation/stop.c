@@ -12,5 +12,5 @@ void simulation_stop(simulation_t *n)
     if (!n)
         return;
     if (n->map)
-        destroy_map(n->map);
+        map_destroy(n->map);
 }
