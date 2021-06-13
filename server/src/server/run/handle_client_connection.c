@@ -22,5 +22,6 @@ void handle_client_connection(server_t *s)
         epinet_perror("");
         return;
     }
-    // APPEND CLIENT TO LIST
+    if (ptr_list_push_front(s->clients, new_client) == LIST_ERROR)
+        client_destroy(new_client);
 }

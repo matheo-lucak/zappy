@@ -6,6 +6,7 @@
 */
 
 #include "server/server.h"
+#include "server/client.h"
 
 static int server_start_error(const char *error)
 {
@@ -17,6 +18,7 @@ int server_start(const arguments_t *args, server_t *s)
 {
     if (!s)
         return SERVER_EXIT;
+    s->clients = ptr_list_create(&client_destroy);
     s->clients = generic_list_create(NULL/*//Client destructor*/);
     if (!s->clients)
         return SERVER_EXIT;

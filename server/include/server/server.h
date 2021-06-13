@@ -23,7 +23,7 @@ typedef struct server_s
 {
     socket_selector_t * selector;
     tcp_listener_t *    listener;
-    list_t *            clients;
+    ptr_list_t *        clients;
     bool                is_running;
 } server_t;
 

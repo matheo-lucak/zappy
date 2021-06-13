@@ -9,4 +9,5 @@
 
 void server_handle_clients_in(server_t *s)
 {
+    handle_client_connection(s);
 }
