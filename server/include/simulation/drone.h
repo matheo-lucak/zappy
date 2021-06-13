@@ -10,6 +10,7 @@
 
 #include "simulation/direction.h"
 #include "simulation/inventory.h"
+#include "simulation/map.h"
 
 typedef struct drone_s
 {
@@ -21,5 +22,8 @@ typedef struct drone_s
 
 drone_t *drone_create(int x, int y);
 void drone_destroy(drone_t *d);
+
+int drone_move(drone_t *drone, const map_t *map);
+int drone_rotate(drone_t *drone, direction_t direction);
 
 #endif /* !DRONE_H_ */

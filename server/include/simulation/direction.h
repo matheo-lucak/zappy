@@ -16,4 +16,6 @@ typedef enum direction_e
     RIGHT
 } direction_t;
 
+direction_t direction_get_random();
+
 #endif /* !DIRECTION_H_ */

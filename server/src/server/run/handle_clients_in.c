@@ -10,17 +10,16 @@
 
 void server_handle_clients_in(server_t *s)
 {
-    client_t *client = NULL;
+    client_t *c = NULL;
 
-    if (socket_selector_wait(s->selector, 500, WATCH_RD) <= 0)
+    if (socket_selector_wait(s->n.selector, 500, WATCH_RD) <= 0)
         return;
-    handle_client_connection(s);
+    server_handle_client_connection(s);
     list_foreach(node, s->clients) {
-        client = NODE_PTR(node, client_t);
-        if (!client)
+        c = NODE_PTR(node, client_t);
+        if (!c)
             continue;
-        if (socket_selector_is_socket_ready(s->selector, client->socket)) {
-            //
+        if (socket_selector_is_socket_ready(s->n.selector, SOCKET(c->socket))) {
         }
     }
 }

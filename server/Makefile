@@ -39,10 +39,14 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), server/run.c)									\
 					$(addprefix $(SRC_PATH), server/start.c)								\
 					$(addprefix $(SRC_PATH), server/stop.c)									\
+					$(addprefix $(SRC_PATH), simulation/direction/get_random.c)				\
 					$(addprefix $(SRC_PATH), simulation/drone/create.c)						\
 					$(addprefix $(SRC_PATH), simulation/drone/destroy.c)					\
+					$(addprefix $(SRC_PATH), simulation/drone/is_drone.c)					\
+					$(addprefix $(SRC_PATH), simulation/drone/is_spectator.c)				\
 					$(addprefix $(SRC_PATH), simulation/drone/move.c)						\
 					$(addprefix $(SRC_PATH), simulation/drone/rotate.c)						\
+					$(addprefix $(SRC_PATH), simulation/drone/set_drone.c)					\
 					$(addprefix $(SRC_PATH), simulation/map/create.c)						\
 					$(addprefix $(SRC_PATH), simulation/map/destroy.c)						\
 					$(addprefix $(SRC_PATH), simulation/tile/create.c)						\
@@ -96,7 +100,7 @@ override NAME		=	$(PATH_TO_INSTANTIATE)/zappy_server
 all:	$(NAME)
 .PHONY:	all
 
-$(NAME):	CFLAGS += -O2
+$(NAME):	CFLAGS += -O0
 $(NAME):	$(LIBRARIES) $(OBJ)
 	$(CC) -o $(NAME) $(OBJ) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 
@@ -125,6 +129,8 @@ TESTS_SRC		=	$(addprefix $(TESTS_PATH), arg_parser/arg_checker/positive_int.c)	\
 					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_x.c)	\
 					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_y.c)	\
 					$(addprefix $(TESTS_PATH), arg_parser/parse.c)	\
+					$(addprefix $(TESTS_PATH), simulation/drone/move.c)	\
+					$(addprefix $(TESTS_PATH), simulation/drone/rotate.c)	\
 
 TESTS_OBJ		=	$(TESTS_SRC:.c=.o)
 

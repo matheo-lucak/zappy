@@ -8,21 +8,22 @@
 #include "server/client.h"
 #include "server/server.h"
 
-void handle_client_connection(server_t *s)
+void server_handle_client_connection(server_t *s)
 {
     client_t *new_client = NULL;
+    network_t *n = &s->n;
 
-    if (socket_selector_is_socket_ready(s->selector, SOCKET(s->listener))
+    if (socket_selector_is_socket_ready(n->selector, SOCKET(n->listener))
         == false)
         return;
     new_client = client_create();
     if (!new_client)
         return;
-    if (tcp_listener_accept(s->listener, &new_client->socket) == SOCKET_ERROR) {
-        epinet_perror("");
+    if (tcp_listener_accept(n->listener, &new_client->socket) == SOCKET_ERROR) {
+        epinet_perror(NULL);
         return;
     }
     if (ptr_list_push_front(s->clients, new_client) == LIST_ERROR)
         client_destroy(new_client);
-    socket_selector_add_socket(s->selector, new_client->socket);
+    socket_selector_add_socket(n->selector, SOCKET(new_client->socket));
 }

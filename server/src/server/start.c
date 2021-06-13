@@ -5,6 +5,9 @@
 ** start
 */
 
+#include <stdlib.h>
+#include <string.h>
+
 #include "server/server.h"
 #include "server/client.h"
 
@@ -12,7 +15,8 @@ int server_start(const arguments_t *args, server_t *s)
 {
     if (!s || !args)
         return SERVER_EXIT;
-    s->clients = ptr_list_create(&client_destroy);
+    memset(s, 0, sizeof(server_t));
+    s->clients = ptr_list_create(&free);
     if (!s->clients)
         return SERVER_EXIT;
     if (network_start(args, &s->n) != NETWORK_SUCCESS)
