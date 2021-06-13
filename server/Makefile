@@ -28,18 +28,29 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), arg_parser/arg_setter/get_from_option.c)		\
 					$(addprefix $(SRC_PATH), arg_parser/arg_setter/setters.c)				\
 					$(addprefix $(SRC_PATH), arg_parser/parse.c)							\
+					$(addprefix $(SRC_PATH), network/start.c)								\
+					$(addprefix $(SRC_PATH), network/stop.c)								\
 					$(addprefix $(SRC_PATH), server/client/create.c)						\
 					$(addprefix $(SRC_PATH), server/client/destroy.c)						\
-					$(addprefix $(SRC_PATH), server/run/handle_client_connection.c)						\
-					$(addprefix $(SRC_PATH), server/run/handle_clients_in.c)						\
-					$(addprefix $(SRC_PATH), server/run/handle_clients_out.c)						\
+					$(addprefix $(SRC_PATH), server/run/handle_client_connection.c)			\
+					$(addprefix $(SRC_PATH), server/run/handle_clients_in.c)				\
+					$(addprefix $(SRC_PATH), server/run/handle_clients_out.c)				\
 					$(addprefix $(SRC_PATH), server/launch.c)								\
 					$(addprefix $(SRC_PATH), server/run.c)									\
 					$(addprefix $(SRC_PATH), server/start.c)								\
 					$(addprefix $(SRC_PATH), server/stop.c)									\
-					$(addprefix $(SRC_PATH), simulation/drone/create.c)									\
-					$(addprefix $(SRC_PATH), simulation/drone/destroy.c)									\
+					$(addprefix $(SRC_PATH), simulation/drone/create.c)						\
+					$(addprefix $(SRC_PATH), simulation/drone/destroy.c)					\
+					$(addprefix $(SRC_PATH), simulation/drone/move.c)						\
+					$(addprefix $(SRC_PATH), simulation/drone/rotate.c)						\
+					$(addprefix $(SRC_PATH), simulation/map/create.c)						\
+					$(addprefix $(SRC_PATH), simulation/map/destroy.c)						\
+					$(addprefix $(SRC_PATH), simulation/tile/create.c)						\
+					$(addprefix $(SRC_PATH), simulation/tile/destroy.c)						\
+					$(addprefix $(SRC_PATH), simulation/start.c)							\
+					$(addprefix $(SRC_PATH), simulation/stop.c)								\
 					$(addprefix $(SRC_PATH), arguments_default_values.c)					\
+					$(addprefix $(SRC_PATH), usage.c)										\
 
 SRC				=	$(SRC_PROJECT) $(MAIN)
 

@@ -14,6 +14,8 @@ int server_run(server_t *s)
     s->is_running = true;
     while (s->is_running)
     {
+        server_handle_clients_in(s);
+        server_handle_clients_out(s);
     }
     return error;
 }

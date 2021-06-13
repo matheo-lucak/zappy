@@ -24,4 +24,5 @@ void handle_client_connection(server_t *s)
     }
     if (ptr_list_push_front(s->clients, new_client) == LIST_ERROR)
         client_destroy(new_client);
+    socket_selector_add_socket(s->selector, new_client->socket);
 }

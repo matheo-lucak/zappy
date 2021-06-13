@@ -8,13 +8,15 @@
 #ifndef DRONE_H_
 #define DRONE_H_
 
+#include "simulation/direction.h"
 #include "simulation/inventory.h"
 
 typedef struct drone_s
 {
-    inventory_t inventory;
-    unsigned int    x;
-    unsigned int    y;
+    unsigned int                x;
+    unsigned int                y;
+    direction_t  facing_direction;
+    inventory_t         inventory;
 } drone_t;
 
 drone_t *drone_create(int x, int y);

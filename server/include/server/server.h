@@ -10,21 +10,26 @@
 
 #include <stdbool.h>
 
-#include <epinet.h>
 #include <mylist.h>
 
 #include "arguments.h"
+
+#include "network/network.h"
+#include "simulation/simulation.h"
 
 #define SERVER_EXIT     84
 #define SERVER_ERROR    1
 #define SERVER_SUCCESS  0
 
+typedef size_t frequency_t;
+
 typedef struct server_s
 {
-    socket_selector_t * selector;
-    tcp_listener_t *    listener;
+    network_t           n;
+    simulation_t        s;
     ptr_list_t *        clients;
     bool                is_running;
+    frequency_t         freq;
 } server_t;
 
 int server_launch(const arguments_t *args);

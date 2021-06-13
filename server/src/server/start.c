@@ -8,31 +8,16 @@
 #include "server/server.h"
 #include "server/client.h"
 
-static int server_start_error(const char *error)
-{
-    epinet_perror(error);
-    return SERVER_EXIT;
-}
-
 int server_start(const arguments_t *args, server_t *s)
 {
-    if (!s)
+    if (!s || !args)
         return SERVER_EXIT;
     s->clients = ptr_list_create(&client_destroy);
-    s->clients = generic_list_create(NULL/*//Client destructor*/);
     if (!s->clients)
         return SERVER_EXIT;
-    s->selector = socket_selector_create();
-    if (!s->selector)
-        return server_start_error("");
-    s->listener = tcp_listener_create();
-    if (!s->listener)
-        return server_start_error("");
-    if (tcp_listener_listen(s->listener, args->port, IP_ADDRESS_ANY)
-        == SOCKET_ERROR)
+    if (network_start(args, &s->n) != NETWORK_SUCCESS)
         return SERVER_EXIT;
-    if (socket_selector_add_socket(s->selector, SOCKET(s->listener))
-        == SOCKET_ERROR)
+    if (simulation_start(args, &s->s) != SIMULATION_SUCCESS)
         return SERVER_EXIT;
     return SERVER_SUCCESS;
 }
