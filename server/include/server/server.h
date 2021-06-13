@@ -33,6 +33,7 @@ int server_start(const arguments_t *args, server_t *s);
 void server_stop(server_t *s);
 
 int server_run(server_t *s);
-
+void server_handle_clients_in(server_t *s);
+void server_handle_clients_out(server_t *s);
 
 #endif /* !SERVER_H_ */
