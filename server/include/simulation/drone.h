@@ -18,6 +18,7 @@ typedef struct drone_s
     unsigned int                y;
     direction_t  facing_direction;
     inventory_t         inventory;
+    int              elevation_lvl;
 } drone_t;
 
 drone_t *drone_create(int x, int y);
