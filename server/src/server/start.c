@@ -5,26 +5,24 @@
 ** start
 */
 
-#include "server.h"
+#include <stdlib.h>
+#include <string.h>
 
-static int start_server_error(const char *error)
-{
-    epinet_perror(error);
-    return -1;
-}
+#include "server/server.h"
+#include "server/client.h"
 
-int start_server(const arguments_t *args, server_t *s)
+int server_start(const arguments_t *args, server_t *s)
 {
-    if (!s)
-        return 1;
-    s->listener = tcp_listener_create();
-    if (!s->listener)
-        return start_server_error("");
-    srv->selector = socket_selector_create();
-    if (!srv->selector)
-        return start_server_error("");
-    srv->clients = generic_list_create();
-    if (!srv->clients)
-        return server_init_client_list_error();
-    return 0;
+    if (!s || !args)
+        return SERVER_EXIT;
+    memset(s, 0, sizeof(server_t));
+    s->clients = ptr_list_create(&free);
+    if (!s->clients)
+        return SERVER_EXIT;
+    if (network_start(args, &s->n) != NETWORK_SUCCESS)
+        return SERVER_EXIT;
+    if (simulation_start(args, &s->s) != SIMULATION_SUCCESS)
+        return SERVER_EXIT;
+    server_log(LOG_SERVER_STARTED);
+    return SERVER_SUCCESS;
 }

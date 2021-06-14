@@ -8,22 +8,22 @@
 #include <stdlib.h>
 #include "simulation/map.h"
 
-static void destroy_tile_map(map_t *map)
+static void map_destroy_tile(map_t *map)
 {
     if (!map->tiles)
         return;
     for (unsigned int y = 0; y < map->height; y++) {
         for (unsigned int x = 0; x < map->width; x++) {
-            destroy_tile(map->tiles[y][x]);
+            tile_destroy(map->tiles[y][x]);
         }
     }
     free(map->tiles);
 }
 
-void destroy_map(map_t *map)
+void map_destroy(map_t *map)
 {
     if (!map)
         return;
-    destroy_tile_map(map);
+    map_destroy_tile(map);
     free(map);
 }

@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include "simulation/tile.h"
 
-void destroy_tile(tile_t *tile)
+void tile_destroy(tile_t *tile)
 {
     if (!tile)
         return;

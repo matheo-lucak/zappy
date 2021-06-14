@@ -11,7 +11,7 @@ arguments_t arguments_default_values(void)
 {
     arguments_t args = {0};
 
-    args.port = 3;
+    args.port = 0;
     args.clients_nb = 3;
     args.width = 10;
     args.height = 10;

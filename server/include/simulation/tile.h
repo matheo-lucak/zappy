@@ -18,7 +18,7 @@ typedef struct tile_s
     unsigned int pos_y;
 } tile_t;
 
-tile_t *create_tile(unsigned int pos_x, unsigned int pos_y);
-void destroy_tile(tile_t *tile);
+tile_t *tile_create(unsigned int pos_x, unsigned int pos_y);
+void tile_destroy(tile_t *tile);
 
 #endif /* !TILE_H_ */

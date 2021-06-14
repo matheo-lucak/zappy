@@ -51,7 +51,7 @@ static const command_request_info_t COMMAND_INFOS[] = {
 typedef struct command_request_s
 {
     command_request_type_t type;
-    void *parameter;
+    char parameter[256];
 } command_request_t;
 
 #endif /* !COMMAND_REQUEST_H_ */
