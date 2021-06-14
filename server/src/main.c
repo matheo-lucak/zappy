@@ -13,6 +13,6 @@ int main(int ac, char **av)
     arguments_t args = arguments_default_values();
 
     if (parse_arguments(ac, av, &args))
-        return 84;
+        return SERVER_EXIT;
     return server_launch(&args);
 }
