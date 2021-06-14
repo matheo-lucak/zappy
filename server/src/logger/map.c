@@ -18,16 +18,36 @@ const log_info_t log_info_map[] =
         .message = "Stopped"
     },
     {
-        .type = LOG_SERVER_LISTENING,
-        .message = "Listening on port %d"
-    },
-    {
         .type = LOG_SERVER_NEW_CLIENT,
         .message = "New client from: %s"
     },
     {
         .type = LOG_SERVER_CLIENT_LEFT,
         .message = "A client has left"
+    },
+        {
+        .type = LOG_NETWORK_STARTED,
+        .message = "Started"
+    },
+    {
+        .type = LOG_NETWORK_STOPPED,
+        .message = "Stopped"
+    },
+    {
+        .type = LOG_NETWORK_LISTENING,
+        .message = "Listening on port %d"
+    },
+    {
+        .type = LOG_SIMULATION_STARTED,
+        .message = "Started"
+    },
+        {
+        .type = LOG_SIMULATION_STOPPED,
+        .message = "Stopped"
+    },
+    {
+        .type = LOG_SIMULATION_NEW_FORK,
+        .message = "An egg has hatched at (%d, %d) facing %d"
     },
 };
 

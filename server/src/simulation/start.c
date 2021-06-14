@@ -5,6 +5,7 @@
 ** start
 */
 
+#include "logger/logger.h"
 #include "simulation/simulation.h"
 
 int simulation_start(const arguments_t *args, simulation_t *n)
@@ -16,4 +17,5 @@ int simulation_start(const arguments_t *args, simulation_t *n)
         return SIMULATION_EXIT;
     n->default_team_free_slot = args->clients_nb;
     return SIMULATION_SUCCESS;
+    server_log(LOG_SIMULATION_STARTED);
 }

@@ -8,7 +8,7 @@
 #include "server/client.h"
 #include "server/server.h"
 
-void server_handle_client_connection(server_t *s)
+void network_handle_client_connection(server_t *s)
 {
     client_t *new_client = NULL;
     network_t *n = &s->n;
@@ -25,5 +25,6 @@ void server_handle_client_connection(server_t *s)
     }
     if (ptr_list_push_front(s->clients, new_client) == LIST_ERROR)
         client_destroy(new_client);
-    socket_selector_add_socket(n->selector, SOCKET(new_client->socket));
+    socket_selector_add_socket(n->selector, SOCKET(n->listener));
+    server_log(LOG_SERVER_NEW_CLIENT, tcp_socket_get_local_address(new_client->socket).str_address);
 }

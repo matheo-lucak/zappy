@@ -7,6 +7,6 @@
 
 #include "server/server.h"
 
-void server_handle_clients_out(server_t *s)
+void network_handle_clients_out(server_t *s)
 {
 }

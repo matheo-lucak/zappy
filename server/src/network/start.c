@@ -4,7 +4,7 @@
 ** File description:
 ** start
 */
-
+#include <epinet.h>
 #include "server/server.h"
 #include "server/client.h"
 
@@ -26,5 +26,7 @@ int network_start(const arguments_t *args, network_t *n)
         return network_start_error(NULL);
     if (socket_selector_add_socket(n->selector, SOCKET(n->listener)) == SOCKET_ERROR)
         return network_start_error(NULL);
+    server_log(LOG_NETWORK_STARTED);
+    server_log(LOG_NETWORK_LISTENING, tcp_socket_get_local_port(n->listener));
     return SERVER_SUCCESS;
 }

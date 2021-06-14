@@ -31,13 +31,13 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), logger/find_message.c)							\
 					$(addprefix $(SRC_PATH), logger/logger.c)								\
 					$(addprefix $(SRC_PATH), logger/map.c)									\
+					$(addprefix $(SRC_PATH), network/handle_client_connection.c)			\
+					$(addprefix $(SRC_PATH), network/handle_clients_in.c)					\
+					$(addprefix $(SRC_PATH), network/handle_clients_out.c)					\
 					$(addprefix $(SRC_PATH), network/start.c)								\
 					$(addprefix $(SRC_PATH), network/stop.c)								\
 					$(addprefix $(SRC_PATH), server/client/create.c)						\
 					$(addprefix $(SRC_PATH), server/client/destroy.c)						\
-					$(addprefix $(SRC_PATH), server/run/handle_client_connection.c)			\
-					$(addprefix $(SRC_PATH), server/run/handle_clients_in.c)				\
-					$(addprefix $(SRC_PATH), server/run/handle_clients_out.c)				\
 					$(addprefix $(SRC_PATH), server/launch.c)								\
 					$(addprefix $(SRC_PATH), server/run.c)									\
 					$(addprefix $(SRC_PATH), server/start.c)								\

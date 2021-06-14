@@ -16,7 +16,6 @@
 #define NETWORK_ERROR    1
 #define NETWORK_SUCCESS  0
 
-
 typedef struct network_s
 {
     socket_selector_t * selector;
