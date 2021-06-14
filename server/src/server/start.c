@@ -23,5 +23,6 @@ int server_start(const arguments_t *args, server_t *s)
         return SERVER_EXIT;
     if (simulation_start(args, &s->s) != SIMULATION_SUCCESS)
         return SERVER_EXIT;
+    server_log(LOG_SERVER_STARTED);
     return SERVER_SUCCESS;
 }

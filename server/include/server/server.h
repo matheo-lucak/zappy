@@ -17,6 +17,8 @@
 #include "network/network.h"
 #include "simulation/simulation.h"
 
+#include "logger/logger.h"
+
 #define SERVER_EXIT     84
 #define SERVER_ERROR    1
 #define SERVER_SUCCESS  0

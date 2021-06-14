@@ -28,6 +28,9 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), arg_parser/arg_setter/get_from_option.c)		\
 					$(addprefix $(SRC_PATH), arg_parser/arg_setter/setters.c)				\
 					$(addprefix $(SRC_PATH), arg_parser/parse.c)							\
+					$(addprefix $(SRC_PATH), logger/find_message.c)							\
+					$(addprefix $(SRC_PATH), logger/logger.c)								\
+					$(addprefix $(SRC_PATH), logger/map.c)									\
 					$(addprefix $(SRC_PATH), network/start.c)								\
 					$(addprefix $(SRC_PATH), network/stop.c)								\
 					$(addprefix $(SRC_PATH), server/client/create.c)						\

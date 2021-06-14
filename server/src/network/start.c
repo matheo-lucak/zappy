@@ -10,7 +10,7 @@
 
 static int network_start_error(const char *error)
 {
-    epinet_perror(error);
+    epinet_perror(error ? error : "");
     return NETWORK_EXIT;
 }
 
