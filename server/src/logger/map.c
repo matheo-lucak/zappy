@@ -25,7 +25,15 @@ const log_info_t log_info_map[] =
         .type = LOG_SERVER_CLIENT_LEFT,
         .message = "A client has left"
     },
-        {
+    {
+        .type = LOG_SERVER_INVALID_REQUEST,
+        .message = "Invalid client request: \"%s\""
+    },
+    {
+        .type = LOG_SERVER_INVALID_REQUEST_ARG,
+        .message = "Invalid client request argument"
+    },
+    {
         .type = LOG_NETWORK_STARTED,
         .message = "Started"
     },
@@ -51,4 +59,4 @@ const log_info_t log_info_map[] =
     },
 };
 
-const size_t log_info_map_size = sizeof(log_info_map)/ sizeof(log_info_map[0]);
+const size_t log_info_map_size = sizeof(log_info_map) / sizeof(log_info_map[0]);

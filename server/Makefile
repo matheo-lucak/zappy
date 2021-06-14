@@ -38,6 +38,11 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), network/stop.c)								\
 					$(addprefix $(SRC_PATH), server/client/create.c)						\
 					$(addprefix $(SRC_PATH), server/client/destroy.c)						\
+					$(addprefix $(SRC_PATH), server/request/info/get_info.c)				\
+					$(addprefix $(SRC_PATH), server/request/info/info.c)					\
+					$(addprefix $(SRC_PATH), server/request/create.c)						\
+					$(addprefix $(SRC_PATH), server/request/destroy.c)						\
+					$(addprefix $(SRC_PATH), server/request/parse.c)						\
 					$(addprefix $(SRC_PATH), server/launch.c)								\
 					$(addprefix $(SRC_PATH), server/run.c)									\
 					$(addprefix $(SRC_PATH), server/start.c)								\
@@ -125,15 +130,16 @@ TESTS_PATH		=	tests/
 
 TESTS_SRC		=	$(addprefix $(TESTS_PATH), arg_parser/arg_checker/positive_int.c)	\
 					$(addprefix $(TESTS_PATH), arg_parser/arg_setter/get_from_option.c)	\
-					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_f.c)	\
-					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_c.c)	\
-					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_n.c)	\
-					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_p.c)	\
-					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_x.c)	\
-					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_y.c)	\
-					$(addprefix $(TESTS_PATH), arg_parser/parse.c)	\
-					$(addprefix $(TESTS_PATH), simulation/drone/move.c)	\
-					$(addprefix $(TESTS_PATH), simulation/drone/rotate.c)	\
+					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_f.c)				\
+					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_c.c)				\
+					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_n.c)				\
+					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_p.c)				\
+					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_x.c)				\
+					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_y.c)				\
+					$(addprefix $(TESTS_PATH), arg_parser/parse.c)						\
+					$(addprefix $(TESTS_PATH), server/request/parse.c)					\
+					$(addprefix $(TESTS_PATH), simulation/drone/move.c)					\
+					$(addprefix $(TESTS_PATH), simulation/drone/rotate.c)				\
 
 TESTS_OBJ		=	$(TESTS_SRC:.c=.o)
 

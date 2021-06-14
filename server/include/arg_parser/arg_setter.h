@@ -13,9 +13,9 @@
 #include "arg_parser.h"
 
 // Type of a classic arg_setter
-// The arguments_t is the structure to fill 
+// The arguments_t is the structure to fill
 // If the option requires an argument, use optarg
-// The '...' parameters are : int ac, char **av 
+// The '...' parameters are : int ac, char **av
 typedef int (*arg_setter_t)(arguments_t *, ...);
 
 typedef struct arg_setter_map
