@@ -55,7 +55,6 @@ node_t *create_ptr_node(void *ptr)
     if (element) {
         element->data.ptr = ptr;
         element->data.size = 0;
-        element->data.hold_ptr = 1;
     }
     return element;
 }

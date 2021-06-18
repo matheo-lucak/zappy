@@ -14,7 +14,6 @@ typedef struct data_node
 {
     void *ptr;
     size_t size;
-    int hold_ptr;
 } data_node_t;
 
 typedef void (*node_dtor_t)(void *);

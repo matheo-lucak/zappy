@@ -6,15 +6,12 @@ SRC_LIB		=	array/array_to_generic_list.c			\
 				array/ptr_list_to_array.c				\
 				array/string_list_to_array.c			\
 				container/container_add_node.c			\
-				container/container_clear.c				\
-				container/container_delete_node.c		\
 				container/container_get_node.c			\
 				container/container_merge.c				\
 				container/container_remove_node.c		\
 				container/container_reverse.c			\
 				container/container_rotate.c			\
 				container/create_node.c					\
-				container/destroy_node.c				\
 				generic_list/generic_list_clear.c		\
 				generic_list/generic_list_create.c		\
 				generic_list/generic_list_contains.c	\

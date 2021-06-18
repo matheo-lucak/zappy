@@ -9,5 +9,6 @@
 
 void intern_generic_list_clear(list_t *this)
 {
-    container_clear((container_list_t *)&this->__c);
+    while (!list_empty(this))
+        list_pop_front(this);
 }
