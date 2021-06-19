@@ -18,4 +18,5 @@ def main() -> int:
     zappy_ai(args)
     return EPITECH_EXIT_SUCCESS
 
-exit(main())
+if __name__ == "__main__":
+    exit(main())

@@ -22,8 +22,7 @@ class ZappyAI:
         if self.__server.recv(WelcomeResponse) is None:
             raise ZappyError("No welcome message received from server")
 
-        team_request: TeamRequest = TeamRequest(self.__team_name)
-        team_response: TeamResponse = self.__server.send_and_wait_for_response(team_request)
+        team_response: TeamResponse = self.__server.send_and_wait_for_response(TeamRequest(self.__team_name))
         if team_response.client_num is None:
             raise ZappyError(f"Cannot integrate team {repr(self.__team_name)}")
         print(team_response.client_num)
