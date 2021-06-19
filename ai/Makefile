@@ -9,6 +9,10 @@ current_dir			:=	$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 PYCACHE				=	__pycache__
 
+PYTEST_CACHE		=	.pytest_cache
+
+MYPY_CACHE			=	.mypy_cache
+
 PATH_TO_INSTANTIATE	?=	.
 
 override NAME		=	$(PATH_TO_INSTANTIATE)/zappy_ai
@@ -25,9 +29,14 @@ $(NAME):
 	@chmod +x $@
 	@echo "Done"
 
+tests_run:
+	@echo "Running tests..."
+	@pytest .
+
 clean:
-	@echo "$(RM) -r $(PYCACHE)"
-	@find -name "$(PYCACHE)" | xargs -I {} $(RM) -r {}
+	@find -name "$(PYCACHE)" | xargs -I {} sh -c 'echo "$(RM) -r {}" && $(RM) -r {}'
+	$(RM) -r $(PYTEST_CACHE)
+	$(RM) -r $(MYPY_CACHE)
 .PHONY:	clean
 
 fclean:	clean

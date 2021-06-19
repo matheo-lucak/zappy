@@ -1,14 +1,7 @@
 # -*- coding: Utf-8 -*
 
-from .base import ZappyRequest
-from .response import ZappyResponse
+from .base import BaseRequest
+from .response.broadcast import BroadcastResponse
 
-class BroadcastResponse(ZappyResponse):
-
-    def __init__(self, response: str) -> None:
-        super().__init__()
-
-class BroadcastRequest(ZappyRequest):
-
-    def make_response(self, response: str) -> BroadcastResponse:
-        return BroadcastResponse(response)
+class BroadcastRequest(BaseRequest[BroadcastResponse], response=BroadcastResponse):
+    pass

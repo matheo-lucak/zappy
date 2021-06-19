@@ -2,8 +2,8 @@
 
 from sys import exit
 
-from src.parse_args import parse_args
-from src.errors import Result, Error, HelpError
+from src.parse_args import parse_args, HelpError
+from src.errors import Result, Error
 from src.zappy_ai import ZappyAIArgs, zappy_ai
 
 EPITECH_EXIT_SUCCESS: int = 0

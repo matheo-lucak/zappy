@@ -1,11 +1,12 @@
 # -*- coding: Utf-8 -*
 
-from .base import ZappyRequest
-from .response import ZappyResponse
+from .base import BaseRequest, Request
 from .broadcast import BroadcastRequest
+from .team import TeamRequest
 
 __all__ = [
-    "ZappyRequest",
-    "ZappyResponse",
-    "BroadcastRequest"
+    "BaseRequest",
+    "Request",
+    "BroadcastRequest",
+    "TeamRequest"
 ]
