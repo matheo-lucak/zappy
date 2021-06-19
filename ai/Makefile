@@ -32,6 +32,7 @@ $(NAME):
 tests_run:
 	@echo "Running tests..."
 	@pytest .
+.PHONY: tests_run
 
 clean:
 	@find -name "$(PYCACHE)" | xargs -I {} sh -c 'echo "$(RM) -r {}" && $(RM) -r {}'
