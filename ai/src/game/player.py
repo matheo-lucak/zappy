@@ -7,6 +7,7 @@ from ..api_server.request import BroadcastRequest, InventoryRequest
 from ..api_server.request.response.spontaneous import MessageResponse
 from ..log import Logger
 
+
 class Player:
     def __init__(self, team_name: str, api: APIServer) -> None:
         self.__team: str = team_name
