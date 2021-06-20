@@ -5,6 +5,7 @@ from .exceptions import ResponseParsingError
 
 class WelcomeResponse(Response):
 
-    def parse(self, response: str) -> None:
+    def __init__(self, response: str) -> None:
+        super().__init__(response)
         if response != "WELCOME":
             raise ResponseParsingError(f"{repr(response)} is not the WELCOME response")

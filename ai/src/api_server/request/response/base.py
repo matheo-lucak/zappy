@@ -5,14 +5,7 @@ from typing import Any, Dict, ItemsView, Type
 
 Regex = Pattern[str]
 
-class MetaResponse(type):
-
-    def __call__(self, *args: Any, **kwds: Any) -> "Response":
-        obj: "Response" = super().__call__(*args, **kwds)
-        obj.parse(str(obj))
-        return obj
-
-class Response(metaclass=MetaResponse):
+class Response:
     
     END_RESPONSE: str = "\n"
 
@@ -24,9 +17,6 @@ class Response(metaclass=MetaResponse):
 
     def __str__(self) -> str:
         return self.__response
-
-    def parse(self, response: str) -> None:
-        pass
 
 class SpontaneousResponse(Response):
     

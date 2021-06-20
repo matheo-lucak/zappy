@@ -10,13 +10,12 @@ class TeamResponse(Response):
         super().__init__(response)
         self.__client_num: Optional[int] = None
 
-    def parse(self, response: str) -> None:
         if response == "ko":
-            self.__client_num = None
-        elif not response.isdigit():
-            raise ResponseParsingError(f"Should received 'ko' or a positive integer. Recevied {repr(response)}.")
-        else:
+            return
+        if response.isdigit():
             self.__client_num = int(response)
+        else:
+            raise ResponseParsingError(f"Should receive 'ko' or a positive integer. Received {repr(response)}.")
 
     @property
     def client_num(self) -> Optional[int]:
