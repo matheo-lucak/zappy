@@ -107,7 +107,11 @@ class APIServer:
             self.__parse_response(response)
 
     def __parse_response(self, received_response: str) -> None:
-        response: Optional[SpontaneousResponse] = SpontaneousResponse.match(received_response)
+        try:
+            response: Optional[SpontaneousResponse] = SpontaneousResponse.match(received_response)
+        except ResponseError as e:
+            print(f"{type(e).__name__}: {e}", file=stderr)
+            return
         if response is not None:
             self.__spontaneous_responses.append(response)
         elif not self.__pending_requests:
