@@ -17,7 +17,7 @@ class APIServer:
     def __init__(self, machine: str, port: int) -> None:
         timeout: int = 10 #seconds
         self.__socket: socket = socket(AF_INET, SOCK_STREAM)
-        print(f"Connecting to {machine} at port {port}... (Timeout: {timeout})")
+        print(f"Connecting to {machine} at port {port}... (Timeout: {timeout}s)")
         self.__socket.settimeout(timeout)
         self.__socket.connect((machine, port))
         self.__socket.settimeout(None)
@@ -88,7 +88,7 @@ class APIServer:
                 idx: int = self.__buffer.find(Response.END_RESPONSE)
                 if idx < 0:
                     break
-                response: str = self.__buffer[:idx]
+                response: str = self.__buffer[:idx].strip()
                 self.__buffer = self.__buffer[idx + 1:]
                 print(f"<-- {repr(response)}")
                 yield response
@@ -98,11 +98,10 @@ class APIServer:
             self.__parse_response(response)
 
     def __parse_response(self, received_response: str) -> None:
-        for ResponseClass, response_pattern in SpontaneousResponse.list():
-            if response_pattern.match(received_response):
-                self.__spontaneous_responses.append(ResponseClass(received_response))
-                return
-        if not self.__pending_requests:
+        response: Optional[SpontaneousResponse] = SpontaneousResponse.match(received_response)
+        if response is not None:
+            self.__spontaneous_responses.append(response)
+        elif not self.__pending_requests:
             self.__pending_responses.append(received_response)
         else:
             request: Request = self.__pending_requests.pop(0)
