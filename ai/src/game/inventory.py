@@ -34,4 +34,3 @@ class Inventory:
             raise ResponseError(str(response), "Missing a resource in the list")
         for name, amount in response.resources.items():
             self.__resources[name].amount = amount
-        print("Inventory updated")

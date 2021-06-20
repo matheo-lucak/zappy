@@ -36,10 +36,11 @@ def parse_args(arguments: List[str] = argv[1:]) -> Result[ZappyAIArgs]:
     )
     parser.add_argument("-n", metavar="name", required=True, help="is the name of the team")
     parser.add_argument("-h", metavar="machine", default="localhost", help="is the name of the machine; localhost by default")
+    parser.add_argument("-v", action="count", default=0, help="Sets the verbose")
     try:
         args = parser.parse_args(args=arguments)
     except SystemExit as exception:
         if exception.code == 0:
             return HelpError("Help Error")
         return ArgumentParsingError("ArgumentParsingError")
-    return ZappyAIArgs(machine=args.h, port=args.p, team_name=args.n)
+    return ZappyAIArgs(machine=args.h, port=args.p, team_name=args.n, verbose=args.v)

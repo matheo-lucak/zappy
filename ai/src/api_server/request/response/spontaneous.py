@@ -1,9 +1,10 @@
 # -*- coding: Utf-8 -*
 
-from re import compile as regex_compile, Pattern
+from re import compile as regex_compile, Pattern, Match
 from typing import Any, Dict, Optional, Type
 
 from .base import Response
+from .exceptions import ResponseParsingError
 
 
 class SpontaneousResponse(Response):
@@ -19,13 +20,36 @@ class SpontaneousResponse(Response):
             raise TypeError(f"{cls.__name__} can't be instantiated")
         return super().__new__(cls)
 
+    def __init__(self, response: Match[str]) -> None:
+        super().__init__(response.string)
+
     @classmethod
     def match(cls, response: str) -> Optional["SpontaneousResponse"]:
         for ResponseClass, response_pattern in cls.__response_list.items():
-            if response_pattern.match(response):
-                return ResponseClass(response)
+            match: Optional[Match[str]] = response_pattern.match(response)
+            if match:
+                return ResponseClass(match)
         return None
 
 
 class DeadResponse(SpontaneousResponse, response=r"dead"):
     pass
+
+
+class MessageResponse(SpontaneousResponse, response=r"message +([0-9]+) *, *(.+)"):
+    def __init__(self, response: Match[str]) -> None:
+        super().__init__(response)
+
+        try:
+            self.__tile: int = int(response.group(1))
+            self.__text: str = response.group(2)
+        except (ValueError, IndexError) as e:
+            raise ResponseParsingError from e
+
+    @property
+    def tile(self) -> int:
+        return self.__tile
+
+    @property
+    def text(self) -> str:
+        return self.__text

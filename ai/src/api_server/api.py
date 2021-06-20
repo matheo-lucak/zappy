@@ -8,7 +8,7 @@ from typing import Callable, Iterator, List, Optional, Type, TypeVar, cast
 from .request import BaseRequest, Request
 from .request.response import Response, SpontaneousResponse
 from .request.response.exceptions import ResponseError
-
+from ..log import Logger
 
 R = TypeVar("R", bound=Response)
 
@@ -47,6 +47,9 @@ class APIServer:
             self.__fetch_all_responses()
         return response_class(self.__pending_responses.pop(0)) if self.__pending_responses else None
 
+    def has_request_to_handle(self, request_type: Type[BaseRequest[R]]) -> bool:
+        return any(type(request) is request_type for request in (self.__requests + self.__pending_requests))
+
     def flush_spontaneous_responses(self) -> List[SpontaneousResponse]:
         responses: List[SpontaneousResponse] = self.__spontaneous_responses
         self.__spontaneous_responses = list()
@@ -73,7 +76,7 @@ class APIServer:
             self.__fetch_all_responses()
 
     def __send_request_to_server(self, request: str) -> None:
-        print(f"--> {repr(request)}")
+        Logger.print(2, f"--> {repr(request)}")
         data: bytes = (request + BaseRequest.END_REQUEST).encode()
         self.__socket.sendall(data)
 
@@ -96,7 +99,7 @@ class APIServer:
                     break
                 response: str = self.__buffer[:idx].strip()
                 self.__buffer = self.__buffer[idx + 1 :]
-                print(f"<-- {repr(response)}")
+                Logger.print(2, f"<-- {repr(response)}")
                 yield response
 
     def __fetch_all_responses(self) -> None:
