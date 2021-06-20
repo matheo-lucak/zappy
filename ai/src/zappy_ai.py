@@ -1,11 +1,12 @@
 # -*- coding: Utf-8 -*
 
 from sys import stderr
-from typing import NamedTuple, Optional
+from typing import Any, Callable, Dict, NamedTuple, Optional, Type
 
 from .api_server import APIServer
 from .api_server.request import TeamRequest
 from .api_server.request.response import MapSizeAtBeginningResponse, WelcomeResponse
+from .api_server.request.response.spontaneous import DeadResponse, SpontaneousResponse
 from .errors import ZappyError
 from .game import Player
 
@@ -36,9 +37,27 @@ class ZappyAI:
         print(f"Map size: {(map_size.width, map_size.height)}")
 
         self.__player: Player = Player(team_name)
+        print(self.__player.inventory)
 
     def run(self) -> None:
-        pass
+        while self.__player.is_alive():
+            self.__player.update(self.__server)
+            self.__server.fetch()
+            self.__handle_spontaneous_responses()
+
+    def __handle_spontaneous_responses(self) -> None:
+        handler_map: Dict[Type[SpontaneousResponse], Callable[[Any], None]] = {
+            DeadResponse: self.__handle_dead_response
+        }
+
+        for rp in self.__server.flush_spontaneous_responses():
+            handler: Optional[Callable[[SpontaneousResponse], None]] = handler_map.get(type(rp))
+            if callable(handler):
+                handler(rp)
+
+    def __handle_dead_response(self, dead: DeadResponse) -> None:
+        print("I'm dying...!")
+        self.__player.kill()
 
 def zappy_ai(args: ZappyAIArgs) -> None:
     try:

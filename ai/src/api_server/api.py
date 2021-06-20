@@ -1,11 +1,13 @@
 # -*- coding: Utf-8 -*
 
+from sys import stderr
 from socket import socket, AF_INET, SOCK_STREAM
 from select import select
-
 from typing import Callable, Iterator, List, Optional, Type, TypeVar, cast
+
 from .request import BaseRequest, Request
 from .request.response import Response, SpontaneousResponse
+from .request.response.exceptions import ResponseError
 
 
 R = TypeVar("R", bound=Response)
@@ -16,6 +18,8 @@ class APIServer:
 
     def __init__(self, machine: str, port: int) -> None:
         timeout: int = 10 #seconds
+        self.__machine: str = machine
+        self.__port: int = port
         self.__socket: socket = socket(AF_INET, SOCK_STREAM)
         print(f"Connecting to {machine} at port {port}... (Timeout: {timeout}s)")
         self.__socket.settimeout(timeout)
@@ -30,7 +34,7 @@ class APIServer:
 
     def __del__(self) -> None:
         self.__socket.close()
-        print("Disconnected")
+        print(f"Disconnected from {self.__machine}:{self.__port}")
 
     def send(self, request: BaseRequest[R]) -> None:
         self.__requests.append(cast(Request, request))
@@ -77,7 +81,7 @@ class APIServer:
                 data: bytes = self.__socket.recv(chunck_size)
                 length: int = len(data)
                 if length == 0:
-                    break
+                    raise EOFError
                 yield data
                 if length < chunck_size:
                     break
@@ -105,4 +109,10 @@ class APIServer:
             self.__pending_responses.append(received_response)
         else:
             request: Request = self.__pending_requests.pop(0)
-            request.set_response(received_response)
+            try:
+                request.set_response(received_response)
+            except ResponseError as e:
+                print(f"{type(e).__name__}: {e}", file=stderr)
+                print(f"-> The request {repr(request)} will be sent again to the server.", file=stderr)
+                self.send(request)
+

@@ -11,9 +11,9 @@ class MapSizeAtBeginningResponse(Response):
         self.__w: int = 0
         self.__h: int = 0
 
-        splitted: List[str] = response.split(" ")
+        splitted: List[str] = response.split()
         if len(splitted) != 2 or any(not val.isdigit() for val in splitted):
-            raise ResponseParsingError(f"Invalid map size response: {repr(response)}")
+            raise ResponseParsingError(response, "Invalid map size response")
         self.__w = int(splitted[0])
         self.__h = int(splitted[1])
 

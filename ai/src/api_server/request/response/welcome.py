@@ -8,4 +8,4 @@ class WelcomeResponse(Response):
     def __init__(self, response: str) -> None:
         super().__init__(response)
         if response != "WELCOME":
-            raise ResponseParsingError(f"{repr(response)} is not the WELCOME response")
+            raise ResponseParsingError(response, "Not the 'WELCOME' response")

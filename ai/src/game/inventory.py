@@ -3,7 +3,8 @@
 from typing import Dict
 
 from .resource import MetaResource, BaseResource
-
+from ..api_server.request.inventory import InventoryResponse
+from ..api_server.request.response.exceptions import ResponseError
 
 class Inventory:
 
@@ -24,3 +25,12 @@ class Inventory:
 
     def __getitem__(self, resource: str) -> int:
         return self.__resources[resource].amount
+
+    def update(self, response: InventoryResponse) -> None:
+        if any(resource not in self.__resources for resource in response.resources):
+            raise ResponseError(str(response), "Unknown resource caught")
+        if any(resource not in response.resources for resource in self.__resources):
+            raise ResponseError(str(response), "Missing a resource in the list")
+        for name, amount in response.resources.items():
+            self.__resources[name].amount = amount
+        print("Inventory updated")
