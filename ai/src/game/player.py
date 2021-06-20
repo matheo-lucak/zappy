@@ -9,6 +9,7 @@ class Player:
     def __init__(self, team_name: str) -> None:
         self.__team: str = team_name
         self.__inventory: Inventory = Inventory()
+        print(self.__inventory)
         self.__vision: Vision = Vision()
 
     def update(self, api: APIServer) -> None:

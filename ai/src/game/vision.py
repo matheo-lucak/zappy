@@ -46,7 +46,7 @@ class Vision:
         self.__grid = dict()
 
         index: int = 0
-        for unit in range(self.__vision_unit):
+        for unit in range(self.__vision_unit + 1):
             for divergence in range(-unit, unit + 1):
                 self.__grid[unit, divergence] = Tile(unit, divergence, index)
                 index += 1
