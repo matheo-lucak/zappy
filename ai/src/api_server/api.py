@@ -12,12 +12,13 @@ from .request.response.exceptions import ResponseError
 
 R = TypeVar("R", bound=Response)
 
+
 class APIServer:
 
     MAX_PENDING_REQUEST: int = 10
 
     def __init__(self, machine: str, port: int) -> None:
-        timeout: int = 10 #seconds
+        timeout: int = 10  # seconds
         self.__machine: str = machine
         self.__port: int = port
         self.__socket: socket = socket(AF_INET, SOCK_STREAM)
@@ -57,7 +58,9 @@ class APIServer:
         for response in pending_responses:
             self.__parse_response(response)
 
-        has_requests: Callable[[], bool] = lambda: bool(self.__requests) and (len(self.__pending_requests) < self.MAX_PENDING_REQUEST)
+        has_requests: Callable[[], bool] = lambda: bool(self.__requests) and (
+            len(self.__pending_requests) < self.MAX_PENDING_REQUEST
+        )
 
         timeout: float = 0.05
 
@@ -75,7 +78,6 @@ class APIServer:
         self.__socket.sendall(data)
 
     def __recv_response_from_server(self) -> Iterator[str]:
-
         def read_socket(chunck_size: int) -> Iterator[bytes]:
             while True:
                 data: bytes = self.__socket.recv(chunck_size)
@@ -93,7 +95,7 @@ class APIServer:
                 if idx < 0:
                     break
                 response: str = self.__buffer[:idx].strip()
-                self.__buffer = self.__buffer[idx + 1:]
+                self.__buffer = self.__buffer[idx + 1 :]
                 print(f"<-- {repr(response)}")
                 yield response
 
@@ -115,4 +117,3 @@ class APIServer:
                 print(f"{type(e).__name__}: {e}", file=stderr)
                 print(f"-> The request {repr(request)} will be sent again to the server.", file=stderr)
                 self.send(request)
-

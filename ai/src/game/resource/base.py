@@ -36,8 +36,8 @@ class MetaResource(type):
             raise TypeError(f"Unknown resource {repr(resource)}")
         return cast(BaseResource, metacls.__all_resources[resource](amount))
 
-class BaseResource(metaclass=MetaResource, resource=str()):
 
+class BaseResource(metaclass=MetaResource, resource=str()):
     def __init__(self, amount: int = 0) -> None:
         self.amount = amount
 

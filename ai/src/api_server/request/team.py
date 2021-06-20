@@ -6,8 +6,8 @@ from .base import BaseRequest
 from .response import Response
 from .response.exceptions import ResponseParsingError
 
-class TeamResponse(Response):
 
+class TeamResponse(Response):
     def __init__(self, response: str) -> None:
         super().__init__(response)
         self.__client_num: Optional[int] = None
@@ -23,7 +23,7 @@ class TeamResponse(Response):
     def client_num(self) -> Optional[int]:
         return self.__client_num
 
-class TeamRequest(BaseRequest[TeamResponse]):
 
+class TeamRequest(BaseRequest[TeamResponse]):
     def __init__(self, team_name: str) -> None:
         super().__init__(team_name)

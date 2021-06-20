@@ -5,6 +5,7 @@ from typing import Any, Dict, Optional, Type
 
 from .base import Response
 
+
 class SpontaneousResponse(Response):
 
     __response_list: Dict[Type["SpontaneousResponse"], Pattern[str]] = dict()
@@ -24,6 +25,7 @@ class SpontaneousResponse(Response):
             if response_pattern.match(response):
                 return ResponseClass(response)
         return None
+
 
 class DeadResponse(SpontaneousResponse, response=r"dead"):
     pass

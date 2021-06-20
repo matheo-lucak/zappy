@@ -6,17 +6,17 @@ from .base import BaseRequest, ResponseCallback
 from .response import Response
 from .response.exceptions import ResponseParsingError
 
-class InventoryResponse(Response):
 
+class InventoryResponse(Response):
     def __init__(self, response: str) -> None:
         super().__init__(response)
         self.__resources: Dict[str, int] = dict()
 
-        if response[0] != '[' or response[-1] != ']':
+        if response[0] != "[" or response[-1] != "]":
             raise ResponseParsingError(response, "Should be between '[]' brackets")
 
         response = response[1:-1]
-        if response.find('[') >= 0 or response.find(']') >= 0:
+        if response.find("[") >= 0 or response.find("]") >= 0:
             raise ResponseParsingError(response, "There are brackets inside the list")
 
         for resource in response.split(","):
@@ -33,7 +33,7 @@ class InventoryResponse(Response):
     def resources(self) -> Dict[str, int]:
         return self.__resources
 
-class InventoryRequest(BaseRequest[InventoryResponse]):
 
+class InventoryRequest(BaseRequest[InventoryResponse]):
     def __init__(self, callback: Optional[ResponseCallback[InventoryResponse]] = None) -> None:
         super().__init__("Inventory", callback=callback)

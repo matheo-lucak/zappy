@@ -4,8 +4,8 @@ from typing import List
 from .base import Response
 from .exceptions import ResponseParsingError
 
-class MapSizeAtBeginningResponse(Response):
 
+class MapSizeAtBeginningResponse(Response):
     def __init__(self, response: str) -> None:
         super().__init__(response)
         self.__w: int = 0

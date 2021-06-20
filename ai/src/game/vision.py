@@ -5,8 +5,8 @@ from typing import Dict, Tuple
 Coords = Tuple[int, int]
 Grid = Dict[Coords, "Tile"]
 
-class Tile:
 
+class Tile:
     def __init__(self, unit: int, divergence: int, index: int) -> None:
         self.__unit: int = unit
         self.__divergence: int = divergence
@@ -23,6 +23,7 @@ class Tile:
     @property
     def index(self) -> int:
         return self.__index
+
 
 class Vision:
 

@@ -5,8 +5,8 @@ from .vision import Vision
 from ..api_server import APIServer
 from ..api_server.request import InventoryRequest
 
-class Player:
 
+class Player:
     def __init__(self, team_name: str) -> None:
         self.__team: str = team_name
         self.__inventory: Inventory = Inventory()

@@ -10,13 +10,14 @@ from .api_server.request.response.spontaneous import DeadResponse, SpontaneousRe
 from .errors import ZappyError
 from .game import Player
 
+
 class ZappyAIArgs(NamedTuple):
     machine: str
     port: int
     team_name: str
 
-class ZappyAI:
 
+class ZappyAI:
     def __init__(self, machine: str, port: int, team_name: str) -> None:
         self.__server: APIServer = APIServer(machine, port)
 
@@ -58,6 +59,7 @@ class ZappyAI:
     def __handle_dead_response(self, dead: DeadResponse) -> None:
         print("I'm dying...!")
         self.__player.kill()
+
 
 def zappy_ai(args: ZappyAIArgs) -> None:
     try:

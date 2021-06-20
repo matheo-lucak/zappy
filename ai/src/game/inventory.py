@@ -6,6 +6,7 @@ from .resource import MetaResource, BaseResource
 from ..api_server.request.inventory import InventoryResponse
 from ..api_server.request.response.exceptions import ResponseError
 
+
 class Inventory:
 
     __SETUP: Dict[str, int] = {
@@ -21,7 +22,9 @@ class Inventory:
         return f"<{type(self).__name__}{tuple(self.__resources.values())}>"
 
     def __str__(self) -> str:
-        return f"Inventory: [{', '.join(f'{resource.name}: {resource.amount}' for resource in self.__resources.values())}]"
+        return (
+            f"Inventory: [{', '.join(f'{resource.name}: {resource.amount}' for resource in self.__resources.values())}]"
+        )
 
     def __getitem__(self, resource: str) -> int:
         return self.__resources[resource].amount

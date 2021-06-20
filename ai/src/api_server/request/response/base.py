@@ -1,5 +1,6 @@
 # -*- coding: Utf-8 -*
 
+
 class Response:
 
     END_RESPONSE: str = "\n"

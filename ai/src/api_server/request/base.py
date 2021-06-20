@@ -7,6 +7,7 @@ from .response import Response, SpontaneousResponse
 T = TypeVar("T", bound=Response)
 ResponseCallback = Callable[[T], None]
 
+
 class BaseRequest(Generic[T]):
 
     SEPARATOR: str = " "
@@ -48,6 +49,7 @@ class BaseRequest(Generic[T]):
 
     def has_response(self) -> bool:
         return self.response is not None
+
 
 class Request(BaseRequest[Response]):
     pass
