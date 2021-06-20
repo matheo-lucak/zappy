@@ -35,9 +35,7 @@ def parse_args(arguments: List[str] = argv[1:]) -> Result[ZappyAIArgs]:
         help="is the port number",
     )
     parser.add_argument("-n", metavar="name", required=True, help="is the name of the team")
-    parser.add_argument(
-        "-h", metavar="machine", default="localhost", help="is the name of the machine; localhost by default"
-    )
+    parser.add_argument("-h", metavar="machine", default="localhost", help="is the name of the machine; localhost by default")
     try:
         args = parser.parse_args(args=arguments)
     except SystemExit as exception:
