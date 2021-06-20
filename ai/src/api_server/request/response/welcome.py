@@ -1,6 +1,6 @@
 # -*- coding: Utf-8 -*
 
-from .response import Response
+from .base import Response
 from .exceptions import ResponseParsingError
 
 class WelcomeResponse(Response):

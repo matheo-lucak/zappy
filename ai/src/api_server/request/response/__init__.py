@@ -1,6 +1,6 @@
 # -*- coding: Utf-8 -*
 
-from .response import Response, SpontaneousResponse
+from .base import Response, SpontaneousResponse
 from .broadcast import BroadcastResponse
 from .map_size import MapSizeAtBeginningResponse, MapSizeInGameResponse
 from .team import TeamResponse

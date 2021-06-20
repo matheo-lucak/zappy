@@ -1,7 +1,7 @@
 # -*- coding: Utf-8 -*
 
 from typing import List
-from .response import Response
+from .base import Response
 from .exceptions import ResponseParsingError
 
 class MapSizeAtBeginningResponse(Response):

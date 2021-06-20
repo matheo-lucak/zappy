@@ -5,8 +5,9 @@ from typing import NamedTuple, Optional
 
 from .api_server import APIServer
 from .api_server.request import TeamRequest
-from .api_server.request.response import MapSizeAtBeginningResponse, TeamResponse, WelcomeResponse
+from .api_server.request.response import MapSizeAtBeginningResponse, WelcomeResponse
 from .errors import ZappyError
+from .game import Player
 
 class ZappyAIArgs(NamedTuple):
     machine: str
@@ -17,20 +18,24 @@ class ZappyAI:
 
     def __init__(self, machine: str, port: int, team_name: str) -> None:
         self.__server: APIServer = APIServer(machine, port)
-        self.__team_name: str = team_name
 
         if self.__server.recv(WelcomeResponse) is None:
             raise ZappyError("No welcome message received from server")
 
-        team_response: TeamResponse = self.__server.send_and_wait_for_response(TeamRequest(self.__team_name))
-        if team_response.client_num is None:
-            raise ZappyError(f"Cannot integrate team {repr(self.__team_name)}")
-        print(team_response.client_num)
+        team: TeamRequest = TeamRequest(team_name)
+        self.__server.send(team)
+        while team.response is None:
+            self.__server.fetch()
+        if team.response.client_num is None:
+            raise ZappyError(f"Cannot integrate team {repr(team_name)}")
+        print(f"{team.response.client_num} players left can be in team {repr(team_name)}")
 
         map_size: Optional[MapSizeAtBeginningResponse] = self.__server.recv(MapSizeAtBeginningResponse)
         if map_size is None:
             raise ZappyError("The server did not send the map size")
-        print((map_size.width, map_size.height))
+        print(f"Map size: {(map_size.width, map_size.height)}")
+
+        self.__player: Player = Player(team_name)
 
     def run(self) -> None:
         pass
@@ -41,5 +46,7 @@ def zappy_ai(args: ZappyAIArgs) -> None:
         ai.run()
     except (ConnectionError, BlockingIOError, ZappyError) as e:
         print(e, file=stderr)
+    except EOFError:
+        print("Remote server closes this connection. Disconnecting...", file=stderr)
     except KeyboardInterrupt:
         print("AI stopped by user. Disconnecting...", file=stderr)

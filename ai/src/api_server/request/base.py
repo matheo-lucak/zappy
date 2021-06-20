@@ -5,7 +5,6 @@ from .response import Response
 
 
 T = TypeVar("T", bound=Response)
-_DEFAULT_RESPONSE_CLASS: Type[Response] = Response
 
 class BaseRequest(Generic[T]):
 
@@ -14,8 +13,9 @@ class BaseRequest(Generic[T]):
 
     __response_class: Dict[Type["BaseRequest[T]"], Type[Response]] = dict()
 
-    def __init_subclass__(cls, /, *, response: Type[Response] = _DEFAULT_RESPONSE_CLASS) -> None:
+    def __init_subclass__(cls, /, *, response: Type[Response] = Response) -> None:
         cls.__response_class[cls] = response
+        return super().__init_subclass__()
 
     def __init__(self, command: str, *args: str, callback: Optional[Callable[[T], None]] = None) -> None:
         self.__command: str = command
@@ -34,7 +34,7 @@ class BaseRequest(Generic[T]):
         return self.__response
 
     def set_response(self, response: str) -> None:
-        ResponseClass: Type[Response] = self.__response_class.get(type(self), _DEFAULT_RESPONSE_CLASS)
+        ResponseClass: Type[Response] = self.__response_class.get(type(self), Response)
         self.__response = cast(T, ResponseClass(response))
         if callable(self.__callback):
             self.__callback(self.__response)

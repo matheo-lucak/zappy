@@ -1,7 +1,7 @@
 # -*- coding: Utf-8 -*
 
 from typing import Optional
-from .response import Response
+from .base import Response
 from .exceptions import ResponseParsingError
 
 class TeamResponse(Response):
