@@ -1,7 +1,7 @@
 # -*- coding: Utf-8 -*
 
 from sys import argv
-from argparse import ArgumentParser, ArgumentTypeError, ArgumentError
+from argparse import ArgumentParser, ArgumentTypeError
 from typing import List
 from .errors import Error, Result
 from .zappy_ai import ZappyAIArgs

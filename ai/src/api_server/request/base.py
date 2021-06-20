@@ -1,6 +1,5 @@
 # -*- coding: Utf-8 -*
 
-from operator import ge
 from typing import Any, Callable, Generic, Optional, Tuple, Type, TypeVar
 from .response import Response, SpontaneousResponse
 

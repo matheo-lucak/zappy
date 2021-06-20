@@ -1,6 +1,6 @@
 # -*- coding: Utf-8 -*
 
-from typing import Any, Dict, Tuple, Type, cast
+from typing import Any, Dict, Tuple, cast
 
 
 class MetaResource(type):
