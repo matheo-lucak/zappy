@@ -31,9 +31,9 @@ class SpontaneousResponse(Response):
             raise TypeError(f"{cls.__name__} can't be instantiated")
         return super().__new__(cls)
 
-    @staticmethod
-    def match(response: str) -> Optional["SpontaneousResponse"]:
-        for ResponseClass, response_pattern in SpontaneousResponse.__response_list.items():
+    @classmethod
+    def match(cls, response: str) -> Optional["SpontaneousResponse"]:
+        for ResponseClass, response_pattern in cls.__response_list.items():
             if response_pattern.match(response):
                 return ResponseClass(response)
         return None
