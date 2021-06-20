@@ -11,6 +11,8 @@ PYCACHE				=	__pycache__
 
 PYTEST_CACHE		=	.pytest_cache
 
+COVERAGE_CACHE		=	.coverage
+
 MYPY_CACHE			=	.mypy_cache
 
 PATH_TO_INSTANTIATE	?=	.
@@ -34,10 +36,15 @@ tests_run:
 	@pytest .
 .PHONY: tests_run
 
+coverage:
+	coverage run -m pytest
+	coverage report -m
+
 clean:
 	@find -name "$(PYCACHE)" | xargs -I {} sh -c 'echo "$(RM) -r {}" && $(RM) -r {}'
 	$(RM) -r $(PYTEST_CACHE)
 	$(RM) -r $(MYPY_CACHE)
+	$(RM) $(COVERAGE_CACHE)
 .PHONY:	clean
 
 fclean:	clean

@@ -23,13 +23,19 @@ class SpontaneousResponse(Response):
     def __init__(self, response: Match[str]) -> None:
         super().__init__(response.string)
 
-    @classmethod
-    def match(cls, response: str) -> Optional["SpontaneousResponse"]:
-        for ResponseClass, response_pattern in cls.__response_list.items():
+    @staticmethod
+    def match(response: str) -> Optional["SpontaneousResponse"]:
+        for ResponseClass, response_pattern in SpontaneousResponse.__response_list.items():
             match: Optional[Match[str]] = response_pattern.match(response)
             if match:
                 return ResponseClass(match)
         return None
+
+    @classmethod
+    def get_pattern(cls) -> Pattern[str]:
+        if cls is SpontaneousResponse:
+            raise TypeError(f"The base class {cls.__name__} does not have a regex pattern")
+        return cls.__response_list[cls]
 
 
 class DeadResponse(SpontaneousResponse, response=r"dead"):

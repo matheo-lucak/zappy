@@ -38,6 +38,14 @@ class BaseRequest(Generic[T]):
         return f"{self.__command}{self.SEPARATOR if self.__args else ''}{self.SEPARATOR.join(self.__args)}"
 
     @property
+    def command(self) -> str:
+        return self.__command
+
+    @property
+    def args(self) -> Tuple[str, ...]:
+        return self.__args
+
+    @property
     def response(self) -> Optional[T]:
         return self.__response
 
