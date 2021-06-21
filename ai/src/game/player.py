@@ -29,15 +29,6 @@ class Message:
         return self.__text
 
 
-def alive_action(method: Callable[..., None]) -> Callable[..., None]:
-    @wraps(method)
-    def wrapper(player: "Player", *args: Any, **kwargs: Any) -> None:
-        if player.is_alive():
-            method(player, *args, **kwargs)
-
-    return wrapper
-
-
 class Player:
     def __init__(self, team_name: str, api: APIServer) -> None:
         self.__team: str = team_name
@@ -65,8 +56,10 @@ class Player:
             print("I'm dying...!")
             self.__alive = False
 
-    @alive_action
     def move_forward(self, nb_times: int = 1) -> None:
+        if not self.is_alive():
+            return
+
         def handler() -> None:
             self.__forwarding -= 1
             print("Move forward completed")
@@ -80,8 +73,10 @@ class Player:
     def moving_forward(self) -> int:
         return self.__forwarding
 
-    @alive_action
     def turn_left(self, nb_times: int = 1) -> None:
+        if not self.is_alive():
+            return
+
         def handler() -> None:
             self.__turning_left -= 1
             print("Left rotation completed")
@@ -95,8 +90,10 @@ class Player:
     def turning_left(self) -> int:
         return self.__turning_left
 
-    @alive_action
     def turn_right(self, nb_times: int = 1) -> None:
+        if not self.is_alive():
+            return
+
         def handler() -> None:
             self.__turning_right -= 1
             print("Right rotation completed")
@@ -114,8 +111,10 @@ class Player:
         print(f"From tile {message.tile}: {repr(message.text)}")
         self.__messages.append(Message(message.tile, message.text))
 
-    @alive_action
     def broadcast(self, message: str) -> None:
+        if not self.is_alive():
+            return
+
         print(f"Broadcasting: {repr(message)}")
         self.__api.send(BroadcastRequest(message))
 
