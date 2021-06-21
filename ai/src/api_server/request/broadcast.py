@@ -3,19 +3,11 @@
 from typing import Optional
 
 from .base import BaseRequest, ResponseCallback
-from .response import Response
-from .response.exceptions import ResponseParsingError
+from .response.ok import OKResponse
 
 
-class BroadcastResponse(Response):
-    def __init__(self, response: str) -> None:
-        super().__init__(response)
-        if response != "ok":
-            raise ResponseParsingError(response, "Should be 'ok'")
-
-    @property
-    def ok(self) -> bool:
-        return True
+class BroadcastResponse(OKResponse):
+    pass
 
 
 class BroadcastRequest(BaseRequest[BroadcastResponse]):

@@ -52,7 +52,7 @@ class ZappyAI:
             self.__server.fetch()
         if team.response.client_num is None:
             raise ZappyError(f"Cannot integrate team {repr(team_name)}")
-        print(f"{team.response.client_num} players left can be in team {repr(team_name)}")
+        print(f"{team.response.client_num} player(s) left can be in team {repr(team_name)}")
 
         map_size: Optional[MapSizeAtBeginningResponse] = self.__server.recv(MapSizeAtBeginningResponse)
         if map_size is None:
@@ -68,6 +68,9 @@ class ZappyAI:
             self.__player.update()
             if clock.elapsed_time(1000, restart=True):
                 self.__player.broadcast("I'm alive")
+                self.__player.move_forward()
+            if self.__player.moving_forward:
+                print("Player moving")
             self.__server.fetch()
             self.__handle_spontaneous_responses()
 
