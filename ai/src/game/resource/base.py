@@ -2,6 +2,8 @@
 
 from typing import Any, Dict, Tuple, cast
 
+from .exception import ResourceError
+
 
 class MetaResource(type):
 
@@ -33,7 +35,7 @@ class MetaResource(type):
     @classmethod
     def create(metacls, resource: str, amount: int = 0) -> "BaseResource":
         if resource not in metacls.__all_resources:
-            raise TypeError(f"Unknown resource {repr(resource)}")
+            raise ResourceError(f"Unknown resource {repr(resource)}")
         return cast(BaseResource, metacls.__all_resources[resource](amount))
 
 
