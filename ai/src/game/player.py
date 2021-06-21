@@ -66,8 +66,8 @@ class Player:
 
         for _ in range(nb_times):
             print("Moving forward...")
-            self.__api.send(ForwardRequest(lambda rp: handler()))
             self.__forwarding += 1
+            self.__api.send(ForwardRequest(lambda rp: handler()))
 
     @property
     def moving_forward(self) -> int:
@@ -83,8 +83,8 @@ class Player:
 
         for _ in range(nb_times):
             print("Turning 90deg left...")
-            self.__api.send(LeftRequest(lambda rp: handler()))
             self.__turning_left += 1
+            self.__api.send(LeftRequest(lambda rp: handler()))
 
     @property
     def turning_left(self) -> int:
@@ -100,8 +100,8 @@ class Player:
 
         for _ in range(nb_times):
             print("Turning 90deg right...")
-            self.__api.send(RightRequest(lambda rp: handler()))
             self.__turning_right += 1
+            self.__api.send(RightRequest(lambda rp: handler()))
 
     @property
     def turning_right(self) -> int:
