@@ -16,13 +16,15 @@ class InventoryResponse(Response):
             raise ResponseParsingError(response, "Should be between '[]' brackets")
 
         response = response[1:-1]
-        if response.find("[") >= 0 or response.find("]") >= 0:
+        if any(response.find(char) >= 0 for char in "[]()"):
             raise ResponseParsingError(response, "There are brackets inside the list")
 
         for resource in response.split(","):
             resource = resource.strip()
             try:
                 name, amount = resource.split()
+                if not name.isalpha():
+                    raise ValueError
                 if not amount.isdigit():
                     raise ValueError
                 self.__resources[name] = int(amount)
