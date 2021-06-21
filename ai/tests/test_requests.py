@@ -1,6 +1,6 @@
 # -*- coding: Utf-8 -*
 
-from src.api_server.request import BroadcastRequest, InventoryRequest, Request, TeamRequest
+from src.api_server.request import BroadcastRequest, InventoryRequest, LookRequest, Request, TeamRequest
 
 
 def test_request_class_creation() -> None:
@@ -29,3 +29,10 @@ def test_broadcast_request() -> None:
     assert req.command == "Broadcast"
     assert req.args == ("I'm alive",)
     assert str(req) == "Broadcast I'm alive"
+
+
+def test_look_request() -> None:
+    req: LookRequest = LookRequest()
+    assert req.command == "Look"
+    assert req.args == tuple()
+    assert str(req) == "Look"

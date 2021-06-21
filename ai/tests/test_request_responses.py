@@ -4,6 +4,7 @@ import pytest
 
 from src.api_server.request.inventory import InventoryResponse
 from src.api_server.request.broadcast import BroadcastResponse
+from src.api_server.request.look import LookResponse
 from src.api_server.request.response.exceptions import ResponseParsingError
 
 
@@ -57,3 +58,43 @@ def test_broadcast_response() -> None:
 def test_broadcast_response_invalid() -> None:
     with pytest.raises(ResponseParsingError):
         rp: BroadcastResponse = BroadcastResponse("ko")
+
+
+def test_look_response() -> None:
+    rp: LookResponse = LookResponse("[player, thystame, sibur phiras, deraumere deraumere]")
+    assert len(rp.tiles) == 4
+    assert rp.tiles[0]["player"] == 1
+    assert rp.tiles[1]["thystame"] == 1
+    assert rp.tiles[2]["sibur"] == 1
+    assert rp.tiles[2]["phiras"] == 1
+    assert rp.tiles[3]["deraumere"] == 2
+
+
+def test_look_response_empty_slots() -> None:
+    rp: LookResponse = LookResponse("[player, player deraumere, , ]")
+    assert len(rp.tiles) == 4
+    assert rp.tiles[0]["player"] == 1
+    assert rp.tiles[1]["player"] == 1
+    assert rp.tiles[1]["deraumere"] == 1
+    assert len(rp.tiles[2]) == 0
+    assert len(rp.tiles[3]) == 0
+
+
+def test_look_response_invalid() -> None:
+    with pytest.raises(ResponseParsingError):
+        rp: LookResponse = LookResponse("[]")
+
+    with pytest.raises(ResponseParsingError):
+        rp = LookResponse("player, thystame, sibur phiras, deraumere deraumere")
+
+    with pytest.raises(ResponseParsingError):
+        rp = LookResponse("[player, [thystame, sibur phiras], deraumere deraumere]")
+
+    with pytest.raises(ResponseParsingError):
+        rp = LookResponse("[player, thystame, (sibur phiras), deraumere deraumere]")
+
+    with pytest.raises(ResponseParsingError):
+        rp = LookResponse("[player, thystame, sibur ph1ras, deraumere deraumere]")
+
+    with pytest.raises(ResponseParsingError):
+        rp = LookResponse("[player, thystame, sibur]")
