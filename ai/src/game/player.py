@@ -114,6 +114,7 @@ class Player:
         print(f"From tile {message.tile}: {repr(message.text)}")
         self.__messages.append(Message(message.tile, message.text))
 
+    @alive_action
     def broadcast(self, message: str) -> None:
         print(f"Broadcasting: {repr(message)}")
         self.__api.send(BroadcastRequest(message))
