@@ -3,9 +3,8 @@
 from .inventory import Inventory
 from .vision import Vision
 from ..api_server import APIServer
-from ..api_server.request import BroadcastRequest, InventoryRequest
+from ..api_server.request import BroadcastRequest, InventoryRequest, LookRequest
 from ..api_server.request.response.spontaneous import MessageResponse
-from ..log import Logger
 
 
 class Player:
@@ -19,6 +18,8 @@ class Player:
     def update(self) -> None:
         if not self.__api.has_request_to_handle(InventoryRequest):
             self.__api.send(InventoryRequest(self.__inventory.update))
+        if not self.__api.has_request_to_handle(LookRequest):
+            self.__api.send(LookRequest(self.__vision.update))
 
     def is_alive(self) -> bool:
         return self.__alive
@@ -32,7 +33,7 @@ class Player:
         print(f"From tile {message.tile}: {repr(message.text)}")
 
     def broadcast(self, message: str) -> None:
-        Logger.print(1, f"Broadcasting: {repr(message)}")
+        print(f"Broadcasting: {repr(message)}")
         self.__api.send(BroadcastRequest(message))
 
     @property
