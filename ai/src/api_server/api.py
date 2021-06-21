@@ -48,7 +48,11 @@ class APIServer:
         return response_class(self.__pending_responses.pop(0)) if self.__pending_responses else None
 
     def has_request_to_handle(self, request_type: Type[BaseRequest[R]]) -> bool:
-        return any(type(request) is request_type for request in (self.__requests + self.__pending_requests))
+        if any(type(request) is request_type for request in self.__pending_requests):
+            return True
+        if any(type(request) is request_type for request in self.__requests):
+            return True
+        return False
 
     def flush_spontaneous_responses(self) -> List[SpontaneousResponse]:
         responses: List[SpontaneousResponse] = self.__spontaneous_responses
