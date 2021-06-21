@@ -10,23 +10,23 @@
 
 #include <mylist.h>
 
-#include "server/client.h"
 #include "simulation/drone.h"
+#include "server/client.h"
 
-typedef struct player_s
-{
-    drone_t drone;
-    client_t *client;
-} player_t;
+#define TEAM_DEFAULT_NAME "Unkown team"
 
 typedef struct team_s
 {
     char *          name;
     unsigned int    free_slots_nb;
-    ptr_list_t *    players;
+    ptr_list_t *    drones;
 } team_t;
 
+team_t *team_create(char *name, unsigned int free_slots_nb);
+void team_destroy(team_t *team);
 
-void team_add_player(team_t *team, drone_t *drone);
+bool team_add_drone(team_t *team, drone_t *drone);
+bool team_delete_drone(team_t *team, drone_t *drone);
+bool team_has_drone(team_t *team, const drone_t *drone);
 
 #endif /* !TEAM_H_ */
