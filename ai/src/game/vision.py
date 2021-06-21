@@ -26,6 +26,15 @@ class Tile:
     def __repr__(self) -> str:
         return f"{type(self).__name__}(resources={self.__resources}, nb_players={self.__players})"
 
+    def __getitem__(self, resource: str) -> int:
+        for r in self.__resources:
+            if r.name == resource:
+                return r.amount
+        raise KeyError(resource)
+
+    def __contains__(self, resource: str) -> bool:
+        return any(r.name == resource for r in self.__resources)
+
     @property
     def unit(self) -> int:
         return self.__unit
@@ -76,11 +85,15 @@ class Vision:
         new_grid: Grid = dict()
         vision_unit: int = isqrt(len(response.tiles)) - 1
 
+        if vision_unit <= 0:
+            raise ResponseError(str(response), "I don't see anything")
         for index, (unit, divergence) in enumerate(self.iter_units(vision_unit)):
             try:
                 new_grid[unit, divergence] = Tile(unit, divergence, index, response.tiles[index])
             except ResourceError as e:
                 raise ResponseError(str(response), str(e))
+        if new_grid[0, 0].nb_players < 1:
+            raise ResponseError(str(response), "I'm a ghost, so what ?")
 
         self.__vision_unit = vision_unit
         self.__grid = new_grid

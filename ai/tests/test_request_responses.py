@@ -61,9 +61,10 @@ def test_broadcast_response_invalid() -> None:
 
 
 def test_look_response() -> None:
-    rp: LookResponse = LookResponse("[player, thystame, sibur phiras, deraumere deraumere]")
+    rp: LookResponse = LookResponse("[player linemate, thystame, sibur phiras, deraumere deraumere]")
     assert len(rp.tiles) == 4
     assert rp.tiles[0]["player"] == 1
+    assert rp.tiles[0]["linemate"] == 1
     assert rp.tiles[1]["thystame"] == 1
     assert rp.tiles[2]["sibur"] == 1
     assert rp.tiles[2]["phiras"] == 1

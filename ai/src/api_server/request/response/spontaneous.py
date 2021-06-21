@@ -56,11 +56,8 @@ class MessageResponse(SpontaneousResponse, response=r"message +([0-9]+) *, *([^\
     def __init__(self, response: str) -> None:
         super().__init__(response)
 
-        try:
-            self.__tile: int = int(self.match.group(1))
-            self.__text: str = self.match.group(2)
-        except (ValueError, IndexError) as e:
-            raise ResponseParsingError from e
+        self.__tile: int = int(self.match.group(1))
+        self.__text: str = self.match.group(2)
 
     @property
     def tile(self) -> int:

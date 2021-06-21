@@ -1,10 +1,21 @@
 # -*- coding: Utf-8 -*
 
 import pytest
+from re import Pattern
 from typing import Optional
 from src.api_server.request.response.exceptions import ResponseParsingError
 
 from src.api_server.request.response.spontaneous import SpontaneousResponse, DeadResponse, MessageResponse
+
+
+def test_spontaneous_response_class_instantiation() -> None:
+    with pytest.raises(TypeError):
+        rp: SpontaneousResponse = SpontaneousResponse("a")
+
+
+def test_spontaneous_response_class_pattern() -> None:
+    with pytest.raises(TypeError):
+        pattern: Pattern[str] = SpontaneousResponse.get_pattern()
 
 
 def test_spontaneous_response_find_dead_response() -> None:
