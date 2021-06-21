@@ -1,6 +1,7 @@
 # -*- coding: Utf-8 -*
 
-from typing import List
+from typing import Any, Callable, List
+from functools import wraps
 
 from .inventory import Inventory
 from .vision import Vision
@@ -26,6 +27,15 @@ class Message:
     @property
     def text(self) -> str:
         return self.__text
+
+
+def alive_action(method: Callable[..., None]) -> Callable[..., None]:
+    @wraps(method)
+    def wrapper(player: "Player", *args: Any, **kwargs: Any) -> None:
+        if player.is_alive():
+            method(player, *args, **kwargs)
+
+    return wrapper
 
 
 class Player:
@@ -55,6 +65,7 @@ class Player:
             print("I'm dying...!")
             self.__alive = False
 
+    @alive_action
     def move_forward(self, nb_times: int = 1) -> None:
         def handler() -> None:
             self.__forwarding -= 1
@@ -69,6 +80,7 @@ class Player:
     def moving_forward(self) -> int:
         return self.__forwarding
 
+    @alive_action
     def turn_left(self, nb_times: int = 1) -> None:
         def handler() -> None:
             self.__turning_left -= 1
@@ -83,6 +95,7 @@ class Player:
     def turning_left(self) -> int:
         return self.__turning_left
 
+    @alive_action
     def turn_right(self, nb_times: int = 1) -> None:
         def handler() -> None:
             self.__turning_right -= 1
