@@ -73,6 +73,9 @@ class Vision:
     def get(self, unit: int, divergence: int) -> Tile:
         return self.__grid[unit, divergence]
 
+    def __contains__(self, resource: str) -> bool:
+        return any(resource in tile for tile in self.__grid.values())
+
     @property
     def max_unit(self) -> int:
         return self.__vision_unit
@@ -99,7 +102,14 @@ class Vision:
         self.__grid = new_grid
 
     @staticmethod
-    def iter_units(max_unit: int) -> Iterator[Tuple[int, int]]:
+    def iter_units(max_unit: int) -> Iterator[Coords]:
         for unit in range(max_unit + 1):
             for divergence in range(-unit, unit + 1):
                 yield (unit, divergence)
+
+    def find(self, resource: str) -> List[Coords]:
+        coords_list: List[Coords] = list()
+        for coord, tile in self.__grid.items():
+            if resource in tile:
+                coords_list.append(coord)
+        return coords_list

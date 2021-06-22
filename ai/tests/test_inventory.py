@@ -17,6 +17,9 @@ def test_inventory() -> None:
     assert inventory["phiras"] == 0
     assert inventory["thystame"] == 0
 
+    assert "food" in inventory
+    assert "linemate" not in inventory
+
 
 def test_inventory_update_by_response() -> None:
     inventory: Inventory = Inventory()

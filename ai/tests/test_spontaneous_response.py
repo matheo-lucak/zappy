@@ -14,7 +14,7 @@ def test_spontaneous_response_class_instantiation() -> None:
 
 
 def test_spontaneous_response_class_pattern() -> None:
-    with pytest.raises(TypeError):
+    with pytest.raises(AttributeError):
         pattern: Pattern[str] = SpontaneousResponse.get_pattern()
 
 
