@@ -44,7 +44,7 @@ class SpontaneousResponse(Response):
     @classmethod
     def get_pattern(cls) -> Pattern[str]:
         if cls is SpontaneousResponse:
-            raise TypeError(f"The base class {cls.__name__} does not have a regex pattern")
+            raise AttributeError(f"The base class {cls.__name__} does not have a regex pattern")
         return cast(Pattern[str], getattr(cls, "__pattern__"))
 
 

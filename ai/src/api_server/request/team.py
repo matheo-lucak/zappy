@@ -14,10 +14,9 @@ class TeamResponse(Response):
 
         if response == "ko":
             return
-        if response.isdigit():
-            self.__client_num = int(response)
-        else:
+        if not response.isdigit():
             raise ResponseParsingError(response, "Should receive 'ko' or a positive integer")
+        self.__client_num = int(response)
 
     @property
     def client_num(self) -> Optional[int]:
