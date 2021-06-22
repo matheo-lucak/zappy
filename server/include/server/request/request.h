@@ -10,6 +10,8 @@
 
 #include <mylist/string_list.h>
 
+#include"server/request/handler.h"
+
 #define RQ_SEPARATORS " "
 #define RQ_DELIMITER '\n'
 
@@ -41,9 +43,11 @@ typedef enum request_type_e
 
 typedef struct request_s
 {
-    request_type_t  type;
-    int             time_limit;
-    string_list_t * arguments;
+    bool                is_valid;
+    request_type_t      type;
+    int                 time_limit;
+    string_list_t *     arguments;
+    request_handler_t   handler;
 } request_t;
 
 request_t *request_create(void);

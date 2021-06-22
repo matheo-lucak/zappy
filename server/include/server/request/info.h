@@ -9,12 +9,14 @@
 #define INFO_H_
 
 #include "server/request/request.h"
+#include "server/request/handler.h"
 
 typedef struct request_info_s
 {
-    char *                  name;
-    request_type_t          type;
-    int                     time_limit;
+    char *              name;
+    request_type_t      type;
+    request_handler_t   handler;
+    int                 time_limit;
 } request_info_t;
 
 const request_info_t *request_get_info_from_name(char *name);

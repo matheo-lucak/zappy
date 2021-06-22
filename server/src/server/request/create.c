@@ -20,5 +20,6 @@ request_t *request_create(void)
         request_destroy(request);
         return NULL;
     }
+    request->is_valid = false;
     return request;
 }

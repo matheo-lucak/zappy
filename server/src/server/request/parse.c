@@ -82,9 +82,10 @@ request_t *request_parse_from_input(char *input)
         return NULL;
     request->type = info->type;
     request->time_limit = info->time_limit;
-    if (request_parse_arguments_from_input(request, input)) {
-        request_destroy(request);
-        return NULL;
-    }
+    request->handler = info->handler;
+    if (request_parse_arguments_from_input(request, input))
+        request->is_valid = false;
+    else
+        request->is_valid = true;
     return request;
 }

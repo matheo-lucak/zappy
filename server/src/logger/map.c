@@ -26,6 +26,18 @@ const log_info_t log_info_map[] =
         .message = "A client has left"
     },
     {
+        .type = LOG_SERVER_CLIENT_TO_DRONE,
+        .message = "A client became a drone"
+    },
+    {
+        .type = LOG_SERVER_CLIENT_TO_SPECTATOR,
+        .message = "A client became a drone"
+    },
+    {
+        .type = LOG_SERVER_CLIENT_TO_ERROR,
+        .message = "A client can't change twice its type"
+    },
+    {
         .type = LOG_SERVER_INVALID_REQUEST,
         .message = "Invalid client request: \"%s\""
     },
