@@ -13,8 +13,6 @@ void client_destroy(client_t *c)
 {
     if (!c)
         return;
-    if (c->drone)
-        drone_destroy(c->drone);
     if (c->socket)
         tcp_socket_destroy(c->socket);
     if (c->pending_requests)
