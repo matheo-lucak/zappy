@@ -1,10 +1,13 @@
 # -*- coding: Utf-8 -*
 
-from typing import Dict
+from typing import Dict, Iterator, Tuple
 
 from .resource import MetaResource, BaseResource
 from ..api_server.request.inventory import InventoryResponse
 from ..api_server.request.response.exceptions import ResponseError
+
+
+InventoryView = Iterator[Tuple[str, int]]
 
 
 class Inventory:
@@ -26,6 +29,13 @@ class Inventory:
 
     def __getitem__(self, resource: str) -> int:
         return self.__resources[resource].amount
+
+    def __contains__(self, resource: str) -> bool:
+        return self[resource] > 0
+
+    def __iter__(self) -> InventoryView:
+        for resource in self.__resources.values():
+            yield (resource.name, resource.amount)
 
     def update(self, response: InventoryResponse) -> None:
         if any(resource not in self.__resources for resource in response.resources):
