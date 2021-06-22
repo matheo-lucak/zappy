@@ -40,12 +40,22 @@ class APIServer:
     def send(self, request: BaseRequest[R]) -> None:
         self.__requests.append(cast(Request, request))
 
-    def recv(self, response_class: Type[R], *, wait: bool = True) -> Optional[R]:
+    def recv(self, response_class: Type[R], *, wait: bool = True, handle_response_error: bool = False) -> Optional[R]:
+        def create_response() -> Optional[R]:
+            try:
+                rp: R = response_class(self.__pending_responses[0])
+            except ResponseError as e:
+                if not handle_response_error:
+                    raise e from None
+                return None
+            self.__pending_responses.pop(0)
+            return rp
+
         if self.__pending_responses:
-            return response_class(self.__pending_responses.pop(0))
+            return create_response()
         if wait:
             self.__fetch_all_responses()
-        return response_class(self.__pending_responses.pop(0)) if self.__pending_responses else None
+        return create_response() if self.__pending_responses else None
 
     def has_request_to_handle(self, request_type: Type[BaseRequest[R]]) -> bool:
         if any(type(request) is request_type for request in self.__pending_requests):

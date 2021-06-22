@@ -55,9 +55,6 @@ class BaseRequest(Generic[T]):
         if callable(self.__callback):
             self.__callback(self.__response)
 
-    def has_response(self) -> bool:
-        return self.response is not None
-
 
 class Request(BaseRequest[Response]):
     pass
