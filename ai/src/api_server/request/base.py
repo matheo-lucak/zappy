@@ -1,6 +1,6 @@
 # -*- coding: Utf-8 -*
 
-from typing import Any, Callable, Generic, Optional, Tuple, Type, TypeVar
+from typing import Any, Callable, Generic, Optional, Tuple, Type, TypeVar, cast
 from enum import IntEnum, unique
 
 from .response import Response, SpontaneousResponse
@@ -58,7 +58,7 @@ class BaseRequest(Generic[T]):
         return self.__response
 
     def get_response_type(self) -> Type[T]:
-        return getattr(type(self), "__response_class__")
+        return cast(Type[T], getattr(type(self), "__response_class__"))
 
     def set_response(self, response: str) -> None:
         ResponseClass: Type[T] = self.get_response_type()

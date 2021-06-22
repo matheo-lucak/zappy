@@ -63,6 +63,7 @@ def test_vision_update_by_response() -> None:
     assert "linemate" in vision
     assert "food" not in vision
 
+
 def test_vision_find() -> None:
     vision: Vision = Vision()
     vision.update(LookResponse("[player linemate, thystame, sibur phiras linemate, deraumere deraumere]"))
