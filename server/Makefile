@@ -69,6 +69,7 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), server/request/checker.c)							\
 					$(addprefix $(SRC_PATH), server/request/create.c)							\
 					$(addprefix $(SRC_PATH), server/request/destroy.c)							\
+          $(addprefix $(SRC_PATH), server/request/get_input.c)  \
 					$(addprefix $(SRC_PATH), server/request/handle.c)							\
 					$(addprefix $(SRC_PATH), server/request/parse.c)							\
 					$(addprefix $(SRC_PATH), server/launch.c)									\
@@ -170,6 +171,7 @@ TESTS_SRC		=	$(addprefix $(TESTS_PATH), arg_parser/arg_checker/positive_int.c)	\
 					$(addprefix $(TESTS_PATH), arg_parser/parse_basic_y.c)				\
 					$(addprefix $(TESTS_PATH), arg_parser/parse.c)						\
 					$(addprefix $(TESTS_PATH), server/request/parse.c)					\
+					$(addprefix $(TESTS_PATH), server/request/get_input.c)				\
 					$(addprefix $(TESTS_PATH), simulation/drone/move.c)					\
 					$(addprefix $(TESTS_PATH), simulation/drone/rotate.c)				\
 					$(addprefix $(TESTS_PATH), simulation/teams/has_drone.c)			\
@@ -188,7 +190,7 @@ tests_run:	CFLAGS += --coverage
 tests_run:	LDLIBS += -lcriterion
 tests_run:	clean $(LIBRARIES) $(PROJECT_OBJ) $(TESTS_OBJ)
 	$(CC) -o $(TESTS_NAME) $(PROJECT_OBJ) $(TESTS_OBJ) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
-	./$(TESTS_NAME) --verbose --always-succeed
+	./$(TESTS_NAME) --verbose --always-succeed -j1
 	$(RM) $(TESTS_NAME)
 .PHONY:	tests_run
 

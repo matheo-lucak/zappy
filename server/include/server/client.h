@@ -42,6 +42,7 @@ typedef struct client_s
 {
     client_type_t   type;
     tcp_socket_t *  socket;
+    char *          input_stock;
     drone_t *       drone;
     ptr_list_t *    pending_requests;
 } client_t;

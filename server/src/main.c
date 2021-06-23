@@ -5,6 +5,7 @@
 ** main
 */
 
+#include <fcntl.h>
 #include "arg_parser.h"
 #include "server/server.h"
 

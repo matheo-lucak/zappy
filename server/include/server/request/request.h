@@ -9,6 +9,7 @@
 #define REQUEST_H_
 
 #include <mylist/string_list.h>
+#include "server/client.h"
 
 #include "server/client.h"
 #include "server/request/handler.h"
@@ -59,6 +60,7 @@ typedef struct request_s
 request_t *request_create(void);
 void request_destroy(request_t *request);
 
-request_t *request_parse_from_input(char *input, client_type_t type);
+char *request_get_input(client_t *c);
+request_t *request_parse_from_input(char *input);
 
 #endif /* !REQUEST_H_ */
