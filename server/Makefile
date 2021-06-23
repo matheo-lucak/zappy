@@ -39,6 +39,9 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), server/client/create.c)							\
 					$(addprefix $(SRC_PATH), server/client/destroy.c)							\
 					$(addprefix $(SRC_PATH), server/client/to.c)								\
+					$(addprefix $(SRC_PATH), server/request/checkers/is_positive_int.c)			\
+					$(addprefix $(SRC_PATH), server/request/checkers/is_resource.c)				\
+					$(addprefix $(SRC_PATH), server/request/checkers/no_check.c)				\
 					$(addprefix $(SRC_PATH), server/request/handlers/cmd_broadcast.c)			\
 					$(addprefix $(SRC_PATH), server/request/handlers/cmd_connect_nbr.c)			\
 					$(addprefix $(SRC_PATH), server/request/handlers/cmd_eject.c)				\
@@ -62,6 +65,7 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), server/request/handlers/gui_time_unit_request.c)	\
 					$(addprefix $(SRC_PATH), server/request/info/get_info.c)					\
 					$(addprefix $(SRC_PATH), server/request/info/info.c)						\
+					$(addprefix $(SRC_PATH), server/request/checker.c)							\
 					$(addprefix $(SRC_PATH), server/request/create.c)							\
 					$(addprefix $(SRC_PATH), server/request/destroy.c)							\
 					$(addprefix $(SRC_PATH), server/request/handle.c)							\
@@ -77,6 +81,8 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/drone/rotate.c)							\
 					$(addprefix $(SRC_PATH), simulation/map/create.c)							\
 					$(addprefix $(SRC_PATH), simulation/map/destroy.c)							\
+					$(addprefix $(SRC_PATH), simulation/resource/get_info.c)					\
+					$(addprefix $(SRC_PATH), simulation/resource/info.c)						\
 					$(addprefix $(SRC_PATH), simulation/team/add_drone.c)						\
 					$(addprefix $(SRC_PATH), simulation/team/create.c)							\
 					$(addprefix $(SRC_PATH), simulation/team/delete_drone.c)					\

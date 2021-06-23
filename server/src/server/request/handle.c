@@ -15,13 +15,15 @@ static void server_handle_single_request(server_t *s, client_t *c)
     if (list_len(c->pending_requests) == 0)
         return;
     request = NODE_PTR(list_begin(c->pending_requests), request_t);
-    if (!request || request->is_valid == false) {
-        // SEND KO
+    if (request_checker(c, request) == false) {
+        // send KO
         list_pop_front(c->pending_requests);
         return;
     }
-    if (request->time_limit > 0)
+    if (request->time_limit > 0) {
+        request->time_limit -= 1;
         return;
+    }
     request->time_limit -= 1;
     if (request->handler)
         request->handler(s, c, request);
