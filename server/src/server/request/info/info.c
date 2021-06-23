@@ -7,6 +7,22 @@
 
 #include "server/request/info.h"
 
+const request_info_t default_request_info =
+{
+    .name = "Default request",
+    .type = RQ_DEFAULT,
+    .handler = &request_handler_default,
+    .time_limit = 0,
+    .requirements = (request_requirements_t [])
+    {
+        {
+            .client_type    = CLIENT_UNKNOWN,
+            .arg_number     = 0,
+            .arg_checkers   = (request_arg_checker_t []) {NULL}
+        }
+    }
+};
+
 const request_info_t request_info_map[] =
 {
     /* Drone COMMANDS*/

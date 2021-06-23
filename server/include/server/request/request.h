@@ -10,6 +10,7 @@
 
 #include <mylist/string_list.h>
 
+#include "server/client.h"
 #include "server/request/handler.h"
 #include "server/request/checker.h"
 
@@ -18,6 +19,8 @@
 
 typedef enum request_type_e
 {
+    RQ_DEFAULT,
+
     RQ_CMD_FORWARD,
     RQ_CMD_RIGHT,
     RQ_CMD_LEFT,
@@ -44,17 +47,18 @@ typedef enum request_type_e
 
 typedef struct request_s
 {
-    bool                        is_valid;
     request_type_t              type;
-    int                         time_limit;
+    char *                      name;
     string_list_t *             arguments;
-    request_handler_t           handler;
+    int                         time_limit;
     request_requirements_t *    requirements;
+    request_handler_t           handler;
+    bool                        is_valid;
 } request_t;
 
 request_t *request_create(void);
 void request_destroy(request_t *request);
 
-request_t *request_parse_from_input(char *input);
+request_t *request_parse_from_input(char *input, client_type_t type);
 
 #endif /* !REQUEST_H_ */

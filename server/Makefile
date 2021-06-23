@@ -54,6 +54,7 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), server/request/handlers/cmd_right.c)				\
 					$(addprefix $(SRC_PATH), server/request/handlers/cmd_set.c)					\
 					$(addprefix $(SRC_PATH), server/request/handlers/cmd_take.c)				\
+					$(addprefix $(SRC_PATH), server/request/handlers/default.c)				\
 					$(addprefix $(SRC_PATH), server/request/handlers/gui_map_content.c)			\
 					$(addprefix $(SRC_PATH), server/request/handlers/gui_map_size.c)			\
 					$(addprefix $(SRC_PATH), server/request/handlers/gui_player_inventory.c)	\

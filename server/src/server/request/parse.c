@@ -50,9 +50,10 @@ static int request_parse_arguments_from_input(request_t *request, char *input)
     return 0;
 }
 
-static const request_info_t *request_parse_info_from_input(char **input)
+static const request_info_t *request_parse_info_from_input(char **input,
+                                                        char **req_name,
+                                                        client_type_t type)
 {
-    const request_info_t *info = NULL;
     char *cmd = NULL;
 
     if (!*input || strchr(RQ_SEPARATORS, **input))
@@ -62,32 +63,36 @@ static const request_info_t *request_parse_info_from_input(char **input)
         server_log(LOG_SERVER_INVALID_REQUEST_ARG);
         return NULL;
     }
-    info = request_get_info_from_name(cmd);
-    if (!info) {
-        server_log(LOG_SERVER_INVALID_REQUEST, cmd ? cmd : "");
+    if (!cmd) {
+        server_log(LOG_SERVER_INVALID_REQUEST, "NULL");
         return NULL;
     }
-    return info;
+    *req_name = strdup(cmd);
+    if (type == CLIENT_UNKNOWN)
+        return &default_request_info;
+    return request_get_info_from_name(cmd);
 }
 
-request_t *request_parse_from_input(char *input)
+request_t *request_parse_from_input(char *input, client_type_t type)
 {
-    const request_info_t *info = request_parse_info_from_input(&input);
+    char *r_name = NULL;
+    const request_info_t *info = request_parse_info_from_input(
+        &input, &r_name, type);
     request_t *request = NULL;
 
     request = request_create();
     if (!request)
         return NULL;
-    if (request_parse_arguments_from_input(request, input)) {
-        request->is_valid = false;
-    } else if (!info) {
-        request->is_valid = false;
-    } else {
+    request->name = r_name;
+     if (info) {
         request->type = info->type;
         request->time_limit = info->time_limit;
         request->handler = info->handler;
         request->requirements = info->requirements;
         request->is_valid = true;
-    }
+    } else
+        request->is_valid = false;
+    if (request_parse_arguments_from_input(request, input))
+        request->is_valid = false;
     return request;
 }

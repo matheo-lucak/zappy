@@ -13,6 +13,8 @@ void request_destroy(request_t *request)
 {
     if (!request)
         return;
+    if (request->name)
+        free(request->name);
     if (request->arguments)
         string_list_destroy(request->arguments);
     free(request);

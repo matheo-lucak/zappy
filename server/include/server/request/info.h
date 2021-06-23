@@ -24,5 +24,6 @@ const request_info_t *request_get_info_from_name(char *name);
 
 extern const request_info_t request_info_map[];
 extern const size_t request_info_map_size;
+extern const request_info_t default_request_info;
 
 #endif /* !INFO_H_ */

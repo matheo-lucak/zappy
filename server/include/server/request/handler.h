@@ -18,6 +18,8 @@ typedef void (*request_handler_t)(
     request_t *
 );
 
+void request_handler_default(server_t *s, client_t *c, request_t *r);
+
 void request_handler_cmd_forward(server_t *, client_t *, request_t *);
 void request_handler_cmd_right(server_t *, client_t *, request_t *);
 void request_handler_cmd_left(server_t *, client_t *, request_t *);

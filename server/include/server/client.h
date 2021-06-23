@@ -17,9 +17,9 @@
 
 typedef enum client_type_e
 {
-    CLIENT_UNKNOWN,
-    CLIENT_DRONE,
-    CLIENT_SPECTATOR
+    CLIENT_UNKNOWN      = 0b00000001,
+    CLIENT_DRONE        = 0b00000010,
+    CLIENT_SPECTATOR    = 0b00000100
 } client_type_t;
 
 ////////////////////////////////////////////////////////////////////////////////

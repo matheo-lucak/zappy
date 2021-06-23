@@ -36,7 +36,7 @@ static bool request_checker_client_type(client_t *client, request_t *request)
 {
     if (request->requirements->client_type == RQ_REQUIRE_NO_CLIENT_TYPE)
         return true;
-    return request->requirements->client_type == (int)client->type;
+    return request->requirements->client_type & (int)client->type;
 }
 
 bool request_checker(client_t *client, request_t *request)
