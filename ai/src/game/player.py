@@ -35,7 +35,6 @@ class Player:
         self.__team: str = team_name
         self.__inventory: Inventory = Inventory()
         self.__vision: Vision = Vision()
-        self.__alive: bool = True
         self.__api: APIServer = api
         self.__messages: List[Message] = list()
 
@@ -49,18 +48,7 @@ class Player:
         if not self.__api.has_request_to_handle(LookRequest):
             self.__api.send(LookRequest(self.__vision.update))
 
-    def is_alive(self) -> bool:
-        return self.__alive
-
-    def kill(self) -> None:
-        if self.__alive:
-            print("I'm dying...!")
-            self.__alive = False
-
     def move_forward(self, nb_times: int = 1) -> None:
-        if not self.is_alive():
-            return
-
         def handler() -> None:
             self.__forwarding -= 1
             print("Move forward completed")
@@ -75,9 +63,6 @@ class Player:
         return self.__forwarding
 
     def turn_left(self, nb_times: int = 1) -> None:
-        if not self.is_alive():
-            return
-
         def handler() -> None:
             self.__turning_left -= 1
             print("Left rotation completed")
@@ -92,9 +77,6 @@ class Player:
         return self.__turning_left
 
     def turn_right(self, nb_times: int = 1) -> None:
-        if not self.is_alive():
-            return
-
         def handler() -> None:
             self.__turning_right -= 1
             print("Right rotation completed")
@@ -113,9 +95,6 @@ class Player:
         self.__messages.append(Message(message.tile, message.text))
 
     def broadcast(self, message: str) -> None:
-        if not self.is_alive():
-            return
-
         print(f"Broadcasting: {repr(message)}")
         self.__api.send(BroadcastRequest(message))
 
@@ -125,9 +104,6 @@ class Player:
         return messages
 
     def take_object(self, resource: str) -> None:
-        if not self.is_alive():
-            return
-
         def handler(response: TakeObjectResponse) -> None:
             print(f"{repr(resource)}: {'taken' if response.ok else 'not taken'}")
 
@@ -135,9 +111,6 @@ class Player:
         self.__api.send(TakeObjectRequest(resource, callback=handler))
 
     def set_object_down(self, resource: str) -> None:
-        if not self.is_alive():
-            return
-
         def handler(response: SetObjectDownResponse) -> None:
             print(f"{repr(resource)}: {'set down' if response.ok else 'not set down'}")
 

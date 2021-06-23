@@ -1,7 +1,6 @@
 # -*- coding: Utf-8 -*
 
 from time import time_ns
-from sys import stderr
 from typing import Any, Callable, Dict, NamedTuple, Optional, Type
 
 from .api_server import APIServer
@@ -39,6 +38,10 @@ class Clock:
         self.__actual = time_ns()
 
 
+class PlayerDeadError(ZappyError):
+    pass
+
+
 class ZappyAI:
     def __init__(self, machine: str, port: int, team_name: str) -> None:
         self.__server: APIServer = APIServer(machine, port)
@@ -64,7 +67,7 @@ class ZappyAI:
 
     def run(self) -> None:
         clock: Clock = Clock()
-        while self.__player.is_alive():
+        while True:
             self.__player.update()
             if clock.elapsed_time(1000, restart=True):
                 self.__player.broadcast("I'm alive")
@@ -74,26 +77,31 @@ class ZappyAI:
             self.__server.fetch()
             self.__handle_spontaneous_responses()
 
+    @staticmethod
+    def start(machine: str, port: int, team_name: str) -> None:
+        try:
+            ai: ZappyAI = ZappyAI(machine, port, team_name)
+            ai.run()
+        except (ConnectionError, BlockingIOError, ZappyError) as e:
+            print(e)
+        except EOFError:
+            print("Remote server closes this connection. Disconnecting...")
+        except KeyboardInterrupt:
+            print("\n" "AI stopped by user. Disconnecting...")
+
     def __handle_spontaneous_responses(self) -> None:
         handler_map: Dict[Type[SpontaneousResponse], Callable[[Any], None]] = {
-            DeadResponse: lambda rp: self.__player.kill(),
             MessageResponse: self.__player.listen,
         }
 
         for rp in self.__server.flush_spontaneous_responses():
+            if isinstance(rp, DeadResponse):
+                raise PlayerDeadError("I'm dying...!")
             handler: Optional[Callable[[SpontaneousResponse], None]] = handler_map.get(type(rp))
             if callable(handler):
                 handler(rp)
 
 
 def zappy_ai(args: ZappyAIArgs) -> None:
-    try:
-        Logger.set_verbose_level(args.verbose)
-        ai: ZappyAI = ZappyAI(args.machine, args.port, args.team_name)
-        ai.run()
-    except (ConnectionError, BlockingIOError, ZappyError) as e:
-        print(e, file=stderr)
-    except EOFError:
-        print("Remote server closes this connection. Disconnecting...", file=stderr)
-    except KeyboardInterrupt:
-        print("\n" "AI stopped by user. Disconnecting...", file=stderr)
+    Logger.set_verbose_level(args.verbose)
+    return ZappyAI.start(args.machine, args.port, args.team_name)

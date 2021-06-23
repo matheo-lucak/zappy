@@ -1,9 +1,8 @@
 # -*- coding: Utf-8 -*
 
-from sys import stderr
 from socket import socket, AF_INET, SOCK_STREAM
 from select import select
-from typing import Callable, Dict, Iterator, List, Optional, Tuple, Type, TypeVar, cast
+from typing import Dict, Iterator, List, Optional, Tuple, Type, TypeVar, cast
 
 from .request import BaseRequest, Request
 from .request.response import Response, SpontaneousResponse, MultiResponse
@@ -46,6 +45,7 @@ class APIServer:
 
     def send(self, request: BaseRequest[R]) -> None:
         self.__requests.append(cast(Request, request))
+        self.__send_all_requests()
 
     def recv(self, response_class: Type[R], *, wait: bool = True, handle_response_error: bool = False) -> Optional[R]:
         def create_response() -> Optional[R]:
@@ -81,26 +81,26 @@ class APIServer:
         return responses
 
     def fetch(self) -> None:
-        has_requests: Callable[[], bool] = lambda: bool(self.__requests) and (
-            len(self.__pending_requests) < self.MAX_PENDING_REQUEST
-        )
+        self.__send_all_requests()
 
-        timeout: float = 0.05
-
-        while has_requests() and self.__socket in select([], [self.__socket], [], timeout)[1]:
-            request: Request = self.__requests.pop(0)
-            self.__send_request_to_server(str(request))
-            self.__pending_requests.append(request)
-
-        if self.__socket in select([self.__socket], [], [], timeout)[0]:
+        if self.__socket in select([self.__socket], [], [], 0.05)[0]:
             self.__fetch_all_responses()
 
         self.__handle_pending_requests()
 
-    def __send_request_to_server(self, request: str) -> None:
-        Logger.print(2, f"--> {repr(request)}")
-        data: bytes = (request + BaseRequest.END_REQUEST).encode()
-        self.__socket.sendall(data)
+    def __send_all_requests(self) -> None:
+        def has_requests() -> bool:
+            return bool(self.__requests) and (len(self.__pending_requests) < self.MAX_PENDING_REQUEST)
+
+        def send_request_to_server(request: str) -> None:
+            Logger.print(1, f"--> {repr(request)}")
+            data: bytes = (request + BaseRequest.END_REQUEST).encode()
+            self.__socket.sendall(data)
+
+        while has_requests() and self.__socket in select([], [self.__socket], [], 0.05)[1]:
+            request: Request = self.__requests.pop(0)
+            send_request_to_server(str(request))
+            self.__pending_requests.append(request)
 
     def __fetch_all_responses(self) -> None:
         def read_socket(chunck_size: int) -> Iterator[bytes]:
@@ -128,7 +128,7 @@ class APIServer:
                         break
                     response: str = self.__buffer[:idx].strip()
                     self.__buffer = self.__buffer[idx + 1 :]
-                    Logger.print(2, f"<-- {repr(response)}")
+                    Logger.print(1, f"<-- {repr(response)}")
                     yield response
 
         for received_response in recv_response_from_server():
@@ -174,7 +174,7 @@ class APIServer:
                     request.response = response_class(self.__pending_responses.pop(0))
                     self.__pending_requests.remove(request)
             except ResponseError as e:
-                print(f"{type(e).__name__}: {e}", file=stderr)
-                print(f"-> The request {repr(request)} will be sent again to the server.", file=stderr)
+                print(f"{type(e).__name__}: {e}")
+                print(f"-> The request {repr(request)} will be sent again to the server.")
                 self.__pending_requests.remove(request)
                 self.send(request)
