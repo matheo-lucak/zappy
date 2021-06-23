@@ -1,6 +1,6 @@
 # -*- coding: Utf-8 -*
 
-from typing import Any
+from typing import Any, Tuple
 
 from .base import Response
 
@@ -20,6 +20,11 @@ class MultiResponse(Response):
 
     def __init__(self, *responses: str) -> None:
         super().__init__(self.END_RESPONSE.join(responses))
+        self.__responses: Tuple[str, ...] = responses
+
+    @property
+    def list(self) -> Tuple[str, ...]:
+        return self.__responses
 
     @classmethod
     def nb_responses(cls) -> int:

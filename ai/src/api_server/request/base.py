@@ -3,7 +3,7 @@
 from typing import Any, Callable, Generic, Optional, Tuple, Type, TypeVar, cast
 from enum import IntEnum, unique
 
-from .response import Response, SpontaneousResponse
+from .response import Response, SpontaneousResponse, MultiResponse
 
 
 T = TypeVar("T", bound=Response)
@@ -26,6 +26,8 @@ class BaseRequest(Generic[T]):
         response: Type[T] = getattr(getattr(cls, "__orig_bases__")[0], "__args__")[0]
         if issubclass(response, SpontaneousResponse):
             raise TypeError("A request cannot have a spontaneous response.")
+        if cls is MultiResponse:
+            raise TypeError("Cannot use base class MultiResponse as response class.")
         setattr(cls, "__response_class__", response)
 
     def __new__(cls, *args: Any, **kwargs: Any) -> Any:
