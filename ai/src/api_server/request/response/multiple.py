@@ -8,14 +8,17 @@ from .base import Response
 class MultiResponse(Response):
     def __init_subclass__(cls, /, *, nb_responses: int, wait_for_all: bool) -> None:
         super().__init_subclass__()
-        if nb_responses < 1:
-            raise ValueError("nb_responses must be a positive integer")
+        if nb_responses < 2:
+            raise ValueError("nb_responses must be a positive integer greather than 1")
         setattr(cls, "__nb_responses__", nb_responses)
         setattr(cls, "__wait_all__", wait_for_all)
 
     def __new__(cls, response: str, *other_responses: str, **kwargs: Any) -> Any:
         if cls is MultiResponse:
             raise TypeError(f"{cls.__name__} can't be instantiated")
+        nb_responses: int = len(other_responses) + 1
+        if nb_responses > cls.nb_responses() or (not cls.wait_for_all() and nb_responses < cls.nb_responses()):
+            raise ValueError(f"Number of response isn't correct: actual=`{nb_responses}`, expected=`{cls.nb_responses()}`")
         return super().__new__(cls)
 
     def __init__(self, *responses: str) -> None:

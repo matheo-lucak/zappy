@@ -1,19 +1,12 @@
 # -*- coding: Utf-8 -*
 
 from typing import Any, Callable, Generic, Optional, Tuple, Type, TypeVar, cast
-from enum import IntEnum, unique
 
 from .response import Response, SpontaneousResponse, MultiResponse
 
 
 T = TypeVar("T", bound=Response)
 ResponseCallback = Callable[[T], None]
-
-
-@unique
-class ResponseState(IntEnum):
-    COMPLETED: int = 0
-    NEED_OTHER_RESPONSE: int = 1
 
 
 class BaseRequest(Generic[T]):
@@ -59,14 +52,14 @@ class BaseRequest(Generic[T]):
     def response(self) -> Optional[T]:
         return self.__response
 
+    @response.setter
+    def response(self, rp: T) -> None:
+        self.__response = rp
+        if callable(self.__callback):
+            self.__callback(rp)
+
     def get_response_type(self) -> Type[T]:
         return cast(Type[T], getattr(type(self), "__response_class__"))
-
-    def set_response(self, response: str) -> None:
-        ResponseClass: Type[T] = self.get_response_type()
-        self.__response = ResponseClass(response)
-        if callable(self.__callback):
-            self.__callback(self.__response)
 
 
 class Request(BaseRequest[Response]):
