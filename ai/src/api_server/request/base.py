@@ -26,7 +26,7 @@ class BaseRequest(Generic[T]):
         response: Type[T] = getattr(getattr(cls, "__orig_bases__")[0], "__args__")[0]
         if issubclass(response, SpontaneousResponse):
             raise TypeError("A request cannot have a spontaneous response.")
-        if cls is MultiResponse:
+        if response is MultiResponse:
             raise TypeError("Cannot use base class MultiResponse as response class.")
         setattr(cls, "__response_class__", response)
 

@@ -1,6 +1,6 @@
 # -*- coding: Utf-8 -*
 
-from typing import Any, Tuple
+from typing import Any, Tuple, cast
 
 from .base import Response
 
@@ -30,10 +30,10 @@ class MultiResponse(Response):
     def nb_responses(cls) -> int:
         if cls is MultiResponse:
             raise AttributeError(f"Base class {cls.__name__} does not have this attribute")
-        return getattr(cls, "__nb_responses__")
+        return int(getattr(cls, "__nb_responses__"))
 
     @classmethod
     def wait_for_all(cls) -> bool:
         if cls is MultiResponse:
             raise AttributeError(f"Base class {cls.__name__} does not have this attribute")
-        return getattr(cls, "__wait_all__")
+        return bool(getattr(cls, "__wait_all__"))
