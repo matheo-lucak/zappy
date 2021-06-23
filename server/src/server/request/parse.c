@@ -75,17 +75,19 @@ request_t *request_parse_from_input(char *input)
     const request_info_t *info = request_parse_info_from_input(&input);
     request_t *request = NULL;
 
-    if (!info)
-        return NULL;
     request = request_create();
     if (!request)
         return NULL;
-    request->type = info->type;
-    request->time_limit = info->time_limit;
-    request->handler = info->handler;
-    if (request_parse_arguments_from_input(request, input))
+    if (request_parse_arguments_from_input(request, input)) {
         request->is_valid = false;
-    else
+    } else if (!info) {
+        request->is_valid = false;
+    } else {
+        request->type = info->type;
+        request->time_limit = info->time_limit;
+        request->handler = info->handler;
+        request->requirements = info->requirements;
         request->is_valid = true;
+    }
     return request;
 }

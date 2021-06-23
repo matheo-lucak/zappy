@@ -134,7 +134,7 @@ Test(request_parse_from_input, fail_unkown_request)
     char *input = strdup("unkown_request");
     request_t *request = request_parse_from_input(input);
 
-    cr_assert(request == NULL);
+    cr_assert(request && !request->is_valid);
     free(input);
     request_destroy(request);
 }
@@ -144,7 +144,7 @@ Test(request_parse_from_input, fail_unkown_request_w_spaces_1)
     char *input = strdup("unkown_request ");
     request_t *request = request_parse_from_input(input);
 
-    cr_assert(request == NULL);
+    cr_assert(request && !request->is_valid);
     free(input);
     request_destroy(request);
 }
@@ -154,7 +154,7 @@ Test(request_parse_from_input, fail_unkown_request_w_spaces_2)
     char *input = strdup(" unkown_request");
     request_t *request = request_parse_from_input(input);
 
-    cr_assert(request == NULL);
+    cr_assert(request && !request->is_valid);
     free(input);
     request_destroy(request);
 }
@@ -164,7 +164,7 @@ Test(request_parse_from_input, fail_unkown_request_w_spaces_3)
     char *input = strdup("    unkown_request  ");
     request_t *request = request_parse_from_input(input);
 
-    cr_assert(request == NULL);
+    cr_assert(request && !request->is_valid);
     free(input);
     request_destroy(request);
 }
@@ -174,7 +174,7 @@ Test(request_parse_from_input, fail_kown_request_w_spaces_1)
     char *input = strdup("Forward ");
     request_t *request = request_parse_from_input(input);
 
-    cr_assert(request == NULL);
+    cr_assert(request && !request->is_valid);
     free(input);
     request_destroy(request);
 }
@@ -184,7 +184,7 @@ Test(request_parse_from_input, fail_kown_request_w_spaces_2)
     char *input = strdup(" Forward");
     request_t *request = request_parse_from_input(input);
 
-    cr_assert(request == NULL);
+    cr_assert(request && !request->is_valid);
     free(input);
     request_destroy(request);
 }
@@ -194,7 +194,7 @@ Test(request_parse_from_input, fail_kown_request_w_spaces_3)
     char *input = strdup("    Forward  ");
     request_t *request = request_parse_from_input(input);
 
-    cr_assert(request == NULL);
+    cr_assert(request && !request->is_valid);
     free(input);
     request_destroy(request);
 }
@@ -204,7 +204,7 @@ Test(request_parse_from_input, fail_arg_w_bad_spaces_1)
     char *input = strdup("Forward  arg_1");
     request_t *request = request_parse_from_input(input);
 
-    cr_assert(request == NULL);
+    cr_assert(request && !request->is_valid);
     free(input);
     request_destroy(request);
 }
@@ -214,7 +214,7 @@ Test(request_parse_from_input, fail_arg_w_bad_spaces_2)
     char *input = strdup("Forward arg_1 ");
     request_t *request = request_parse_from_input(input);
 
-    cr_assert(request == NULL);
+    cr_assert(request && !request->is_valid);
     free(input);
     request_destroy(request);
 }
@@ -224,7 +224,7 @@ Test(request_parse_from_input, fail_args_w_bad_spaces_1)
     char *input = strdup("Forward  arg_1 arg2");
     request_t *request = request_parse_from_input(input);
 
-    cr_assert(request == NULL);
+    cr_assert(request && !request->is_valid);
     free(input);
     request_destroy(request);
 }
@@ -234,7 +234,7 @@ Test(request_parse_from_input, fail_args_w_bad_spaces_2)
     char *input = strdup("Forward arg_1  arg2");
     request_t *request = request_parse_from_input(input);
 
-    cr_assert(request == NULL);
+    cr_assert(request && !request->is_valid);
     free(input);
     request_destroy(request);
 }
@@ -244,7 +244,7 @@ Test(request_parse_from_input, fail_args_w_bad_spaces_3)
     char *input = strdup("Forward arg_1 arg2 ");
     request_t *request = request_parse_from_input(input);
 
-    cr_assert(request == NULL);
+    cr_assert(request && !request->is_valid);
     free(input);
     request_destroy(request);
 }
