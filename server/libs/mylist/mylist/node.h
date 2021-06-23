@@ -23,6 +23,7 @@ typedef int (*node_cmp_t)(const void *, const void *);
 typedef struct node_list
 {
     data_node_t data;
+    size_t index;
     struct node_list *previous;
     struct node_list *next;
 } node_t;

@@ -17,6 +17,8 @@ void container_merge(container_list_t *list1, container_list_t *list2)
         list1->end->next = list2->start;
         list2->start->previous = list1->end;
         list1->end = list2->end;
+        for (node_t *n = list2->start; n; n = n->next)
+            n->index += list1->size;
         list1->size += list2->size;
     }
     list2->size = 0;

@@ -7,20 +7,24 @@
 
 #include "mylist/container.h"
 
-static void swap_node_links(node_t *node)
+static void swap_node_data(data_node_t *first, data_node_t *second)
 {
-    node_t *temp = node->previous;
+    data_node_t copy = *first;
 
-    node->previous = node->next;
-    node->next = temp;
+    *first = *second;
+    *second = copy;
 }
 
 void container_reverse(container_list_t *list)
 {
-    node_t *tail = list->end;
+    node_t *node_forward = list->start;
+    node_t *node_backward = list->end;
 
-    for (node_t *node = tail; node; node = node->next)
-        swap_node_links(node);
-    list->end = list->start;
-    list->start = tail;
+    if (list->size <= 1)
+        return;
+    while (node_forward->index < node_backward->index) {
+        swap_node_data(&node_forward->data, &node_backward->data);
+        node_forward = node_forward->next;
+        node_backward = node_backward->previous;
+    }
 }

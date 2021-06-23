@@ -48,6 +48,10 @@ node_t *create_node(const void *data, size_t size);
 node_t *create_ptr_node(void *ptr);
 
 node_t *create_string_node(const char *str);
+
+void destroy_node(node_t *node, node_dtor_t dtor);
+
+void destroy_ptr_node(node_t *node, node_dtor_t dtor);
 /////////////////////////////////////////////////////////////////////////////
 
 #endif /* !MY_LIST_CONTAINER_H_ */
