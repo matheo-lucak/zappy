@@ -38,7 +38,6 @@ typedef enum request_type_e
     RQ_PLAYER_INVENTORY,
     RQ_TIME_UNIT_REQUEST,
     RQ_TIME_UNIT_MODIF,
-
 } request_type_t;
 
 typedef struct request_s

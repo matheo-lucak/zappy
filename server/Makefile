@@ -58,6 +58,11 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/drone/set_drone.c)					\
 					$(addprefix $(SRC_PATH), simulation/map/create.c)						\
 					$(addprefix $(SRC_PATH), simulation/map/destroy.c)						\
+					$(addprefix $(SRC_PATH), simulation/team/add_drone.c)					\
+					$(addprefix $(SRC_PATH), simulation/team/create.c)						\
+					$(addprefix $(SRC_PATH), simulation/team/delete_drone.c)				\
+					$(addprefix $(SRC_PATH), simulation/team/destroy.c)						\
+					$(addprefix $(SRC_PATH), simulation/team/has_drone.c)					\
 					$(addprefix $(SRC_PATH), simulation/tile/create.c)						\
 					$(addprefix $(SRC_PATH), simulation/tile/destroy.c)						\
 					$(addprefix $(SRC_PATH), simulation/start.c)							\
@@ -142,6 +147,7 @@ TESTS_SRC		=	$(addprefix $(TESTS_PATH), arg_parser/arg_checker/positive_int.c)	\
 					$(addprefix $(TESTS_PATH), server/request/get_input.c)				\
 					$(addprefix $(TESTS_PATH), simulation/drone/move.c)					\
 					$(addprefix $(TESTS_PATH), simulation/drone/rotate.c)				\
+					$(addprefix $(TESTS_PATH), simulation/teams/has_drone.c)			\
 
 TESTS_OBJ		=	$(TESTS_SRC:.c=.o)
 

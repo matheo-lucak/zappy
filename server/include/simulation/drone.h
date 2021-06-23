@@ -8,12 +8,15 @@
 #ifndef DRONE_H_
 #define DRONE_H_
 
+#include <stdbool.h>
+
 #include "simulation/direction.h"
 #include "simulation/inventory.h"
 #include "simulation/map.h"
 
 typedef struct drone_s
 {
+    bool                   active;
     unsigned int                x;
     unsigned int                y;
     direction_t  facing_direction;
