@@ -1,6 +1,6 @@
 # -*- coding: Utf-8 -*
 
-from typing import Any, Tuple, cast
+from typing import Any, Tuple
 
 from .base import Response
 
