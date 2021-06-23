@@ -8,6 +8,8 @@
 #ifndef RESOURCES_H_
 #define RESOURCES_H_
 
+#include <stddef.h>
+
 typedef enum resource_type_s
 {
     RESOURCE_FOOD,
@@ -31,16 +33,10 @@ typedef struct resource_info_s
     density_t       density;
 } resource_info_t;
 
-//extern const resource_info_t resource_INFOS[];
+extern const resource_info_t resource_infos[];
+extern const size_t resource_infos_size;
 
-static const resource_info_t resource_INFOS[] = {
-    {.name = "food",        .type = RESOURCE_FOOD,        .density = .5f},
-    {.name = "linemate",    .type = RESOURCE_LINEMATE,    .density = .3f},
-    {.name = "deraumere",   .type = RESOURCE_DERAUMERE,   .density = .15f},
-    {.name = "sibur",       .type = RESOURCE_SIBUR,       .density = .1f},
-    {.name = "mendiane",    .type = RESOURCE_MENDIANE,    .density = .1f},
-    {.name = "phiras",      .type = RESOURCE_PHIRAS,      .density = .08f},
-    {.name = "thystame",    .type = RESOURCE_THYSTAME,    .density = .05f},
-};
+const resource_info_t *resource_get_info_from_name(char *name);
+const resource_info_t *resource_get_info_from_type(resource_type_t type);
 
 #endif /* !RESOURCES_H_ */
