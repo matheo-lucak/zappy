@@ -22,6 +22,7 @@
 typedef struct client_s
 {
     tcp_socket_t *  socket;
+    char *          input_stock;
     drone_t *       drone;
 } client_t;
 
