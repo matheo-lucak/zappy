@@ -11,6 +11,8 @@ from ..api_server.request.forward import ForwardRequest
 from ..api_server.request.look import LookRequest
 from ..api_server.request.left import LeftRequest
 from ..api_server.request.right import RightRequest
+from ..api_server.request.set_object_down import SetObjectDownRequest, SetObjectDownResponse
+from ..api_server.request.take_object import TakeObjectRequest, TakeObjectResponse
 from ..api_server.request.response.spontaneous import MessageResponse
 
 
@@ -121,6 +123,26 @@ class Player:
         messages: List[Message] = self.__messages
         self.__messages = list()
         return messages
+
+    def take_object(self, resource: str) -> None:
+        if not self.is_alive():
+            return
+
+        def handler(response: TakeObjectResponse) -> None:
+            print(f"{repr(resource)}: {'taken' if response.ok else 'not taken'}")
+
+        print(f"Taking {resource}...")
+        self.__api.send(TakeObjectRequest(resource, callback=handler))
+
+    def set_object_down(self, resource: str) -> None:
+        if not self.is_alive():
+            return
+
+        def handler(response: SetObjectDownResponse) -> None:
+            print(f"{repr(resource)}: {'set down' if response.ok else 'not set down'}")
+
+        print(f"Setting {resource} down...")
+        self.__api.send(SetObjectDownRequest(resource, callback=handler))
 
     @property
     def team(self) -> str:

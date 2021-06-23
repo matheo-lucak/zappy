@@ -7,6 +7,8 @@ from .forward import ForwardRequest
 from .left import LeftRequest
 from .look import LookRequest
 from .right import RightRequest
+from .set_object_down import SetObjectDownRequest
+from .take_object import TakeObjectRequest
 from .team import TeamRequest
 
 __all__ = [
@@ -18,5 +20,7 @@ __all__ = [
     "LeftRequest",
     "LookRequest",
     "RightRequest",
+    "SetObjectDownRequest",
+    "TakeObjectRequest",
     "TeamRequest",
 ]

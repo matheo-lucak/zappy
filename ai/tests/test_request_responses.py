@@ -4,7 +4,12 @@ import pytest
 
 from src.api_server.request.inventory import InventoryResponse
 from src.api_server.request.broadcast import BroadcastResponse
+from src.api_server.request.forward import ForwardResponse
+from src.api_server.request.left import LeftResponse
 from src.api_server.request.look import LookResponse
+from src.api_server.request.right import RightResponse
+from src.api_server.request.set_object_down import SetObjectDownResponse
+from src.api_server.request.take_object import TakeObjectResponse
 from src.api_server.request.response.exceptions import ResponseParsingError
 
 
@@ -60,6 +65,26 @@ def test_broadcast_response_invalid() -> None:
         rp: BroadcastResponse = BroadcastResponse("ko")
 
 
+def test_forward_response() -> None:
+    rp: ForwardResponse = ForwardResponse("ok")
+    assert rp.ok is True
+
+
+def test_forward_response_invalid() -> None:
+    with pytest.raises(ResponseParsingError):
+        rp: ForwardResponse = ForwardResponse("ko")
+
+
+def test_left_response() -> None:
+    rp: LeftResponse = LeftResponse("ok")
+    assert rp.ok is True
+
+
+def test_left_response_invalid() -> None:
+    with pytest.raises(ResponseParsingError):
+        rp: LeftResponse = LeftResponse("ko")
+
+
 def test_look_response() -> None:
     rp: LookResponse = LookResponse("[player linemate, thystame, sibur phiras, deraumere deraumere]")
     assert len(rp.tiles) == 4
@@ -99,3 +124,37 @@ def test_look_response_invalid() -> None:
 
     with pytest.raises(ResponseParsingError):
         rp = LookResponse("[player, thystame, sibur]")
+
+
+def test_right_response() -> None:
+    rp: RightResponse = RightResponse("ok")
+    assert rp.ok is True
+
+
+def test_right_response_invalid() -> None:
+    with pytest.raises(ResponseParsingError):
+        rp: RightResponse = RightResponse("ko")
+
+
+def test_set_object_down_request() -> None:
+    rp_ok: SetObjectDownResponse = SetObjectDownResponse("ok")
+    rp_ko: SetObjectDownResponse = SetObjectDownResponse("ko")
+    assert rp_ok.ok is True
+    assert rp_ko.ok is False
+
+
+def test_set_object_down_request_invalid() -> None:
+    with pytest.raises(ResponseParsingError):
+        rp: SetObjectDownResponse = SetObjectDownResponse("other")
+
+
+def test_take_object_down_request() -> None:
+    rp_ok: TakeObjectResponse = TakeObjectResponse("ok")
+    rp_ko: TakeObjectResponse = TakeObjectResponse("ko")
+    assert rp_ok.ok is True
+    assert rp_ko.ok is False
+
+
+def test_take_object_down_request_invalid() -> None:
+    with pytest.raises(ResponseParsingError):
+        rp: TakeObjectResponse = TakeObjectResponse("other")
