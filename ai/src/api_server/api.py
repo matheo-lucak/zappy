@@ -45,7 +45,7 @@ class APIServer:
         self.__multiresponse_buffer: Dict[Request, List[str]] = dict()
         self.__buffer: str = str()
 
-        self.__framerate: float = 0
+        self.__framerate: int = 0
         self.__clock_dict: Dict[Request, Clock] = dict()
 
         self.__spontaneous_response_handler: Optional[SpontaneousResponseHandler] = None
@@ -106,7 +106,7 @@ class APIServer:
             self.__spontaneous_response_handler(self.flush_spontaneous_responses())
 
     def get_framerate(self) -> int:
-        return int(self.__framerate)
+        return self.__framerate
 
     def __send_all_requests(self) -> None:
         def has_requests() -> bool:
@@ -130,8 +130,7 @@ class APIServer:
                     data: bytes = self.__socket.recv(chunck_size)
                 except BlockingIOError:
                     break
-                if self.__socket.getblocking() is False:
-                    self.__socket.setblocking(True)
+                self.__socket.setblocking(True)
                 length: int = len(data)
                 if length == 0:
                     raise EOFError
@@ -139,6 +138,7 @@ class APIServer:
                 if length < chunck_size:
                     break
                 self.__socket.setblocking(False)
+            self.__socket.setblocking(True)
 
         def recv_response_from_server() -> Iterator[str]:
             for data in read_socket(4096):
@@ -205,6 +205,6 @@ class APIServer:
         elapsed_time: float = self.__clock_dict.pop(request).get_elapsed_time() / 1000
         nb_ticks: int = request.get_process_time()
         if nb_ticks > 0:
-            self.__framerate = nb_ticks / elapsed_time
+            self.__framerate = round(nb_ticks / elapsed_time)
         if self.__pending_requests:
             self.__clock_dict[self.__pending_requests[0]].restart()
