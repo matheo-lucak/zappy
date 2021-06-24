@@ -46,6 +46,10 @@ const log_info_t log_info_map[] =
         .message = "Invalid client request argument"
     },
     {
+        .type = LOG_SERVER_INVALID_RESPONSE_FORMAT,
+        .message = "Response format must not be NULL"
+    },
+    {
         .type = LOG_NETWORK_STARTED,
         .message = "Started"
     },
