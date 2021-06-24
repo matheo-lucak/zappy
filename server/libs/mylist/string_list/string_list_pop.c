@@ -5,22 +5,7 @@
 ** string_list_pop
 */
 
-#include <stdlib.h>
 #include "mylist/string_list.h"
-
-static void destroy_node(node_t *node, node_dtor_t destructor)
-{
-    if (!node)
-        return;
-    if (node->data.ptr) {
-        if (destructor) {
-            destructor(node->data.ptr);
-        } else {
-            free(node->data.ptr);
-        }
-    }
-    free(node);
-}
 
 void intern_string_list_pop(string_list_t *this, long index)
 {
