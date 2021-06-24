@@ -82,9 +82,29 @@ void intern_generic_list_rotate_end(
     list_t *this
 );
 
+int intern_generic_list_empty(
+    const list_t *this
+);
+
 const node_t *intern_generic_list_get(
     const list_t *this,
     long index
+);
+
+size_t intern_generic_list_length(
+    const list_t *this
+);
+
+const node_t *intern_generic_list_begin(
+    const list_t *this
+);
+
+const node_t *intern_generic_list_end(
+    const list_t *this
+);
+
+node_dtor_t intern_generic_list_get_dtor(
+    const list_t *this
 );
 
 const node_t *intern_generic_list_find(
@@ -96,7 +116,14 @@ const node_t *intern_generic_list_find(
 const node_t *intern_generic_list_find_cmp(
     const list_t *this,
     const void *data,
+    size_t size,
     node_cmp_t comparator
+);
+
+int intern_generic_list_contains(
+    const list_t *this,
+    const void *data,
+    size_t size
 );
 
 static const list_t GENERIC_LIST_MODEL =
@@ -116,9 +143,15 @@ static const list_t GENERIC_LIST_MODEL =
     .reverse = &intern_generic_list_reverse,
     .rotate_begin = &intern_generic_list_rotate_begin,
     .rotate_end = &intern_generic_list_rotate_end,
+    .empty = &intern_generic_list_empty,
     .get = &intern_generic_list_get,
+    .__len__ = &intern_generic_list_length,
+    .__begin__ = &intern_generic_list_begin,
+    .__end__ = &intern_generic_list_end,
+    .__get_dtor__ = &intern_generic_list_get_dtor,
     .find = &intern_generic_list_find,
     .find_cmp = &intern_generic_list_find_cmp,
+    .contains = &intern_generic_list_contains
 };
 
 static void generic_list_init(list_t *list, node_dtor_t destructor)

@@ -32,10 +32,18 @@ struct pointer_linked_list
     void (*const rotate_begin)(ptr_list_t *this);
     void (*const rotate_end)(ptr_list_t *this);
 
+    int (*const empty)(const ptr_list_t *this);
     const node_t *(*const get)(const ptr_list_t *this, long index);
+
+    size_t (*const __len__)(const ptr_list_t *this);
+    const node_t *(*const __begin__)(const ptr_list_t *this);
+    const node_t *(*const __end__)(const ptr_list_t *this);
+    node_dtor_t (*const __get_dtor__)(const ptr_list_t *this);
+
     const node_t *(*const ptr_find)(const ptr_list_t *this, const void *ptr);
     const node_t *(*const ptr_find_cmp)(const ptr_list_t *this,
                                         const void *ptr, node_cmp_t comparator);
+    int (*const ptr_contains)(const ptr_list_t *this, const void *ptr);
 
     const container_list_t __c;
 };
@@ -60,15 +68,18 @@ void ptr_list_destroy(ptr_list_t *list);
 
 // Create a NULL-terminated array of pointer from a pointer list
 // If length is not NULL, the array length is stored
-// Each pointer is the one stored in the list, so don't free them
+// Each pointer is the one stored in the list, so use free() to free the array
+// if the list has a destructor instead of free_2d_array()
 void *ptr_list_to_array(const ptr_list_t *list, size_t *length);
 
 // Create a pointer list from a NULL-terminated array of pointers
+// If destructor is not NULL, the ptr_list grabs the ownership of the pointers
 ptr_list_t *array_to_ptr_list(const void *array, node_dtor_t destructor);
 
 // Create a pointer list with default values
-#define make_ptr_list(destructor, value1, values...)    \
-    array_to_ptr_list(_FMT_ARRAY(void *, value1, values, NULL), destructor)
+// If destructor is not NULL, the ptr_list grabs the ownership of the pointers
+#define make_ptr_list(destructor, values...)    \
+    array_to_ptr_list(_FMT_ARRAY(const void *, values, NULL), destructor)
 ///////////////////////////////////////////////////////////////
 
 ///////////// Add data to linked lists ///////////
@@ -109,7 +120,7 @@ ptr_list_t *array_to_ptr_list(const void *array, node_dtor_t destructor);
 // Check if a pointer is in a pointer list
 // Return 1 if it's 1, 0 otherwise
 #define ptr_list_contains(list, ptr)    \
-    ((list)->ptr_find((list), (ptr)) != NULL)
+    (list)->ptr_contains((list), (ptr))
 /////////////////////////////////////////////////
 
 #endif /* !PTR_LIST_H_ */

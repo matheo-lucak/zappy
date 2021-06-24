@@ -50,12 +50,13 @@ node_t *create_node(const void *data, size_t size)
 
 node_t *create_ptr_node(void *ptr)
 {
-    node_t *node = (ptr) ? create_node(&ptr, sizeof(ptr)) : NULL;
+    node_t *element = (ptr) ? allocate_node() : NULL;
 
-    if (node) {
-        node->data.hold_ptr = 1;
+    if (element) {
+        element->data.ptr = ptr;
+        element->data.size = 0;
     }
-    return node;
+    return element;
 }
 
 node_t *create_string_node(const char *str)

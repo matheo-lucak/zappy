@@ -20,13 +20,14 @@ static char *set_size_and_returns(char *str, size_t nmemb, size_t *length)
 static size_t get_str_size(const string_list_t *list, const char *sep)
 {
     size_t size = 0;
-    int has_separator = (list_len(list) > 1 && sep != NULL && sep[0] != '\0');
+    const size_t nb_str = list_len(list);
+    int has_separator = (nb_str > 1 && sep != NULL && sep[0] != '\0');
 
     list_foreach(node, list) {
-        size += strlen(NODE_STR(node));
+        size += node->data.size;
     }
     if (has_separator)
-        size += (strlen(sep) * (list_len(list) - 1));
+        size += (strlen(sep) * (nb_str - 1));
     return size;
 }
 

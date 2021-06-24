@@ -1,14 +1,15 @@
 # -*- coding: Utf-8 -*
 
-from .base import ZappyRequest
-from .response import ZappyResponse
+from typing import Optional
 
-class BroadcastResponse(ZappyResponse):
+from .base import BaseRequest, ResponseCallback
+from .response.ok import OKResponse
 
-    def __init__(self, response: str) -> None:
-        super().__init__()
 
-class BroadcastRequest(ZappyRequest):
+class BroadcastResponse(OKResponse):
+    pass
 
-    def make_response(self, response: str) -> BroadcastResponse:
-        return BroadcastResponse(response)
+
+class BroadcastRequest(BaseRequest[BroadcastResponse]):
+    def __init__(self, text: str, callback: Optional[ResponseCallback[BroadcastResponse]] = None) -> None:
+        super().__init__("Broadcast", text, callback=callback)

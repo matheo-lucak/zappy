@@ -25,14 +25,6 @@ int container_add_node_at_end(container_list_t *list, node_t *element);
 
 int container_add_node(container_list_t *list, node_t *node, long index);
 
-void container_clear(container_list_t *list);
-
-void container_delete_first_node(container_list_t *list);
-
-void container_delete_last_node(container_list_t *list);
-
-void container_delete_node(container_list_t *list, long index);
-
 node_t *container_get_node(const container_list_t *list, long index);
 
 void container_merge(container_list_t *list1, container_list_t *list2);
@@ -57,7 +49,9 @@ node_t *create_ptr_node(void *ptr);
 
 node_t *create_string_node(const char *str);
 
-void destroy_node(node_t *node, node_dtor_t destructor);
+void destroy_node(node_t *node, node_dtor_t dtor);
+
+void destroy_ptr_node(node_t *node, node_dtor_t dtor);
 /////////////////////////////////////////////////////////////////////////////
 
 #endif /* !MY_LIST_CONTAINER_H_ */

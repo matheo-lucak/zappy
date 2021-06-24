@@ -21,8 +21,11 @@ node_t *container_remove_first_node(container_list_t *list)
             list->end = NULL;
             list->size = 0;
         }
+        node->index = 0;
         node->next = NULL;
         node->previous = NULL;
+        for (node_t *n = list->start; n; n = n->next)
+            --(n->index);
     }
     return node;
 }
@@ -41,6 +44,7 @@ node_t *container_remove_last_node(container_list_t *list)
             list->start = NULL;
             list->size = 0;
         }
+        node->index = 0;
         node->next = NULL;
         node->previous = NULL;
     }
@@ -56,6 +60,8 @@ static void remove_middle_node(node_t *node)
     next_node->previous = previous_node;
     node->next = NULL;
     node->previous = NULL;
+    for (node_t *n = next_node; n; n = n->next)
+        --(n->index);
 }
 
 node_t *container_remove(container_list_t *list, long index)

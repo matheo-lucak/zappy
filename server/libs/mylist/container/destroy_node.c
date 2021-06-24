@@ -6,27 +6,27 @@
 */
 
 #include <stdlib.h>
-#include <string.h>
 #include "mylist/container.h"
 
 void destroy_node(node_t *node, node_dtor_t destructor)
 {
-    void *data = NULL;
-
     if (!node)
         return;
-    if (node->data.hold_ptr) {
-        data = *((void **)(node->data.ptr));
-        if (destructor && data)
-            destructor(data);
-        free(node->data.ptr);
-    } else {
-        data = node->data.ptr;
-        if (destructor && data)
-            destructor(data);
-        else
-            free(data);
+    if (node->data.ptr) {
+        if (destructor) {
+            destructor(node->data.ptr);
+        } else {
+            free(node->data.ptr);
+        }
     }
-    memset(node, 0, sizeof(*node));
+    free(node);
+}
+
+void destroy_ptr_node(node_t *node, node_dtor_t destructor)
+{
+    if (!node)
+        return;
+    if (destructor && node->data.ptr)
+        destructor(node->data.ptr);
     free(node);
 }

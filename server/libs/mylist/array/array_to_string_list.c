@@ -7,7 +7,7 @@
 
 #include "mylist/string_list.h"
 
-string_list_t *array_to_string_list(char *const *array)
+string_list_t *array_to_string_list(const char *const *array)
 {
     string_list_t *list = (array) ? string_list_create() : NULL;
 

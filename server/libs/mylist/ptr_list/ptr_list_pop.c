@@ -9,15 +9,21 @@
 
 void intern_ptr_list_pop(ptr_list_t *this, long index)
 {
-    container_delete_node((container_list_t *)&this->__c, index);
+    container_list_t *list = (container_list_t *)&this->__c;
+
+    destroy_ptr_node(container_remove(list, index), list->__dtor__);
 }
 
 void intern_ptr_list_pop_front(ptr_list_t *this)
 {
-    container_delete_first_node((container_list_t *)&this->__c);
+    container_list_t *list = (container_list_t *)&this->__c;
+
+    destroy_ptr_node(container_remove_first_node(list), list->__dtor__);
 }
 
 void intern_ptr_list_pop_back(ptr_list_t *this)
 {
-    container_delete_last_node((container_list_t *)&this->__c);
+    container_list_t *list = (container_list_t *)&this->__c;
+
+    destroy_ptr_node(container_remove_last_node(list), list->__dtor__);
 }

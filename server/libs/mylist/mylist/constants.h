@@ -16,8 +16,8 @@ enum LIST_RESULT
 
 /////////// Internal functions/Macros used for linked lists ///////////
 
-#define _FMT_DATA(data, type) ((const type [1]){(data)})
-#define _FMT_ARRAY(type, values...) ((const type []){values})
+#define _FMT_DATA(data, type) ((type const [1]){(data)})
+#define _FMT_ARRAY(type, values...) ((type const []){values})
 #define _FMT_ARRAY_SIZE(type, values...)    \
     (sizeof(_FMT_ARRAY(type, values)) / sizeof(type))
 
