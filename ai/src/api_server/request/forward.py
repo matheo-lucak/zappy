@@ -10,6 +10,6 @@ class ForwardResponse(OKResponse):
     pass
 
 
-class ForwardRequest(BaseRequest[ForwardResponse]):
+class ForwardRequest(BaseRequest[ForwardResponse], process_time=7):
     def __init__(self, callback: Optional[ResponseCallback[ForwardResponse]] = None) -> None:
         super().__init__("Forward", callback=callback)

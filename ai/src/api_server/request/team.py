@@ -23,6 +23,6 @@ class TeamResponse(Response):
         return self.__client_num
 
 
-class TeamRequest(BaseRequest[TeamResponse]):
+class TeamRequest(BaseRequest[TeamResponse], process_time=0):
     def __init__(self, team_name: str) -> None:
         super().__init__(team_name)

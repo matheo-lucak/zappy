@@ -9,12 +9,19 @@ T = TypeVar("T", bound=Response)
 ResponseCallback = Callable[[T], None]
 
 
-class BaseRequest(Generic[T]):
+class MetaRequest(type):
+    def __call__(cls, *args: Any, **kwds: Any) -> Any:
+        if cls is BaseRequest:
+            raise TypeError(f"{cls.__name__} can't be instantiated")
+        return super().__call__(*args, **kwds)
+
+
+class BaseRequest(Generic[T], metaclass=MetaRequest):
 
     SEPARATOR: str = " "
     END_REQUEST: str = "\n"
 
-    def __init_subclass__(cls) -> None:
+    def __init_subclass__(cls, /, *, process_time: int) -> None:
         super().__init_subclass__()
         response: Type[T] = getattr(getattr(cls, "__orig_bases__")[0], "__args__")[0]
         if issubclass(response, SpontaneousResponse):
@@ -22,11 +29,9 @@ class BaseRequest(Generic[T]):
         if response is MultiResponse:
             raise TypeError("Cannot use base class MultiResponse as response class.")
         setattr(cls, "__response_class__", response)
-
-    def __new__(cls, *args: Any, **kwargs: Any) -> Any:
-        if cls is BaseRequest:
-            raise TypeError(f"{cls.__name__} can't be instantiated")
-        return super().__new__(cls)
+        if process_time < 0:
+            raise ValueError(f"Process time can't be a negative number: {process_time}")
+        setattr(cls, "__process_time__", int(process_time))
 
     def __init__(self, command: str, *args: str, callback: Optional[ResponseCallback[T]] = None) -> None:
         self.__command: str = command
@@ -61,6 +66,9 @@ class BaseRequest(Generic[T]):
     def get_response_type(self) -> Type[T]:
         return cast(Type[T], getattr(type(self), "__response_class__"))
 
+    def get_process_time(self) -> int:
+        return int(getattr(type(self), "__process_time__"))
 
-class Request(BaseRequest[Response]):
+
+class Request(BaseRequest[Response], process_time=0):
     pass

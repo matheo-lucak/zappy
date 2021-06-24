@@ -10,6 +10,6 @@ class TakeObjectResponse(OKorKOResponse):
     pass
 
 
-class TakeObjectRequest(BaseRequest[TakeObjectResponse]):
+class TakeObjectRequest(BaseRequest[TakeObjectResponse], process_time=7):
     def __init__(self, resource: str, callback: Optional[ResponseCallback[TakeObjectResponse]] = None) -> None:
         super().__init__("Take", resource, callback=callback)

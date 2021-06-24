@@ -8,6 +8,7 @@ from .request import BaseRequest, Request
 from .request.response import Response, SpontaneousResponse, MultiResponse
 from .request.response.exceptions import ResponseError
 from ..log import Logger
+from ..utils.clock import Clock
 
 R = TypeVar("R", bound=Response)
 
@@ -43,6 +44,9 @@ class APIServer:
         self.__pending_responses: List[str] = list()
         self.__multiresponse_buffer: Dict[Request, List[str]] = dict()
         self.__buffer: str = str()
+
+        self.__framerate: float = 0
+        self.__clock_dict: Dict[Request, Clock] = dict()
 
         self.__spontaneous_response_handler: Optional[SpontaneousResponseHandler] = None
 
@@ -93,13 +97,16 @@ class APIServer:
     def fetch(self) -> None:
         self.__send_all_requests()
 
-        if self.__socket in select([self.__socket], [], [], 0.01)[0]:
+        if self.__socket in select([self.__socket], [], [], 0)[0]:
             self.__fetch_all_responses()
 
         self.__handle_pending_requests()
 
         if callable(self.__spontaneous_response_handler):
             self.__spontaneous_response_handler(self.flush_spontaneous_responses())
+
+    def get_framerate(self) -> int:
+        return int(self.__framerate)
 
     def __send_all_requests(self) -> None:
         def has_requests() -> bool:
@@ -114,6 +121,7 @@ class APIServer:
             request: Request = self.__requests.pop(0)
             send_request_to_server(str(request))
             self.__pending_requests.append(request)
+            self.__clock_dict[request] = Clock()
 
     def __fetch_all_responses(self) -> None:
         def read_socket(chunck_size: int) -> Iterator[bytes]:
@@ -172,7 +180,7 @@ class APIServer:
                         if len(response_buffer) == response_class.nb_responses():
                             request.response = response_class(*response_buffer)
                             self.__multiresponse_buffer.pop(request)
-                            self.__pending_requests.remove(request)
+                            self.__remove_first_request()
                     else:
                         former_responses: Tuple[str, ...] = tuple()
                         if isinstance(request.response, MultiResponse):
@@ -182,12 +190,21 @@ class APIServer:
                         self.__pending_responses = self.__pending_responses[nb_missing_responses:]
                         request.response = response_class(*former_responses, *missing_responses)
                         if len(request.response.list) == response_class.nb_responses():
-                            self.__pending_requests.remove(request)
+                            self.__remove_first_request()
                 else:
                     request.response = response_class(self.__pending_responses.pop(0))
-                    self.__pending_requests.remove(request)
+                    self.__remove_first_request()
             except ResponseError as e:
                 print(f"{type(e).__name__}: {e}")
                 print(f"-> The request {repr(request)} will be sent again to the server.")
-                self.__pending_requests.remove(request)
+                self.__remove_first_request()
                 self.send(request)
+
+    def __remove_first_request(self) -> None:
+        request: Request = self.__pending_requests.pop(0)
+        elapsed_time: float = self.__clock_dict.pop(request).get_elapsed_time() / 1000
+        nb_ticks: int = request.get_process_time()
+        if nb_ticks > 0:
+            self.__framerate = nb_ticks / elapsed_time
+        if self.__pending_requests:
+            self.__clock_dict[self.__pending_requests[0]].restart()

@@ -1,32 +1,15 @@
 # -*- coding: Utf-8 -*
 
-from time import time_ns
 from .player import Player
 from .algorithm import Algorithm, Implementation
-
-
-class Clock:
-    def __init__(self) -> None:
-        self.__actual: int = 0
-        self.restart()
-
-    def get_elapsed_time(self) -> int:
-        return int((time_ns() - self.__actual) / (1000000))
-
-    def elapsed_time(self, milliseconds: int, *, restart: bool = False) -> bool:
-        if self.get_elapsed_time() < milliseconds:
-            return False
-        if restart:
-            self.restart()
-        return True
-
-    def restart(self) -> None:
-        self.__actual = time_ns()
+from .framerate import Framerate
+from ..utils.clock import Clock
 
 
 class AI:
-    def __init__(self, player: Player) -> None:
+    def __init__(self, player: Player, framerate: Framerate) -> None:
         self.__player: Player = player
+        self.__framerate: Framerate = framerate
 
     def start(self) -> Algorithm:
         return Algorithm(self.__implementation())
@@ -35,6 +18,7 @@ class AI:
         clock: Clock = Clock()
         while True:
             if clock.elapsed_time(1000, restart=True):
+                print(f"Framerate: {self.__framerate.get()}fps")
                 self.__player.broadcast("I'm alive")
                 self.__player.move_forward()
             # if self.__player.moving_forward:

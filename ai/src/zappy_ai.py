@@ -7,7 +7,7 @@ from .api_server.request import TeamRequest, LookRequest, InventoryRequest
 from .api_server.request.inventory import InventoryResponse
 from .api_server.request.response import MapSizeAtBeginningResponse, WelcomeResponse
 from .errors import ZappyError
-from .game import Player, AI, Algorithm
+from .game import Player, AI, Algorithm, Framerate
 from .log import Logger
 
 
@@ -40,7 +40,7 @@ class ZappyAI:
 
         self.__player: Player = Player(team_name, self.__server)
 
-        self.__ai: AI = AI(self.__player)
+        self.__ai: AI = AI(self.__player, Framerate(self.__server.get_framerate))
 
     def run(self) -> None:
         def first_inventory_update(response: InventoryResponse) -> None:

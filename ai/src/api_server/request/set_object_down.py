@@ -10,6 +10,6 @@ class SetObjectDownResponse(OKorKOResponse):
     pass
 
 
-class SetObjectDownRequest(BaseRequest[SetObjectDownResponse]):
+class SetObjectDownRequest(BaseRequest[SetObjectDownResponse], process_time=7):
     def __init__(self, resource: str, callback: Optional[ResponseCallback[SetObjectDownResponse]] = None) -> None:
         super().__init__("Set", resource, callback=callback)
