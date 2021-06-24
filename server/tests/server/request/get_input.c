@@ -6,7 +6,9 @@
 */
 
 #include <fcntl.h>
+#include <unistd.h>
 #include <criterion/criterion.h>
+
 #include "server/request/request.h"
 
 Test(request_get_input, simple_input_from_file)
