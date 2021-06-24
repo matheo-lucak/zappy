@@ -61,6 +61,6 @@ request_t *request_create(void);
 void request_destroy(request_t *request);
 
 char *request_get_input(client_t *c);
-request_t *request_parse_from_input(char *input);
+request_t *request_parse_from_input(char *input, client_type_t type);
 
 #endif /* !REQUEST_H_ */
