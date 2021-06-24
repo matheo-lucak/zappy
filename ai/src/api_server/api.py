@@ -22,6 +22,19 @@ class MultiResponseNotHandledError(ResponseError):
 SpontaneousResponseHandler = Callable[[List[SpontaneousResponse]], None]
 
 
+class FramerateAverage:
+    def __init__(self) -> None:
+        self.__value: float = 0
+        self.__nb_compute: int = 0
+
+    def update(self, framerate_estimation: float) -> None:
+        self.__nb_compute += 1
+        self.__value = ((self.__value * (self.__nb_compute - 1)) + framerate_estimation) / self.__nb_compute
+
+    def get(self) -> float:
+        return self.__value
+
+
 class APIServer:
 
     MAX_PENDING_REQUEST: int = 10
@@ -45,7 +58,7 @@ class APIServer:
         self.__multiresponse_buffer: Dict[Request, List[str]] = dict()
         self.__buffer: str = str()
 
-        self.__framerate: int = 0
+        self.__framerate: FramerateAverage = FramerateAverage()
         self.__clock_dict: Dict[Request, Clock] = dict()
 
         self.__spontaneous_response_handler: Optional[SpontaneousResponseHandler] = None
@@ -106,7 +119,7 @@ class APIServer:
             self.__spontaneous_response_handler(self.flush_spontaneous_responses())
 
     def get_framerate(self) -> int:
-        return self.__framerate
+        return round(self.__framerate.get())
 
     def __send_all_requests(self) -> None:
         def has_requests() -> bool:
@@ -207,6 +220,6 @@ class APIServer:
         elapsed_time: float = self.__clock_dict.pop(request).get_elapsed_time() / 1000
         nb_ticks: int = request.get_process_time()
         if nb_ticks > 0:
-            self.__framerate = round(nb_ticks / elapsed_time)
+            self.__framerate.update(nb_ticks / elapsed_time)
         if self.__pending_requests:
             self.__clock_dict[self.__pending_requests[0]].restart()
