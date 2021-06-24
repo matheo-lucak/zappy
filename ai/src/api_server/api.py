@@ -83,7 +83,7 @@ class APIServer:
     def fetch(self) -> None:
         self.__send_all_requests()
 
-        if self.__socket in select([self.__socket], [], [], 0.05)[0]:
+        if self.__socket in select([self.__socket], [], [], 0.01)[0]:
             self.__fetch_all_responses()
 
         self.__handle_pending_requests()
@@ -97,7 +97,7 @@ class APIServer:
             data: bytes = (request + BaseRequest.END_REQUEST).encode()
             self.__socket.sendall(data)
 
-        while has_requests() and self.__socket in select([], [self.__socket], [], 0.05)[1]:
+        while has_requests() and self.__socket in select([], [self.__socket], [], 0)[1]:
             request: Request = self.__requests.pop(0)
             send_request_to_server(str(request))
             self.__pending_requests.append(request)

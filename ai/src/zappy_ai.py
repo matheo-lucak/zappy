@@ -4,11 +4,11 @@ from time import time_ns
 from typing import Any, Callable, Dict, NamedTuple, Optional, Type
 
 from .api_server import APIServer
-from .api_server.request import TeamRequest
+from .api_server.request import TeamRequest, LookRequest
 from .api_server.request.response import MapSizeAtBeginningResponse, WelcomeResponse
 from .api_server.request.response.spontaneous import DeadResponse, MessageResponse, SpontaneousResponse
 from .errors import ZappyError
-from .game import Player
+from .game import Player, AI, Algorithm
 from .log import Logger
 
 
@@ -19,27 +19,9 @@ class ZappyAIArgs(NamedTuple):
     verbose: int
 
 
-class Clock:
-    def __init__(self) -> None:
-        self.__actual: int = 0
-        self.restart()
-
-    def get_elapsed_time(self) -> int:
-        return int((time_ns() - self.__actual) / (1000000))
-
-    def elapsed_time(self, milliseconds: int, *, restart: bool = False) -> bool:
-        if self.get_elapsed_time() < milliseconds:
-            return False
-        if restart:
-            self.restart()
-        return True
-
-    def restart(self) -> None:
-        self.__actual = time_ns()
-
-
 class PlayerDeadError(ZappyError):
-    pass
+    def __init__(self) -> None:
+        super().__init__("I'm dying...!")
 
 
 class ZappyAI:
@@ -65,17 +47,19 @@ class ZappyAI:
         self.__player: Player = Player(team_name, self.__server)
         print(self.__player.inventory)
 
+        self.__ai: AI = AI(self.__player)
+
     def run(self) -> None:
-        clock: Clock = Clock()
+        algo: Algorithm = self.__ai.start()
         while True:
-            self.__player.update()
-            if clock.elapsed_time(1000, restart=True):
-                self.__player.broadcast("I'm alive")
-                self.__player.move_forward()
-            if self.__player.moving_forward:
-                print("Player moving")
+            if not self.__server.has_request_to_handle(LookRequest):
+                self.__server.send(LookRequest(self.__player.vision.update))
             self.__server.fetch()
             self.__handle_spontaneous_responses()
+            try:
+                next(algo)
+            except StopIteration:
+                break
 
     @staticmethod
     def start(machine: str, port: int, team_name: str) -> None:
@@ -96,7 +80,7 @@ class ZappyAI:
 
         for rp in self.__server.flush_spontaneous_responses():
             if isinstance(rp, DeadResponse):
-                raise PlayerDeadError("I'm dying...!")
+                raise PlayerDeadError()
             handler: Optional[Callable[[SpontaneousResponse], None]] = handler_map.get(type(rp))
             if callable(handler):
                 handler(rp)

@@ -33,6 +33,8 @@ class Tile:
         raise KeyError(resource)
 
     def __contains__(self, resource: str) -> bool:
+        if resource == "player":
+            return self.nb_players > 0
         return any(r.name == resource for r in self.__resources)
 
     @property
@@ -68,7 +70,10 @@ class Vision:
         self.__grid: Grid = dict()
         self.__vision_unit: int = self.DEFAULT_UNIT
         for index, (unit, divergence) in enumerate(self.iter_units(self.__vision_unit)):
-            self.__grid[unit, divergence] = Tile(unit, divergence, index)
+            if index == 0:
+                self.__grid[unit, divergence] = Tile(unit, divergence, index, {"player": 1})
+            else:
+                self.__grid[unit, divergence] = Tile(unit, divergence, index)
 
     def get(self, unit: int, divergence: int) -> Tile:
         return self.__grid[unit, divergence]
