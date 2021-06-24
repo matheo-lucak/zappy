@@ -129,6 +129,7 @@ class APIServer:
                 try:
                     data: bytes = self.__socket.recv(chunck_size)
                 except BlockingIOError:
+                    self.__socket.setblocking(True)
                     break
                 self.__socket.setblocking(True)
                 length: int = len(data)
@@ -138,7 +139,6 @@ class APIServer:
                 if length < chunck_size:
                     break
                 self.__socket.setblocking(False)
-            self.__socket.setblocking(True)
 
         def recv_response_from_server() -> Iterator[str]:
             for data in read_socket(4096):
