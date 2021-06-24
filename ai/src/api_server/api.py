@@ -204,7 +204,7 @@ class APIServer:
                         missing_responses = self.__pending_responses[:nb_missing_responses]
                         self.__pending_responses = self.__pending_responses[nb_missing_responses:]
                         request.response = response_class(*former_responses, *missing_responses)
-                        if len(request.response.list) == response_class.nb_responses():
+                        if request.response.complete:
                             self.__remove_first_request()
                 else:
                     request.response = response_class(self.__pending_responses.pop(0))

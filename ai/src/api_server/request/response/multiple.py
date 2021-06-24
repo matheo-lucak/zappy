@@ -29,6 +29,10 @@ class MultiResponse(Response):
     def list(self) -> Tuple[str, ...]:
         return self.__responses
 
+    @property
+    def complete(self) -> bool:
+        return len(self.__responses) == self.nb_responses()
+
     @classmethod
     def nb_responses(cls) -> int:
         if cls is MultiResponse:
