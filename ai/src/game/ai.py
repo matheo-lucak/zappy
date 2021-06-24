@@ -1,7 +1,6 @@
 # -*- coding: Utf-8 -*
 
 from time import time_ns
-from typing import Iterator
 from .player import Player
 from .algorithm import Algorithm, Implementation
 

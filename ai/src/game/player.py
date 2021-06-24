@@ -14,7 +14,6 @@ from ..api_server.request.right import RightRequest
 from ..api_server.request.set_object_down import SetObjectDownRequest, SetObjectDownResponse
 from ..api_server.request.take_object import TakeObjectRequest, TakeObjectResponse
 from ..api_server.request.response.spontaneous import MessageResponse
-from ..errors import ZappyError
 
 
 class Message:
