@@ -1,11 +1,11 @@
 # -*- coding: Utf-8 -*
 
-from typing import Any, Callable, Dict, NamedTuple, Optional, Type
+from typing import NamedTuple, Optional
 
 from .api_server import APIServer
-from .api_server.request import TeamRequest, LookRequest
+from .api_server.request import TeamRequest, LookRequest, InventoryRequest
+from .api_server.request.inventory import InventoryResponse
 from .api_server.request.response import MapSizeAtBeginningResponse, WelcomeResponse
-from .api_server.request.response.spontaneous import DeadResponse, MessageResponse, SpontaneousResponse
 from .errors import ZappyError
 from .game import Player, AI, Algorithm
 from .log import Logger
@@ -16,11 +16,6 @@ class ZappyAIArgs(NamedTuple):
     port: int
     team_name: str
     verbose: int
-
-
-class PlayerDeadError(ZappyError):
-    def __init__(self) -> None:
-        super().__init__("I'm dying...!")
 
 
 class ZappyAI:
@@ -44,17 +39,28 @@ class ZappyAI:
         print(f"Map size: {(map_size.width, map_size.height)}")
 
         self.__player: Player = Player(team_name, self.__server)
-        print(self.__player.inventory)
 
         self.__ai: AI = AI(self.__player)
 
     def run(self) -> None:
+        def first_inventory_update(response: InventoryResponse) -> None:
+            self.__player.inventory.update(response)
+            print(self.__player.inventory)
+
+        inventory_request: InventoryRequest = InventoryRequest(first_inventory_update)
+        look_request: LookRequest = LookRequest(self.__player.vision.update)
+        self.__server.send(inventory_request)
+        self.__server.send(look_request)
+        while inventory_request.response is None and look_request.response is None:
+            self.__server.fetch()
+        print("AI setup finished.")
+
         algo: Algorithm = self.__ai.start()
+
         while True:
             if not self.__server.has_request_to_handle(LookRequest):
                 self.__server.send(LookRequest(self.__player.vision.update))
             self.__server.fetch()
-            self.__handle_spontaneous_responses()
             try:
                 next(algo)
             except StopIteration:
@@ -71,18 +77,6 @@ class ZappyAI:
             print("Remote server closes this connection. Disconnecting...")
         except KeyboardInterrupt:
             print("\n" "AI stopped by user. Disconnecting...")
-
-    def __handle_spontaneous_responses(self) -> None:
-        handler_map: Dict[Type[SpontaneousResponse], Callable[[Any], None]] = {
-            MessageResponse: self.__player.listen,
-        }
-
-        for rp in self.__server.flush_spontaneous_responses():
-            if isinstance(rp, DeadResponse):
-                raise PlayerDeadError()
-            handler: Optional[Callable[[SpontaneousResponse], None]] = handler_map.get(type(rp))
-            if callable(handler):
-                handler(rp)
 
 
 def zappy_ai(args: ZappyAIArgs) -> None:

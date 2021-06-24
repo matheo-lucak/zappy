@@ -19,4 +19,6 @@ class Logger:
     @classmethod
     def print(cls, required_level: int, *args: Any, **kwargs: Any) -> None:
         if cls.__verbose >= required_level:
-            print(*args, **kwargs, file=stderr)
+            if "file" not in kwargs:
+                kwargs["file"] = stderr
+            print(*args, **kwargs)

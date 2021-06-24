@@ -11,15 +11,10 @@ InventoryView = Iterator[Tuple[str, int]]
 
 
 class Inventory:
-
-    __SETUP: Dict[str, int] = {
-        "food": 10,
-    }
-
     def __init__(self) -> None:
         self.__resources: Dict[str, BaseResource] = dict()
         for resource in MetaResource.get_all_resources():
-            self.__resources[resource] = MetaResource.create(resource, self.__SETUP.get(resource, 0))
+            self.__resources[resource] = MetaResource.create(resource)
 
     def __repr__(self) -> str:
         return f"<{type(self).__name__}{tuple(self.__resources.values())}>"

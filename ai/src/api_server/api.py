@@ -2,7 +2,7 @@
 
 from socket import socket, AF_INET, SOCK_STREAM
 from select import select
-from typing import Dict, Iterator, List, Optional, Tuple, Type, TypeVar, cast
+from typing import Callable, Dict, Iterator, List, Optional, Tuple, Type, TypeVar, cast
 
 from .request import BaseRequest, Request
 from .request.response import Response, SpontaneousResponse, MultiResponse
@@ -18,6 +18,9 @@ class MultiResponseNotHandledError(ResponseError):
         super().__init__(response_class.__name__, message)
 
 
+SpontaneousResponseHandler = Callable[[List[SpontaneousResponse]], None]
+
+
 class APIServer:
 
     MAX_PENDING_REQUEST: int = 10
@@ -26,18 +29,22 @@ class APIServer:
         timeout: int = 10  # seconds
         self.__machine: str = machine
         self.__port: int = port
+
         self.__socket: socket = socket(AF_INET, SOCK_STREAM)
         print(f"Connecting to {machine} at port {port}... (Timeout: {timeout}s)")
         self.__socket.settimeout(timeout)
         self.__socket.connect((machine, port))
         self.__socket.settimeout(None)
         print("Connected")
+
         self.__requests: List[Request] = list()
         self.__pending_requests: List[Request] = list()
         self.__spontaneous_responses: List[SpontaneousResponse] = list()
         self.__pending_responses: List[str] = list()
         self.__multiresponse_buffer: Dict[Request, List[str]] = dict()
         self.__buffer: str = str()
+
+        self.__spontaneous_response_handler: Optional[SpontaneousResponseHandler] = None
 
     def __del__(self) -> None:
         self.__socket.close()
@@ -80,6 +87,9 @@ class APIServer:
         self.__spontaneous_responses = list()
         return responses
 
+    def set_spontaneous_response_handler(self, callback: Optional[SpontaneousResponseHandler]) -> None:
+        self.__spontaneous_response_handler = callback
+
     def fetch(self) -> None:
         self.__send_all_requests()
 
@@ -87,6 +97,9 @@ class APIServer:
             self.__fetch_all_responses()
 
         self.__handle_pending_requests()
+
+        if callable(self.__spontaneous_response_handler):
+            self.__spontaneous_response_handler(self.flush_spontaneous_responses())
 
     def __send_all_requests(self) -> None:
         def has_requests() -> bool:

@@ -7,27 +7,8 @@ from src.api_server.request.look import LookResponse
 
 def test_vision() -> None:
     vision: Vision = Vision()
-    assert vision.max_unit == 1
-    assert len(vision.tiles) == 4
-    assert all(
-        len(tile.resources) == 0 and tile.nb_players == 0 and tile.index == index for index, tile in enumerate(vision.tiles)
-    )
-    assert vision.get(0, 0) == vision.tiles[0]
-    assert vision.get(1, -1) == vision.tiles[1]
-    assert vision.get(1, 0) == vision.tiles[2]
-    assert vision.get(1, 1) == vision.tiles[3]
-
-    assert vision.get(0, 0).unit == 0
-    assert vision.get(0, 0).divergence == 0
-
-    assert vision.get(1, -1).unit == 1
-    assert vision.get(1, -1).divergence == -1
-
-    assert vision.get(1, 0).unit == 1
-    assert vision.get(1, 0).divergence == 0
-
-    assert vision.get(1, 1).unit == 1
-    assert vision.get(1, 1).divergence == 1
+    assert vision.max_unit == 0
+    assert len(vision.tiles) == 0
 
 
 def test_vision_update_by_response() -> None:

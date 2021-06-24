@@ -68,12 +68,7 @@ class Vision:
 
     def __init__(self) -> None:
         self.__grid: Grid = dict()
-        self.__vision_unit: int = self.DEFAULT_UNIT
-        for index, (unit, divergence) in enumerate(self.iter_units(self.__vision_unit)):
-            if index == 0:
-                self.__grid[unit, divergence] = Tile(unit, divergence, index, {"player": 1})
-            else:
-                self.__grid[unit, divergence] = Tile(unit, divergence, index)
+        self.__vision_unit: int = 0
 
     def get(self, unit: int, divergence: int) -> Tile:
         return self.__grid[unit, divergence]

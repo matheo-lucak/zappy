@@ -1,6 +1,6 @@
 # -*- coding: Utf-8 -*
 
-from typing import Dict, List
+from typing import Any, Callable, Dict, List, Optional, Type, NoReturn
 
 from .inventory import Inventory
 from .vision import Vision
@@ -13,7 +13,13 @@ from ..api_server.request.left import LeftRequest
 from ..api_server.request.right import RightRequest
 from ..api_server.request.set_object_down import SetObjectDownRequest, SetObjectDownResponse
 from ..api_server.request.take_object import TakeObjectRequest, TakeObjectResponse
-from ..api_server.request.response.spontaneous import MessageResponse
+from ..api_server.request.response.spontaneous import SpontaneousResponse, DeadResponse, MessageResponse
+from ..errors import ZappyError
+
+
+class PlayerDeadError(ZappyError):
+    def __init__(self) -> None:
+        super().__init__("I'm dying...!")
 
 
 class Message:
@@ -45,8 +51,7 @@ class Player:
         self.__taking_resource: Dict[str, int] = dict()
         self.__setting_resource: Dict[str, int] = dict()
 
-        self.__api.send(InventoryRequest(self.__inventory.update))
-        self.__api.send(LookRequest(self.__vision.update))
+        self.__api.set_spontaneous_response_handler(self.__handle_spontaneous_responses)
 
     def move_forward(self, nb_times: int = 1) -> None:
         def forward_handler() -> None:
@@ -108,10 +113,6 @@ class Player:
     def turning_right(self) -> int:
         return self.__turning_right
 
-    def listen(self, message: MessageResponse) -> None:
-        print(f"From tile {message.tile}: {repr(message.text)}")
-        self.__messages.append(Message(message.tile, message.text))
-
     def broadcast(self, message: str) -> None:
         print(f"Broadcasting: {repr(message)}")
         self.__api.send(BroadcastRequest(message))
@@ -172,6 +173,24 @@ class Player:
 
     def setting_object_down(self, resource: str) -> int:
         return self.__setting_resource.get(resource, 0)
+
+    def __handle_spontaneous_responses(self, spontaneous_responses: List[SpontaneousResponse]) -> None:
+        handler_map: Dict[Type[SpontaneousResponse], Callable[[Any], None]] = {
+            DeadResponse: lambda rp: self.__kill(),
+            MessageResponse: self.__listen,
+        }
+
+        for rp in spontaneous_responses:
+            handler: Optional[Callable[[SpontaneousResponse], None]] = handler_map.get(type(rp))
+            if callable(handler):
+                handler(rp)
+
+    def __kill(self) -> NoReturn:
+        raise PlayerDeadError()
+
+    def __listen(self, message: MessageResponse) -> None:
+        print(f"From tile {message.tile}: {repr(message.text)}")
+        self.__messages.append(Message(message.tile, message.text))
 
     @property
     def team(self) -> str:
