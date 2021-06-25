@@ -4,6 +4,7 @@ from typing import Any, Callable, Dict, List, Optional, Type, NoReturn
 
 from .inventory import Inventory
 from .vision import Vision
+from .level import Level
 from ..api_server import APIServer
 from ..api_server.request.broadcast import BroadcastRequest
 from ..api_server.request.eject import EjectRequest, EjectResponse
@@ -41,6 +42,7 @@ class Player:
     def __init__(self, api: APIServer) -> None:
         self.__inventory: Inventory = Inventory()
         self.__vision: Vision = Vision()
+        self.__level: Level = Level()
         self.__api: APIServer = api
         self.__messages: List[Message] = list()
 
@@ -123,7 +125,7 @@ class Player:
         self.__messages = list()
         return messages
 
-    def take_object(self, resource: str) -> None:
+    def take_object(self, resource: str, number: int = 1) -> None:
         def take_handler(response: TakeObjectResponse) -> None:
             print(f"{repr(resource)}: {'taken' if response.ok else 'not taken'}")
             print("Waiting for vision and inventory update...")
@@ -140,16 +142,17 @@ class Player:
             if self.__taking_resource[resource] < 1:
                 self.__taking_resource.pop(resource)
 
-        print(f"Taking {resource}...")
-        self.__taking_resource[resource] = self.taking_object(resource) + 1
-        self.__api.send(TakeObjectRequest(resource, callback=take_handler))
-        self.__api.send(LookRequest(look_handler))
-        self.__api.send(InventoryRequest(inventory_handler))
+        for _ in range(number):
+            print(f"Taking {resource}...")
+            self.__taking_resource[resource] = self.taking_object(resource) + 1
+            self.__api.send(TakeObjectRequest(resource, callback=take_handler))
+            self.__api.send(LookRequest(look_handler))
+            self.__api.send(InventoryRequest(inventory_handler))
 
     def taking_object(self, resource: str) -> int:
         return self.__taking_resource.get(resource, 0)
 
-    def set_object_down(self, resource: str) -> None:
+    def set_object_down(self, resource: str, number: int = 1) -> None:
         def take_handler(response: SetObjectDownResponse) -> None:
             print(f"{repr(resource)}: {'set down' if response.ok else 'not set down'}")
             print("Waiting for vision and inventory update...")
@@ -166,11 +169,12 @@ class Player:
             if self.__setting_resource[resource] < 1:
                 self.__setting_resource.pop(resource)
 
-        print(f"Setting {resource} down...")
-        self.__setting_resource[resource] = self.setting_object_down(resource) + 1
-        self.__api.send(SetObjectDownRequest(resource, callback=take_handler))
-        self.__api.send(LookRequest(look_handler))
-        self.__api.send(InventoryRequest(inventory_handler))
+        for _ in range(number):
+            print(f"Setting {resource} down...")
+            self.__setting_resource[resource] = self.setting_object_down(resource) + 1
+            self.__api.send(SetObjectDownRequest(resource, callback=take_handler))
+            self.__api.send(LookRequest(look_handler))
+            self.__api.send(InventoryRequest(inventory_handler))
 
     def setting_object_down(self, resource: str) -> int:
         return self.__setting_resource.get(resource, 0)
@@ -192,6 +196,18 @@ class Player:
     def ejecting_player(self) -> int:
         return self.__ejecting
 
+    @property
+    def inventory(self) -> Inventory:
+        return self.__inventory
+
+    @property
+    def vision(self) -> Vision:
+        return self.__vision
+
+    @property
+    def level(self) -> int:
+        return self.__level.value
+
     def __handle_spontaneous_responses(self, spontaneous_responses: List[SpontaneousResponse]) -> None:
         handler_map: Dict[Type[SpontaneousResponse], Callable[[Any], None]] = {
             DeadResponse: lambda rp: self.__kill(),
@@ -209,11 +225,3 @@ class Player:
     def __listen(self, message: MessageResponse) -> None:
         print(f"From tile {message.tile}: {repr(message.text)}")
         self.__messages.append(Message(message.tile, message.text))
-
-    @property
-    def inventory(self) -> Inventory:
-        return self.__inventory
-
-    @property
-    def vision(self) -> Vision:
-        return self.__vision
