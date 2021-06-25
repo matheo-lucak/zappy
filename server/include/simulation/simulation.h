@@ -25,7 +25,7 @@ typedef struct simulation_s
     ptr_list_t *    teams;
 } simulation_t;
 
-int simulation_start(const arguments_t *args, simulation_t *s);
-void simulation_stop(simulation_t *s);
+int simulation_start(const arguments_t *args, simulation_t *sim);
+void simulation_stop(simulation_t *sim);
 
 #endif /* !SIMULATION_H_ */
