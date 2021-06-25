@@ -59,6 +59,8 @@ class BaseRequest(Generic[T], metaclass=MetaRequest):
 
     @response.setter
     def response(self, rp: T) -> None:
+        if not isinstance(rp, Response):
+            raise TypeError(f"Not a Response type")
         self.__response = rp
         if callable(self.__callback):
             self.__callback(rp)

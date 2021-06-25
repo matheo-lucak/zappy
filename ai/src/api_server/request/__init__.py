@@ -2,8 +2,9 @@
 
 from .base import BaseRequest, Request
 from .broadcast import BroadcastRequest
-from .inventory import InventoryRequest
+from .eject import EjectRequest
 from .forward import ForwardRequest
+from .inventory import InventoryRequest
 from .left import LeftRequest
 from .look import LookRequest
 from .right import RightRequest
@@ -15,8 +16,9 @@ __all__ = [
     "BaseRequest",
     "Request",
     "BroadcastRequest",
-    "InventoryRequest",
+    "EjectRequest",
     "ForwardRequest",
+    "InventoryRequest",
     "LeftRequest",
     "LookRequest",
     "RightRequest",

@@ -6,8 +6,9 @@ from .inventory import Inventory
 from .vision import Vision
 from ..api_server import APIServer
 from ..api_server.request.broadcast import BroadcastRequest
-from ..api_server.request.inventory import InventoryRequest, InventoryResponse
+from ..api_server.request.eject import EjectRequest, EjectResponse
 from ..api_server.request.forward import ForwardRequest
+from ..api_server.request.inventory import InventoryRequest, InventoryResponse
 from ..api_server.request.look import LookRequest, LookResponse
 from ..api_server.request.left import LeftRequest
 from ..api_server.request.right import RightRequest
@@ -47,6 +48,7 @@ class Player:
         self.__forwarding: int = 0
         self.__turning_left: int = 0
         self.__turning_right: int = 0
+        self.__ejecting: int = 0
 
         self.__taking_resource: Dict[str, int] = dict()
         self.__setting_resource: Dict[str, int] = dict()
@@ -173,6 +175,23 @@ class Player:
 
     def setting_object_down(self, resource: str) -> int:
         return self.__setting_resource.get(resource, 0)
+
+    def eject_from_this_tile(self) -> None:
+        def eject_handler(response: EjectResponse) -> None:
+            print(f"Ejected: {response.ok}. Waiting for vision update...")
+
+        def look_handler(response: LookResponse) -> None:
+            self.__vision.update(response)
+            print("Vision up-to-date")
+            self.__ejecting -= 1
+
+        self.__ejecting += 1
+        self.__api.send(EjectRequest(eject_handler))
+        self.__api.send(LookRequest(look_handler))
+
+    @property
+    def ejecting_player(self) -> int:
+        return self.__ejecting
 
     def __handle_spontaneous_responses(self, spontaneous_responses: List[SpontaneousResponse]) -> None:
         handler_map: Dict[Type[SpontaneousResponse], Callable[[Any], None]] = {
