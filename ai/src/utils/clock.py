@@ -8,10 +8,10 @@ class Clock:
         self.__actual: int = 0
         self.restart()
 
-    def get_elapsed_time(self) -> int:
-        return int((time_ns() - self.__actual) / (1000000))
+    def get_elapsed_time(self) -> float:
+        return (time_ns() - self.__actual) / (1000000)
 
-    def elapsed_time(self, milliseconds: int, *, restart: bool = False) -> bool:
+    def elapsed_time(self, milliseconds: float, *, restart: bool = False) -> bool:
         if self.get_elapsed_time() < milliseconds:
             return False
         if restart:
