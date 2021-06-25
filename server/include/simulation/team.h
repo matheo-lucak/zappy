@@ -11,6 +11,7 @@
 #include <mylist.h>
 
 #include "simulation/drone.h"
+#include "simulation/egg.h"
 #include "server/client.h"
 
 #define TEAM_DEFAULT_NAME "Unkown team"
@@ -20,6 +21,7 @@ typedef struct team_s
     char *          name;
     unsigned int    free_slots_nb;
     ptr_list_t *    drones;
+    ptr_list_t *    eggs;
 } team_t;
 
 team_t *team_create(char *name, unsigned int free_slots_nb);

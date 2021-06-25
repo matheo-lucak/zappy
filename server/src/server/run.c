@@ -15,6 +15,7 @@ int server_run(server_t *s)
     while (s->is_running) {
         network_handle_clients_in(s);
         server_handle_request(s);
+        simulation_handle(&s->s);
         network_handle_clients_out(s);
     }
     return error;

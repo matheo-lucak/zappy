@@ -10,7 +10,7 @@
 
 Test(drone_move, small_easy_move_in_x)
 {
-    drone_t *drone = drone_create(0, 0);
+    drone_t *drone = drone_create(0, 0, true);
     map_t *map = map_create(10, 10);
 
     drone->facing_direction = RIGHT;
@@ -21,7 +21,7 @@ Test(drone_move, small_easy_move_in_x)
 
 Test(drone_move, small_easy_move_in_y)
 {
-    drone_t *drone = drone_create(0, 0);
+    drone_t *drone = drone_create(0, 0, true);
     map_t *map = map_create(10, 10);
 
     drone->facing_direction = DOWN;
@@ -43,7 +43,7 @@ Test(drone_move, return_to_upper_left_from_upper_right)
 
 Test(drone_move, return_to_upper_right_from_upper_left)
 {
-    drone_t *drone = drone_create(0, 0);
+    drone_t *drone = drone_create(0, 0, true);
     map_t *map = map_create(10, 10);
 
     drone->facing_direction = LEFT;

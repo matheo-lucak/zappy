@@ -83,6 +83,9 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/drone/destroy.c)						\
 					$(addprefix $(SRC_PATH), simulation/drone/move.c)							\
 					$(addprefix $(SRC_PATH), simulation/drone/rotate.c)							\
+					$(addprefix $(SRC_PATH), simulation/egg/create.c)							\
+					$(addprefix $(SRC_PATH), simulation/egg/destroy.c)							\
+					$(addprefix $(SRC_PATH), simulation/handle/eggs.c)							\
 					$(addprefix $(SRC_PATH), simulation/map/create.c)							\
 					$(addprefix $(SRC_PATH), simulation/map/destroy.c)							\
 					$(addprefix $(SRC_PATH), simulation/resource/get_info.c)					\
@@ -94,6 +97,7 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/team/has_drone.c)						\
 					$(addprefix $(SRC_PATH), simulation/tile/create.c)							\
 					$(addprefix $(SRC_PATH), simulation/tile/destroy.c)							\
+					$(addprefix $(SRC_PATH), simulation/handle.c)								\
 					$(addprefix $(SRC_PATH), simulation/start.c)								\
 					$(addprefix $(SRC_PATH), simulation/stop.c)									\
 					$(addprefix $(SRC_PATH), arguments_default_values.c)						\

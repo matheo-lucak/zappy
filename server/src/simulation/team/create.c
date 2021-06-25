@@ -19,7 +19,8 @@ team_t *team_create(char *name, unsigned int free_slots_nb)
     team->name = strdup(name ? name : TEAM_DEFAULT_NAME);
     team->free_slots_nb = free_slots_nb;
     team->drones = ptr_list_create((void *)&drone_destroy);
-    if (!team->name || !team->drones) {
+    team->eggs = ptr_list_create((void *)&egg_destroy);
+    if (!team->name || !team->drones || !team->eggs) {
         team_destroy(team);
         return NULL;
     }

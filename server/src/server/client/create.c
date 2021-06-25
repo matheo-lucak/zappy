@@ -16,7 +16,7 @@ client_t *client_create(void)
 
     if (!client)
         return NULL;
-    client->drone = drone_create(0, 0);
+    client->drone = drone_create(0, 0, true);
     client->socket = tcp_socket_create();
     client->pending_requests = ptr_list_create((void *)&request_destroy);
     client->type = CLIENT_UNKNOWN;

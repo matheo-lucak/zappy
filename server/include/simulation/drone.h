@@ -10,6 +10,8 @@
 
 #include <stdbool.h>
 
+#define DRONE_DEFAULT_ELEVATION_LVL 1
+
 #include "simulation/direction.h"
 #include "simulation/inventory.h"
 #include "simulation/map.h"
@@ -24,7 +26,7 @@ typedef struct drone_s
     int              elevation_lvl;
 } drone_t;
 
-drone_t *drone_create(int x, int y);
+drone_t *drone_create(int x, int y, bool activated);
 void drone_destroy(drone_t *d);
 
 int drone_move(drone_t *drone, const map_t *map);
