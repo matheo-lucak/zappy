@@ -1,14 +1,16 @@
 # -*- coding: Utf-8 -*
 
 from .player import Player
+from .team import Team
 from .algorithm import Algorithm, Implementation
 from .framerate import Framerate
 from ..utils.clock import Clock
 
 
 class AI:
-    def __init__(self, player: Player, framerate: Framerate) -> None:
+    def __init__(self, player: Player, team: Team, framerate: Framerate) -> None:
         self.__player: Player = player
+        self.__team: Team = team
         self.__framerate: Framerate = framerate
 
     def start(self) -> Algorithm:

@@ -3,11 +3,11 @@
 from typing import NamedTuple, Optional
 
 from .api_server import APIServer
-from .api_server.request import TeamRequest, LookRequest, InventoryRequest
+from .api_server.request import TeamRequest, LookRequest, InventoryRequest, ConnectNbrRequest
 from .api_server.request.inventory import InventoryResponse
 from .api_server.request.response import MapSizeAtBeginningResponse, WelcomeResponse
 from .errors import ZappyError
-from .game import Player, AI, Algorithm, Framerate
+from .game import Player, Team, AI, Algorithm, Framerate
 from .log import Logger
 
 
@@ -38,9 +38,10 @@ class ZappyAI:
             raise ZappyError("The server did not send the map size")
         print(f"Map size: {(map_size.width, map_size.height)}")
 
-        self.__player: Player = Player(team_name, self.__server)
+        self.__team: Team = Team(team_name, team.response.client_num)
+        self.__player: Player = Player(self.__server)
 
-        self.__ai: AI = AI(self.__player, Framerate(self.__server.get_framerate))
+        self.__ai: AI = AI(self.__player, self.__team, Framerate(self.__server.get_framerate))
 
     def run(self) -> None:
         def first_inventory_update(response: InventoryResponse) -> None:
@@ -58,6 +59,8 @@ class ZappyAI:
         algo: Algorithm = self.__ai.start()
 
         while True:
+            if not self.__server.has_request_to_handle(ConnectNbrRequest):
+                self.__server.send(ConnectNbrRequest(self.__team.update))
             if not self.__server.has_request_to_handle(LookRequest):
                 self.__server.send(LookRequest(self.__player.vision.update))
             self.__server.fetch()

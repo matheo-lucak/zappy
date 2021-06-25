@@ -38,8 +38,7 @@ class Message:
 
 
 class Player:
-    def __init__(self, team_name: str, api: APIServer) -> None:
-        self.__team: str = team_name
+    def __init__(self, api: APIServer) -> None:
         self.__inventory: Inventory = Inventory()
         self.__vision: Vision = Vision()
         self.__api: APIServer = api
@@ -210,10 +209,6 @@ class Player:
     def __listen(self, message: MessageResponse) -> None:
         print(f"From tile {message.tile}: {repr(message.text)}")
         self.__messages.append(Message(message.tile, message.text))
-
-    @property
-    def team(self) -> str:
-        return self.__team
 
     @property
     def inventory(self) -> Inventory:
