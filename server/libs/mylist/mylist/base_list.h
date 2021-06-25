@@ -10,7 +10,7 @@
 
 ///////////// Delete data from linked lists ///////////
 
-// Delete a node at a certain index and returns the next node
+// Delete a node at a certain index
 #define list_pop(list, index)   \
     (list)->pop((list), (index))
 
