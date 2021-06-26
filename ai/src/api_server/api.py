@@ -110,7 +110,7 @@ class APIServer:
     def fetch(self) -> None:
         self.__send_all_requests()
 
-        if self.__socket in select([self.__socket], [], [], 0)[0]:
+        if self.__socket in select([self.__socket], [], [], 0.001)[0]:
             self.__fetch_all_responses()
 
         self.__handle_pending_requests()

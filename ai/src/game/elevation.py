@@ -1,72 +1,33 @@
 # -*- coding: Utf-8 -*
 
-from typing import Dict
+from typing import Dict, NamedTuple, Tuple
 
-Requirements = Dict[str, int]
+from .resource import BaseResource, Linemate, Deraumere, Sibur, Mendiane, Phiras, Thystame
+
+
+class Requirements(NamedTuple):
+    nb_players: int
+    resources: Tuple[BaseResource, ...]
+
+
 Secrets = Dict[int, Requirements]
 
-ELEVATION_SECRETS: Secrets = {
-    1: {
-        "nb_players": 1,
-        "linemate": 1,
-        "deraumere": 0,
-        "sibur": 0,
-        "mendiane": 0,
-        "phiras": 0,
-        "thystame": 0,
-    },
-    2: {
-        "nb_players": 2,
-        "linemate": 1,
-        "deraumere": 1,
-        "sibur": 1,
-        "mendiane": 0,
-        "phiras": 0,
-        "thystame": 0,
-    },
-    3: {
-        "nb_players": 2,
-        "linemate": 2,
-        "deraumere": 0,
-        "sibur": 1,
-        "mendiane": 0,
-        "phiras": 2,
-        "thystame": 0,
-    },
-    4: {
-        "nb_players": 4,
-        "linemate": 1,
-        "deraumere": 1,
-        "sibur": 2,
-        "mendiane": 0,
-        "phiras": 1,
-        "thystame": 0,
-    },
-    5: {
-        "nb_players": 4,
-        "linemate": 1,
-        "deraumere": 2,
-        "sibur": 1,
-        "mendiane": 3,
-        "phiras": 0,
-        "thystame": 0,
-    },
-    6: {
-        "nb_players": 6,
-        "linemate": 1,
-        "deraumere": 2,
-        "sibur": 3,
-        "mendiane": 0,
-        "phiras": 1,
-        "thystame": 0,
-    },
-    7: {
-        "nb_players": 6,
-        "linemate": 2,
-        "deraumere": 2,
-        "sibur": 2,
-        "mendiane": 2,
-        "phiras": 2,
-        "thystame": 1,
-    },
-}
+
+class Elevation:
+    @staticmethod
+    def get_requirements(level: int) -> Requirements:
+        return Elevation.__SECRETS[level]
+
+    @staticmethod
+    def max_level() -> int:
+        return max(Elevation.__SECRETS.keys()) + 1
+
+    __SECRETS: Secrets = {
+        1: Requirements(nb_players=1, resources=(Linemate(1),)),
+        2: Requirements(nb_players=2, resources=(Linemate(1), Deraumere(1), Sibur(1))),
+        3: Requirements(nb_players=2, resources=(Linemate(2), Sibur(1), Phiras(2))),
+        4: Requirements(nb_players=4, resources=(Linemate(1), Deraumere(1), Sibur(2), Phiras(1))),
+        5: Requirements(nb_players=4, resources=(Linemate(1), Deraumere(2), Sibur(1), Mendiane(3))),
+        6: Requirements(nb_players=6, resources=(Linemate(1), Deraumere(2), Sibur(3), Phiras(1))),
+        7: Requirements(nb_players=6, resources=(Linemate(2), Deraumere(2), Sibur(2), Mendiane(2), Phiras(2), Thystame(1))),
+    }

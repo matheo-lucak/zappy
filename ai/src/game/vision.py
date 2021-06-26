@@ -1,6 +1,6 @@
 # -*- coding: Utf-8 -*
 
-from typing import Dict, Iterator, List, Tuple
+from typing import Dict, Iterator, List, NamedTuple, Tuple, Union
 from math import isqrt
 
 from ..api_server.request.look import LookResponse
@@ -26,13 +26,17 @@ class Tile:
     def __repr__(self) -> str:
         return f"{type(self).__name__}(resources={self.__resources}, nb_players={self.__players})"
 
-    def __getitem__(self, resource: str) -> int:
+    def __getitem__(self, resource: Union[str, BaseResource]) -> int:
+        if isinstance(resource, BaseResource):
+            resource = resource.name
         for r in self.__resources:
             if r.name == resource:
                 return r.amount
-        raise KeyError(resource)
+        return 0
 
-    def __contains__(self, resource: str) -> bool:
+    def __contains__(self, resource: Union[str, BaseResource]) -> bool:
+        if isinstance(resource, BaseResource):
+            resource = resource.name
         if resource == "player":
             return self.nb_players > 0
         return any(r.name == resource for r in self.__resources)
@@ -58,7 +62,11 @@ class Tile:
         return self.__players
 
 
-Coords = Tuple[int, int]
+class Coords(NamedTuple):
+    unit: int
+    divergence: int
+
+
 Grid = Dict[Coords, Tile]
 
 
@@ -71,9 +79,12 @@ class Vision:
         self.__vision_unit: int = 0
 
     def get(self, unit: int, divergence: int) -> Tile:
-        return self.__grid[unit, divergence]
+        return self.__grid[Coords(unit=unit, divergence=divergence)]
 
-    def __contains__(self, resource: str) -> bool:
+    def get_coord(self, coords: Coords) -> Tile:
+        return self.__grid[coords]
+
+    def __contains__(self, resource: Union[str, BaseResource]) -> bool:
         return any(resource in tile for tile in self.__grid.values())
 
     @property
@@ -92,22 +103,22 @@ class Vision:
             raise ResponseError(str(response), "I don't see anything")
         for index, (unit, divergence) in enumerate(self.iter_units(vision_unit)):
             try:
-                new_grid[unit, divergence] = Tile(unit, divergence, index, response.tiles[index])
+                new_grid[Coords(unit=unit, divergence=divergence)] = Tile(unit, divergence, index, response.tiles[index])
             except ResourceError as e:
                 raise ResponseError(str(response), str(e))
-        if new_grid[0, 0].nb_players < 1:
+        if new_grid[Coords(unit=0, divergence=0)].nb_players < 1:
             raise ResponseError(str(response), "I'm a ghost, so what ?")
 
         self.__vision_unit = vision_unit
         self.__grid = new_grid
 
     @staticmethod
-    def iter_units(max_unit: int) -> Iterator[Coords]:
+    def iter_units(max_unit: int) -> Iterator[Tuple[int, int]]:
         for unit in range(max_unit + 1):
             for divergence in range(-unit, unit + 1):
                 yield (unit, divergence)
 
-    def find(self, resource: str) -> List[Coords]:
+    def find(self, resource: Union[str, BaseResource]) -> List[Coords]:
         coords_list: List[Coords] = list()
         for coord, tile in self.__grid.items():
             if resource in tile:

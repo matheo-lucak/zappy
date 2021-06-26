@@ -39,7 +39,7 @@ class ZappyAI:
         print(f"Map size: {(map_size.width, map_size.height)}")
 
         self.__team: Team = Team(team_name, team.response.client_num)
-        self.__player: Player = Player(self.__server)
+        self.__player: Player = Player(team_name, self.__server)
 
         self.__ai: AI = AI(self.__player, self.__team, Framerate(self.__server.get_framerate))
 

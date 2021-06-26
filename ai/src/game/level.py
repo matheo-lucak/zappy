@@ -1,6 +1,6 @@
 # -*- coding: Utf-8 -*
 
-from .elevation import ELEVATION_SECRETS
+from .elevation import Elevation
 
 
 class Level:
@@ -13,4 +13,4 @@ class Level:
 
     @staticmethod
     def max() -> int:
-        return max(ELEVATION_SECRETS.keys()) + 1
+        return Elevation.max_level()

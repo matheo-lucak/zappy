@@ -5,6 +5,8 @@ from typing import Any, Callable, Dict, List, Optional, Type, NoReturn
 from .inventory import Inventory
 from .vision import Vision
 from .level import Level
+from .message import Message, MessageError
+from .role import Role
 from ..api_server import APIServer
 from ..api_server.request.broadcast import BroadcastRequest
 from ..api_server.request.eject import EjectRequest, EjectResponse
@@ -24,28 +26,21 @@ class PlayerDeadError(ZappyError):
         super().__init__("I'm dying...!")
 
 
-class Message:
-    def __init__(self, tile: int, text: str) -> None:
-        self.__tile: int = tile
-        self.__text: str = text
-
-    @property
-    def tile(self) -> int:
-        return self.__tile
-
-    @property
-    def text(self) -> str:
-        return self.__text
+MessageListener = Callable[[Message], None]
 
 
 class Player:
-    def __init__(self, api: APIServer) -> None:
+    def __init__(self, team_name: str, api: APIServer) -> None:
+        self.__team: str = team_name
         self.__inventory: Inventory = Inventory()
         self.__vision: Vision = Vision()
         self.__level: Level = Level()
+        self.__role: Role = Role.NewPlayer
         self.__api: APIServer = api
-        self.__messages: List[Message] = list()
+        self.__message_listener: Optional[MessageListener] = None
 
+        self.__broadcasting: int = 0
+        self.__moving: int = 0
         self.__forwarding: int = 0
         self.__turning_left: int = 0
         self.__turning_right: int = 0
@@ -56,6 +51,10 @@ class Player:
 
         self.__api.set_spontaneous_response_handler(self.__handle_spontaneous_responses)
 
+    @property
+    def moving(self) -> int:
+        return self.__moving
+
     def move_forward(self, nb_times: int = 1) -> None:
         def forward_handler() -> None:
             print("Forward: Waiting for vision update...")
@@ -65,10 +64,12 @@ class Player:
             print("Vision up-to-date")
             print("Move forward action completed")
             self.__forwarding -= 1
+            self.__moving -= 1
 
         for _ in range(nb_times):
             print("Moving forward...")
             self.__forwarding += 1
+            self.__moving += 1
             self.__api.send(ForwardRequest(lambda rp: forward_handler()))
             self.__api.send(LookRequest(look_handler))
 
@@ -85,10 +86,12 @@ class Player:
             print("Vision up-to-date")
             print("Left rotation completed")
             self.__turning_left -= 1
+            self.__moving -= 1
 
         for _ in range(nb_times):
             print("Turning 90deg left...")
             self.__turning_left += 1
+            self.__moving += 1
             self.__api.send(LeftRequest(lambda rp: turn_handler()))
             self.__api.send(LookRequest(look_handler))
 
@@ -105,10 +108,12 @@ class Player:
             print("Vision up-to-date")
             print("Right rotation completed")
             self.__turning_right -= 1
+            self.__moving -= 1
 
         for _ in range(nb_times):
             print("Turning 90deg right...")
             self.__turning_right += 1
+            self.__moving += 1
             self.__api.send(RightRequest(lambda rp: turn_handler()))
             self.__api.send(LookRequest(look_handler))
 
@@ -117,13 +122,24 @@ class Player:
         return self.__turning_right
 
     def broadcast(self, message: str) -> None:
-        print(f"Broadcasting: {repr(message)}")
-        self.__api.send(BroadcastRequest(message))
+        message = message.strip()
+        if len(message) == 0:
+            return
 
-    def flush_messages(self) -> List[Message]:
-        messages: List[Message] = self.__messages
-        self.__messages = list()
-        return messages
+        def broadcast_handler() -> None:
+            self.__broadcasting -= 1
+
+        message = f"{self.__team}: lvl {self.level}({self.role.value}): {message}"
+        print(f"Broadcasting: {repr(message)}")
+        self.__broadcasting += 1
+        self.__api.send(BroadcastRequest(message, callback=lambda rp: broadcast_handler()))
+
+    @property
+    def broadcasting(self) -> int:
+        return self.__broadcasting
+
+    def set_message_listener(self, callback: Optional[MessageListener]) -> None:
+        self.__message_listener = callback
 
     def take_object(self, resource: str, number: int = 1) -> None:
         def take_handler(response: TakeObjectResponse) -> None:
@@ -208,6 +224,16 @@ class Player:
     def level(self) -> int:
         return self.__level.value
 
+    @property
+    def role(self) -> Role:
+        return self.__role
+
+    @role.setter
+    def role(self, r: Role) -> None:
+        if not isinstance(r, Role):
+            raise TypeError("Must be a Role enum")
+        self.__role = r
+
     def __handle_spontaneous_responses(self, spontaneous_responses: List[SpontaneousResponse]) -> None:
         handler_map: Dict[Type[SpontaneousResponse], Callable[[Any], None]] = {
             DeadResponse: lambda rp: self.__kill(),
@@ -224,4 +250,8 @@ class Player:
 
     def __listen(self, message: MessageResponse) -> None:
         print(f"From tile {message.tile}: {repr(message.text)}")
-        self.__messages.append(Message(message.tile, message.text))
+        try:
+            if callable(self.__message_listener):
+                self.__message_listener(Message(message.tile, message.text))
+        except MessageError:
+            pass

@@ -1,6 +1,6 @@
 # -*- coding: Utf-8 -*
 
-from typing import Dict, Iterator, Tuple
+from typing import Dict, Iterator, Tuple, Union
 
 from .resource import MetaResource, BaseResource
 from ..api_server.request.inventory import InventoryResponse
@@ -22,11 +22,16 @@ class Inventory:
     def __str__(self) -> str:
         return f"Inventory: [{', '.join(f'{resource.name}: {resource.amount}' for resource in self.__resources.values())}]"
 
-    def __getitem__(self, resource: str) -> int:
+    def get(self, resource: Union[str, BaseResource]) -> int:
+        if isinstance(resource, BaseResource):
+            return self.__resources[resource.name].amount
         return self.__resources[resource].amount
 
-    def __contains__(self, resource: str) -> bool:
-        return self[resource] > 0
+    def __getitem__(self, resource: Union[str, BaseResource]) -> int:
+        return self.get(resource)
+
+    def __contains__(self, resource: Union[str, BaseResource]) -> bool:
+        return self.get(resource) > 0
 
     def __iter__(self) -> InventoryView:
         for resource in self.__resources.values():

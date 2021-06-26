@@ -65,11 +65,17 @@ class BaseRequest(Generic[T], metaclass=MetaRequest):
         if callable(self.__callback):
             self.__callback(rp)
 
-    def get_response_type(self) -> Type[T]:
-        return cast(Type[T], getattr(type(self), "__response_class__"))
+    @classmethod
+    def get_response_type(cls) -> Type[T]:
+        return cast(Type[T], getattr(cls, "__response_class__"))
 
-    def get_process_time(self) -> int:
-        return int(getattr(type(self), "__process_time__"))
+    @classmethod
+    def get_process_time(cls) -> int:
+        return int(getattr(cls, "__process_time__"))
+
+    @classmethod
+    def get_real_process_time(cls, framerate: float) -> float:
+        return cls.get_process_time() / framerate if framerate > 0 else 0
 
 
 class Request(BaseRequest[Response], process_time=0):
