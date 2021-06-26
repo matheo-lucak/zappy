@@ -8,6 +8,8 @@
 #ifndef BASE_LIST_H_
 #define BASE_LIST_H_
 
+#include "node_iterator.h"
+
 ///////////// Delete data from linked lists ///////////
 
 // Delete a node at a certain index
@@ -82,13 +84,44 @@
 #define list_get(list, index)   \
     (list)->get((list), (index))
 
+// Get the first iterator
+#define list_iter_begin(list)   \
+    node_iter_start((list)->__begin__((list)), 0)
+
+// Get the last iterator
+#define list_iter_end(list)     \
+    node_iter_start((list)->__end__((list)), (list)->__len__((list)) - 1)
+
 // macro for range loop
-#define list_foreach(node, list) \
-    for (const node_t *node = list_begin(list); node; node = (node)->next)
+#define list_foreach(n, l) \
+    for (node_iterator_t *n = list_iter_begin(l); n; node_iter_next(&n))
 
 // macro for range loop reversed
-#define list_foreach_reversed(node, list) \
-    for (const node_t *node = list_end(list); node; node = (node)->previous)
+#define list_foreach_reversed(n, l) \
+    for (node_iterator_t *n = list_iter_end(l); n; node_iter_prev(&n))
+
+// Delete a node using an iterator (next)
+#define list_pop_iter_next(list, it)        \
+    {                                       \
+        size_t it##_index = (it)->index;    \
+        node_iter_next(&it);                \
+        if (it) {                           \
+            (it)->index = it##_index;       \
+        }                                   \
+        list_pop(list, it##_index);         \
+    }
+
+// Delete a node using an iterator (prev)
+#define list_pop_iter_prev(list, it)        \
+    {                                       \
+        size_t it##_index = (it)->index;    \
+        node_iter_prev(&it);                \
+        if (it) {                           \
+            (it)->index = it##_index;       \
+        }                                   \
+        list_pop(list, it##_index);         \
+    }
+
 /////////////////////////////////////////////////////////////////////////////
 
 #endif /* !BASE_LIST_H_ */

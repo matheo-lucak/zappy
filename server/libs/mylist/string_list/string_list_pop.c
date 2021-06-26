@@ -11,7 +11,7 @@ void intern_string_list_pop(string_list_t *this, long index)
 {
     container_list_t *list = (container_list_t *)&this->__c;
 
-    destroy_node(container_remove(list, index), list->__dtor__);
+    destroy_node(container_remove_node(list, index), list->__dtor__);
 }
 
 void intern_string_list_pop_front(string_list_t *this)

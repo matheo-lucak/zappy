@@ -11,8 +11,9 @@ SRC_LIB		=	array/array_to_generic_list.c			\
 				container/container_remove_node.c		\
 				container/container_reverse.c			\
 				container/container_rotate.c			\
-				container/create_node.c					\
-				container/destroy_node.c				\
+				node/create_node.c						\
+				node/destroy_node.c						\
+				node/node_iterator.c					\
 				generic_list/generic_list_clear.c		\
 				generic_list/generic_list_create.c		\
 				generic_list/generic_list_contains.c	\
