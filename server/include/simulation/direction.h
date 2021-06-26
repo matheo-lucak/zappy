@@ -30,5 +30,7 @@ typedef enum local_direction_e
 } local_direction_t;
 
 direction_t direction_get_random();
+local_direction_t direction_get_eject_direction(direction_t facing_direction,
+                                                direction_t pushed_direction);
 
 #endif /* !DIRECTION_H_ */
