@@ -16,6 +16,8 @@ static void simulation_create_all_teams(const arguments_t *args,
     char *team_name = NULL;
     team_t *team = NULL;
 
+    if (!args->team_names)
+        return;
     list_foreach(node, args->team_names) {
         team_name = NODE_STR(node);
         team = team_create(strdup(team_name), args->clients_nb);
