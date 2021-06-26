@@ -12,7 +12,7 @@ const elevation_requirement_t elevation_requirements[] =
     {
         .drone_nb      = 1,
         .drone_lvl     = 1,
-        .requirements   = {
+        .resources   = {
             [RESOURCE_LINEMATE]     = 1,
             [RESOURCE_DERAUMERE]    = 0,
             [RESOURCE_SIBUR]        = 0,
@@ -24,7 +24,7 @@ const elevation_requirement_t elevation_requirements[] =
     {
         .drone_nb      = 2,
         .drone_lvl     = 2,
-        .requirements   = {
+        .resources   = {
             [RESOURCE_LINEMATE]     = 1,
             [RESOURCE_DERAUMERE]    = 1,
             [RESOURCE_SIBUR]        = 1,
@@ -36,7 +36,7 @@ const elevation_requirement_t elevation_requirements[] =
     {
         .drone_nb      = 2,
         .drone_lvl     = 3,
-        .requirements   = {
+        .resources   = {
             [RESOURCE_LINEMATE]     = 2,
             [RESOURCE_DERAUMERE]    = 0,
             [RESOURCE_SIBUR]        = 1,
@@ -48,7 +48,7 @@ const elevation_requirement_t elevation_requirements[] =
     {
         .drone_nb      = 4,
         .drone_lvl     = 4,
-        .requirements   = {
+        .resources   = {
             [RESOURCE_LINEMATE]     = 1,
             [RESOURCE_DERAUMERE]    = 1,
             [RESOURCE_SIBUR]        = 2,
@@ -60,7 +60,7 @@ const elevation_requirement_t elevation_requirements[] =
     {
         .drone_nb      = 4,
         .drone_lvl     = 5,
-        .requirements   = {
+        .resources   = {
             [RESOURCE_LINEMATE]     = 1,
             [RESOURCE_DERAUMERE]    = 2,
             [RESOURCE_SIBUR]        = 1,
@@ -72,7 +72,7 @@ const elevation_requirement_t elevation_requirements[] =
     {
         .drone_nb      = 6,
         .drone_lvl     = 6,
-        .requirements   = {
+        .resources   = {
             [RESOURCE_LINEMATE]     = 1,
             [RESOURCE_DERAUMERE]    = 2,
             [RESOURCE_SIBUR]        = 3,
@@ -84,7 +84,7 @@ const elevation_requirement_t elevation_requirements[] =
     {
         .drone_nb      = 6,
         .drone_lvl     = 7,
-        .requirements   = {
+        .resources   = {
             [RESOURCE_LINEMATE]     = 2,
             [RESOURCE_DERAUMERE]    = 2,
             [RESOURCE_SIBUR]        = 2,

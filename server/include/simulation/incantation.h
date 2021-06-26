@@ -19,9 +19,9 @@
 
 typedef struct elevation_requirement_s
 {
-    size_t drone_nb;
-    size_t drone_lvl;
-    size_t requirements[RESOURCE_NB];
+    size_t  drone_nb;
+    int     drone_lvl;
+    size_t  resources[RESOURCE_NB];
 } elevation_requirement_t;
 
 typedef struct incantation_s
@@ -34,8 +34,9 @@ typedef struct incantation_s
 incantation_t *incantation_create(drone_t *owner);
 void incantation_destroy(incantation_t *incantation);
 
+bool incantation_check_requirements(incantation_t *inc, tile_t *tile);
 
-const elevation_requirement_t *incantation_find_requirements(size_t drone_lvl);
+const elevation_requirement_t *incantation_find_requirements(int drone_lvl);
 
 extern const elevation_requirement_t elevation_requirements[];
 extern const size_t elevation_requirements_size;
