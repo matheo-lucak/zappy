@@ -11,13 +11,13 @@
 int server_launch(const arguments_t *args)
 {
     server_t s;
-    int error = server_start(args, &s);
+    int status = server_start(args, &s);
 
-    if (error != SERVER_SUCCESS) {
+    if (status != SERVER_SUCCESS) {
         server_stop(&s);
-        return error;
+        return status;
     }
-    error = server_run(&s);
+    status = server_run(&s);
     server_stop(&s);
-    return error;
+    return status;
 }

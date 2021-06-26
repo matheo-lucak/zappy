@@ -9,6 +9,7 @@
 
 #include "server/client.h"
 #include "server/request/request.h"
+#include "server/response/response.h"
 
 client_t *client_create(void)
 {
@@ -19,6 +20,7 @@ client_t *client_create(void)
     client->drone = drone_create(0, 0);
     client->socket = tcp_socket_create();
     client->pending_requests = ptr_list_create((void *)&request_destroy);
+    client->pending_responses = generic_list_create((void *)&response_destroy);
     client->type = CLIENT_UNKNOWN;
     if (!client->drone || !client->socket || !client->pending_requests) {
         client_destroy(client);

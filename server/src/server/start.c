@@ -6,7 +6,6 @@
 */
 
 #include <stdlib.h>
-#include <string.h>
 
 #include "server/server.h"
 #include "server/client.h"
@@ -15,7 +14,7 @@ int server_start(const arguments_t *args, server_t *s)
 {
     if (!s || !args)
         return SERVER_EXIT;
-    memset(s, 0, sizeof(server_t));
+    *s = (server_t){0};
     s->clients = ptr_list_create(&free);
     if (!s->clients)
         return SERVER_EXIT;

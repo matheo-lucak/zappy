@@ -10,6 +10,7 @@
 #include "server/server.h"
 
 #include "server/response/response.h"
+#include "server/request/request.h"
 
 int main(int ac, char **av)
 {

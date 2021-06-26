@@ -16,6 +16,6 @@ int simulation_start(const arguments_t *args, simulation_t *n)
     if (!n->map)
         return SIMULATION_EXIT;
     n->default_team_free_slot = args->clients_nb;
-    return SIMULATION_SUCCESS;
     server_log(LOG_SIMULATION_STARTED);
+    return SIMULATION_SUCCESS;
 }
