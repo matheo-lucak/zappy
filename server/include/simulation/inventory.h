@@ -49,7 +49,7 @@ bool inventory_add_item(inventory_t *inventory,
  * @param type The type of item to remove.
  * @param quantity The quantity to remove of the item type.
  * @return true If the remove occured.
- * @return false If it didn't
+ * @return false If it didn't.
  */
 bool inventory_remove_item(inventory_t *inventory,
                             resource_type_t type,

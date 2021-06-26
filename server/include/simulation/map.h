@@ -33,14 +33,4 @@ map_t *map_create(unsigned int width, unsigned int height);
  */
 void map_destroy(map_t *map);
 
-/**
- * @brief Gets tile information from a map. (Complexity: O0).
- * 
- * @param map The map to look onto.
- * @param pos_x Position on X for the searched tile.
- * @param pos_y Position on Y for the searched tile.
- * @return const tile_t* The searched tile.
- */
-const tile_t *map_get_tile_info(const map_t *map, unsigned int pos_x, unsigned int pos_y);
-
 #endif /* !MAP_H_ */
