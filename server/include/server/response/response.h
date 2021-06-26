@@ -29,7 +29,7 @@ void response_destroy(response_t *response);
                                     " sibur %d, mendiane %d, phiras %d,"\
                                     " thystame %d ]\n"
 
-#define RESPONSE_BROADCAST          "broadcast %s\n"
+#define RESPONSE_BROADCAST          "message %d, %s\n"
 
 #define RESPONSE_INCANTATION_START  "Elevation underway\n"
 #define RESPONSE_INCANTATION_ENDS   "Current level: %d\n"

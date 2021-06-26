@@ -42,7 +42,7 @@ void server_stop(server_t *s);
 int server_run(server_t *s);
 
 void network_handle_clients_in(server_t *s);
-void network_handle_clients_out(server_t *s);
+int network_handle_clients_out(server_t *s);
 void network_handle_client_connection(server_t *s);
 
 void server_handle_request(server_t *s);

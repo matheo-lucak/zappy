@@ -9,13 +9,13 @@
 
 int server_run(server_t *s)
 {
-    int error = SERVER_SUCCESS;
+    int status = SERVER_SUCCESS;
 
     s->is_running = true;
-    while (s->is_running) {
+    while (s->is_running && status == SERVER_SUCCESS) {
         network_handle_clients_in(s);
         server_handle_request(s);
-        network_handle_clients_out(s);
+        status = network_handle_clients_out(s);
     }
-    return error;
+    return status;
 }

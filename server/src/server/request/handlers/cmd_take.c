@@ -10,50 +10,18 @@
 #include "server/response/response.h"
 #include "server/request/request.h"
 
-static bool get_resource_type(string_list_t *arguments, resource_type_t *type)
-{
-    const node_t *node = arguments->get(arguments, 0);
-    const char *str = NODE_PTR(node, char *);
-
-    if (!strcmp(str, "food")) {
-        *type = RESOURCE_FOOD;
-        return true;
-    }
-    if (!strcmp(str, "linemate")) {
-        *type = RESOURCE_LINEMATE;
-        return true;
-    }
-    if (!strcmp(str, "deraumere")) {
-        *type = RESOURCE_DERAUMERE;
-        return true;
-    }
-    if (!strcmp(str, "sibur")) {
-        *type = RESOURCE_SIBUR;
-        return true;
-    }
-    if (!strcmp(str, "mendiane")) {
-        *type = RESOURCE_MENDIANE;
-        return true;
-    }
-    if (!strcmp(str, "phiras")) {
-        *type = RESOURCE_PHIRAS;
-        return true;
-    }
-    if (!strcmp(str, "thystame")) {
-        *type = RESOURCE_THYSTAME;
-        return true;
-    }
-    return false;
-}
-
 void request_handler_cmd_take(server_t *s, client_t *c, request_t *r)
 {
     bool is_ok = false;
     response_t *response = NULL;
     resource_type_t type = RESOURCE_FOOD;
+    const node_t *node = list_get(r->arguments, 0);
+    const resource_info_t *info = NULL;
 
-    if (!get_resource_type(r->arguments, &type))
+    info = resource_get_info_from_name(node ? NODE_STR(node) : NULL);
+    if (!info)
         return;
+    type = info->type;
     is_ok = tile_remove_item(s->s.map->tiles[c->drone->y][c->drone->x], type);
     if (is_ok) {
         is_ok = inventory_add_item(c->drone->inventory, type, 1);

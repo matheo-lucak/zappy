@@ -13,5 +13,9 @@ inventory_t *inventory_create(void)
     inventory_t *inventory = malloc(sizeof(inventory_t));
 
     inventory->slots = generic_list_create(&free);
+    if (!inventory->slots) {
+        inventory_destroy(inventory);
+        return NULL;
+    }
     return inventory;
 }

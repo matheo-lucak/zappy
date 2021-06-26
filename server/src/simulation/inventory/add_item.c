@@ -13,6 +13,7 @@ bool inventory_add_item(inventory_t *inventory,
                         unsigned int quantity)
 {
     item_slot_t new_slot;
+    int status;
 
     if (!list_empty(inventory->slots)) {
         list_foreach(node, inventory->slots) {
@@ -24,5 +25,6 @@ bool inventory_add_item(inventory_t *inventory,
     }
     new_slot.type = type;
     new_slot.quantity = quantity;
-    return generic_list_push_back(inventory->slots, new_slot, item_slot_t);
+    status = generic_list_push_back(inventory->slots, new_slot, item_slot_t);
+    return status == LIST_SUCCESS ? true : false;
 }

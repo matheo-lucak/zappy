@@ -7,21 +7,34 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <epinet.h>
 #include "server/server.h"
 #include "server/response/response.h"
 
-void network_handle_clients_out(server_t *s)
+int network_handle_clients_out(server_t *s)
 {
+    selector_status_t status;
+    response_t *response = NULL;
     char *r_data = NULL;
     size_t data_size = 0;
+    bool left_to_send = false;
 
-    list_foreach(c, s->clients) {
-        list_foreach(r, NODE_PTR(c, client_t)->pending_responses) {
-            r_data = NODE_PTR(r, response_t)->data;
+    do {
+        left_to_send = false;
+        status = socket_selector_wait(s->n.selector, 1, WATCH_WRT);
+        if (status != SELECTOR_OK)
+            return SERVER_ERROR;
+        list_foreach(c, s->clients) {
+            if (!socket_selector_is_socket_ready(s->n.selector, SOCKET(NODE_PTR(c, client_t)->socket)))
+                continue;
+            response = NODE_PTR(list_begin(NODE_PTR(c, client_t)->pending_responses), response_t);
+            r_data = response->data;
             data_size = strlen(r_data);
             tcp_socket_send(NODE_PTR(c, client_t)->socket, r_data, data_size);
+            list_pop_front(NODE_PTR(c, client_t)->pending_responses);
+            if (!list_empty(NODE_PTR(c, client_t)->pending_responses))
+                left_to_send = true;
         }
-        generic_list_destroy(NODE_PTR(c, client_t)->pending_responses);
-        NODE_PTR(c, client_t)->pending_responses = generic_list_create(&free);
-    }
+    } while (left_to_send);
+    return SERVER_SUCCESS;
 }

@@ -30,7 +30,7 @@ Test(request_handler_cmd_take, simple_take)
     server_stop(&s);
 }
 
-Test(request_handler_cmd_take, several_same__take)
+Test(request_handler_cmd_take, several_same_take)
 {
     client_t *c = client_create();
     char *input = strdup("Take deraumere");
