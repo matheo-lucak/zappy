@@ -31,4 +31,6 @@ void simulation_stop(simulation_t *sim);
 void simulation_handle(simulation_t *sim);
 void simulation_handle_eggs(simulation_t *sim);
 
+team_t *simulation_find_team_from_drone(simulation_t *sim, drone_t *drone);
+
 #endif /* !SIMULATION_H_ */
