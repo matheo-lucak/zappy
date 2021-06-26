@@ -7,7 +7,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "mylist/container.h"
+#include "mylist/node.h"
 
 static node_t *allocate_node(void)
 {

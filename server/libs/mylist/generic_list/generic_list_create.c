@@ -47,6 +47,19 @@ void *intern_generic_list_emplace(
     size_t size
 );
 
+int intern_generic_list_remove(
+    list_t *this,
+    const void *data,
+    size_t size
+);
+
+int intern_generic_list_remove_cmp(
+    list_t *this,
+    const void *data,
+    size_t size,
+    node_cmp_t comparator
+);
+
 void *intern_generic_list_emplace_front(
     list_t *this,
     size_t size
@@ -137,6 +150,8 @@ static const list_t GENERIC_LIST_MODEL =
     .pop = &intern_generic_list_pop,
     .pop_front = &intern_generic_list_pop_front,
     .pop_back = &intern_generic_list_pop_back,
+    .remove = &intern_generic_list_remove,
+    .remove_cmp = &intern_generic_list_remove_cmp,
     .clear = &intern_generic_list_clear,
     .duplicate = &intern_generic_list_duplicate,
     .merge = &intern_generic_list_merge,

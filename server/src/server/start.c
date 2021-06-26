@@ -6,6 +6,7 @@
 */
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "server/server.h"
 #include "server/client.h"

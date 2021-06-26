@@ -28,6 +28,9 @@ struct generic_linked_list
     void (*const pop)(list_t *this, long index);
     void (*const pop_front)(list_t *this);
     void (*const pop_back)(list_t *this);
+    int (*const remove)(list_t *this, const void *data, size_t size);
+    int (*const remove_cmp)(list_t *this, const void *data,
+                            size_t size, node_cmp_t comparator);
 
     void (*const clear)(list_t *this);
     list_t *(*const duplicate)(const list_t *this);
@@ -124,6 +127,23 @@ list_t *array_to_generic_list(
 // Returns a pointer to the allocated storage, or NULL in case of failure
 #define generic_list_emplace_back(list, type) \
     ((type *)((list)->emplace_back((list), sizeof(type))))
+//////////////////////////////////////////////////
+
+///////////// Remove data in list /////////////
+
+// Remove the first occurence of a data from the list
+// Returns LIST_SUCCESS (1) if it was a success, LIST_ERROR (0) otherwise
+#define generic_list_remove(list, data, type) \
+    (list)->remove((list), _FMT_DATA(data, type), sizeof(type))
+
+// Remove the first occurence of a data from the list using a comparator
+// The comparator function must returns 0 if the data match,
+// non-zero value otherwise
+// Returns LIST_SUCCESS (1) if it was a success, LIST_ERROR (0) otherwise
+// Returns LIST_ERROR for NULL comparator
+#define generic_list_remove_cmp(list, data, type, comparator) \
+    (list)->remove_cmp((list), _FMT_DATA(data, type), sizeof(type), \
+                    (node_cmp_t)(comparator))
 //////////////////////////////////////////////////
 
 ///////////// Find node in list /////////////

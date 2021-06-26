@@ -13,7 +13,7 @@ const node_t *intern_generic_list_find(const list_t *this,
 {
     if (!data || size == 0)
         return NULL;
-    list_foreach(node, this) {
+    for (const node_t *node = list_begin(this); node; node = node->next) {
         if (node->data.size != size)
             continue;
         if (memcmp(node->data.ptr, data, size) == 0)
@@ -29,7 +29,7 @@ const node_t *intern_generic_list_find_cmp(const list_t *this,
 {
     if (!data || !comparator)
         return NULL;
-    list_foreach(node, this) {
+    for (const node_t *node = list_begin(this); node; node = node->next) {
         if (node->data.size != size)
             continue;
         if (comparator(node->data.ptr, data) == 0)

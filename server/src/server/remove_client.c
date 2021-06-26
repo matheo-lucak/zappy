@@ -20,11 +20,7 @@ static void server_remove_client_from_team(ptr_list_t *teams, drone_t *drone)
 
 void server_remove_client(server_t *s, client_t *client)
 {
-    const node_t *client_node = ptr_list_find(s->clients, client);
-
-    if (client_node) {
-        list_pop(s->clients, client_node->index);
-    }
+    ptr_list_remove(s->clients, client);
     if (client->drone) {
         server_remove_client_from_team(s->s.teams, client->drone);
     }

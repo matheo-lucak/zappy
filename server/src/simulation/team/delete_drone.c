@@ -9,13 +9,9 @@
 
 bool team_delete_drone(team_t *team, drone_t *drone)
 {
-    const node_t *drone_node = NULL;
-
-    if (!team || !team->drones || !drone)
+    if (!team || !team->drones)
         return false;
-    drone_node = ptr_list_find(team->drones, drone);
-    if (!drone_node)
+    if (ptr_list_remove(team->drones, drone) == LIST_ERROR)
         return false;
-    list_pop(team->drones, drone_node->index);
     return true;
 }

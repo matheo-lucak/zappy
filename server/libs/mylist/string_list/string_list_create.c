@@ -54,6 +54,17 @@ void intern_string_list_pop_back(
     string_list_t *this
 );
 
+int intern_string_list_remove(
+    string_list_t *this,
+    const char *s
+);
+
+int intern_string_list_remove_cmp(
+    string_list_t *this,
+    const char *s,
+    node_cmp_t comparator
+);
+
 void intern_string_list_clear(
     string_list_t *this
 );
@@ -131,6 +142,8 @@ static const string_list_t STRING_LIST_MODEL =
     .pop = &intern_string_list_pop,
     .pop_front = &intern_string_list_pop_front,
     .pop_back = &intern_string_list_pop_back,
+    .str_remove = &intern_string_list_remove,
+    .str_remove_cmp = &intern_string_list_remove_cmp,
     .clear = &intern_string_list_clear,
     .duplicate = &intern_string_list_duplicate,
     .merge = &intern_string_list_merge,
