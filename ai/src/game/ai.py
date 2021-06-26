@@ -73,15 +73,16 @@ class AI:
 
         def go_to_take_resource(resource: str, amount: int, position: Position) -> Implementation:
             self.__player.go_to_position(position)
-            while self.__player.moving:
-                yield
             print(f"Nb {resource} in tile: {amount}")
             self.__player.take_object(resource, amount)
-            while self.__player.taking_object(resource):
-                yield
             self.__player.look()
             self.__player.check_inventory()
-            while self.__player.looking or self.__player.checking_inventory:
+            while (
+                self.__player.moving
+                or self.__player.taking_object(resource)
+                or self.__player.looking
+                or self.__player.checking_inventory
+            ):
                 yield
 
         if resource.amount > 0:
