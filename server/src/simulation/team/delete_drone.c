@@ -7,11 +7,15 @@
 
 #include "simulation/team.h"
 
-// THIS IS NOT IMPLEMENTED
-// WAIT FOR LIST DELETE
 bool team_delete_drone(team_t *team, drone_t *drone)
 {
+    const node_t *drone_node = NULL;
+
     if (!team || !team->drones || !drone)
         return false;
+    drone_node = ptr_list_find(team->drones, drone);
+    if (!drone_node)
+        return false;
+    list_pop(team->drones, drone_node->index);
     return true;
 }
