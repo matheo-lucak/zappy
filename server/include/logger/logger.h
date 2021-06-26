@@ -43,7 +43,9 @@ typedef enum
 
     LOG_SIMULATION_STARTED      = LOG_SIMULATION_RANGE_L,
     LOG_SIMULATION_STOPPED,
-    LOG_SIMULATION_NEW_FORK
+    LOG_SIMULATION_NEW_DRONE,
+    LOG_SIMULATION_NEW_EGG,
+    LOG_SIMULATION_EGG_HATCHED,
 } log_type_t;
 
 void server_log(log_type_t type, ...);
