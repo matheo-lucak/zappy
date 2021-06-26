@@ -16,10 +16,10 @@ void request_handler_cmd_fork(server_t *s, client_t *c, request_t *r)
     egg_t *egg = NULL;
 
     if (!drone || !team) {
-        // TO IMPLEMENT: SEND KO
+        client_add_response(c, response_create(RESPONSE_KO));
         return;
     }
     egg = egg_create(drone->x, drone->y);
     team_add_egg(team, egg);
-    // TO IMPLEMENT: SEND OK
+    client_add_response(c, response_create(RESPONSE_KO));
 }
