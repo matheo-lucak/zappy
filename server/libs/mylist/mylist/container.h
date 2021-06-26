@@ -33,25 +33,13 @@ node_t *container_remove_first_node(container_list_t *list);
 
 node_t *container_remove_last_node(container_list_t *list);
 
-node_t *container_remove(container_list_t *list, long index);
+node_t *container_remove_node(container_list_t *list, long index);
 
 void container_reverse(container_list_t *list);
 
 void container_rotate_begin(container_list_t *list);
 
 void container_rotate_end(container_list_t *list);
-
-node_t *create_empty_node(size_t size);
-
-node_t *create_node(const void *data, size_t size);
-
-node_t *create_ptr_node(void *ptr);
-
-node_t *create_string_node(const char *str);
-
-void destroy_node(node_t *node, node_dtor_t dtor);
-
-void destroy_ptr_node(node_t *node, node_dtor_t dtor);
 /////////////////////////////////////////////////////////////////////////////
 
 #endif /* !MY_LIST_CONTAINER_H_ */
