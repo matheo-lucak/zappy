@@ -11,7 +11,7 @@
 
 Test(drone_eject, simple_ejection_right)
 {
-    drone_t *drone = drone_create(0, 0);
+    drone_t *drone = drone_create(0, 0, true);
     map_t *map = map_create(10, 10);
 
     cr_assert(drone->x == 0);
@@ -25,7 +25,7 @@ Test(drone_eject, simple_ejection_right)
 
 Test(drone_eject, simple_ejection_up_around_map)
 {
-    drone_t *drone = drone_create(0, 0);
+    drone_t *drone = drone_create(0, 0, true);
     map_t *map = map_create(10, 10);
 
     cr_assert(drone->x == 0);
@@ -39,7 +39,7 @@ Test(drone_eject, simple_ejection_up_around_map)
 
 Test(drone_eject, simple_ejection_down_around_map)
 {
-    drone_t *drone = drone_create(9, 9);
+    drone_t *drone = drone_create(9, 9, true);
     map_t *map = map_create(10, 10);
 
     cr_assert(drone->x == 9);

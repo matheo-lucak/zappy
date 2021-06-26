@@ -65,13 +65,21 @@ const log_info_t log_info_map[] =
         .type = LOG_SIMULATION_STARTED,
         .message = "Started"
     },
-        {
+    {
         .type = LOG_SIMULATION_STOPPED,
         .message = "Stopped"
     },
     {
-        .type = LOG_SIMULATION_NEW_FORK,
-        .message = "An egg has hatched at (%d, %d) facing %d"
+        .type = LOG_SIMULATION_NEW_DRONE,
+        .message = "A new drone spawned at (%d, %d) facing %d"
+    },
+    {
+        .type = LOG_SIMULATION_NEW_EGG,
+        .message = "A new egg spawned at (%d, %d)"
+    },
+    {
+        .type = LOG_SIMULATION_EGG_HATCHED,
+        .message = "An egg has hatched at (%d, %d)"
     },
 };
 

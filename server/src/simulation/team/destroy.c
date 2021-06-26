@@ -16,6 +16,8 @@ void team_destroy(team_t *team)
         return;
     if (team->drones)
         ptr_list_destroy(team->drones);
+    if (team->eggs)
+        ptr_list_destroy(team->eggs);
     if (team->name)
         free(team->name);
     memset(team, 0, sizeof(team_t));
