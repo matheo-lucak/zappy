@@ -83,6 +83,11 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/drone/destroy.c)						\
 					$(addprefix $(SRC_PATH), simulation/drone/move.c)							\
 					$(addprefix $(SRC_PATH), simulation/drone/rotate.c)							\
+					$(addprefix $(SRC_PATH), simulation/incantation/check.c)					\
+					$(addprefix $(SRC_PATH), simulation/incantation/create.c)					\
+					$(addprefix $(SRC_PATH), simulation/incantation/destroy.c)					\
+					$(addprefix $(SRC_PATH), simulation/incantation/find_requirements.c)		\
+					$(addprefix $(SRC_PATH), simulation/incantation/requirements.c)				\
 					$(addprefix $(SRC_PATH), simulation/map/create.c)							\
 					$(addprefix $(SRC_PATH), simulation/map/destroy.c)							\
 					$(addprefix $(SRC_PATH), simulation/resource/get_info.c)					\
