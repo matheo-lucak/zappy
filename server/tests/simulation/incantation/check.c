@@ -43,9 +43,9 @@ Test(incantation_check_requirements, basic_lvl_1)
     incantation_t *inc = NULL;
 
     setup_dummy_tile_drone(tile, drone_tab, drone_nb, 1);
-    inc =  incantation_create(drone_tab[0]);
+    inc =  incantation_create(drone_tab[0], tile);
     setup_dummy_tile_resource(tile, RESOURCE_LINEMATE, 1);
-    cr_assert(incantation_check_requirements(inc, tile) == true);
+    cr_assert(incantation_check_requirements(inc) == true);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
     tile_destroy(tile);
 }
@@ -58,11 +58,11 @@ Test(incantation_check_requirements, basic_lvl_2)
     incantation_t *inc = NULL;
 
     setup_dummy_tile_drone(tile, drone_tab, drone_nb, 2);
-    inc =  incantation_create(drone_tab[0]);
+    inc =  incantation_create(drone_tab[0], tile);
     setup_dummy_tile_resource(tile, RESOURCE_LINEMATE, 1);
     setup_dummy_tile_resource(tile, RESOURCE_DERAUMERE, 1);
     setup_dummy_tile_resource(tile, RESOURCE_SIBUR, 1);
-    cr_assert(incantation_check_requirements(inc, tile) == true);
+    cr_assert(incantation_check_requirements(inc) == true);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
     tile_destroy(tile);
 }
@@ -75,11 +75,11 @@ Test(incantation_check_requirements, basic_lvl_3)
     incantation_t *inc = NULL;
 
     setup_dummy_tile_drone(tile, drone_tab, drone_nb, 3);
-    inc =  incantation_create(drone_tab[0]);
+    inc =  incantation_create(drone_tab[0], tile);
     setup_dummy_tile_resource(tile, RESOURCE_LINEMATE, 2);
     setup_dummy_tile_resource(tile, RESOURCE_SIBUR, 1);
     setup_dummy_tile_resource(tile, RESOURCE_PHIRAS, 2);
-    cr_assert(incantation_check_requirements(inc, tile) == true);
+    cr_assert(incantation_check_requirements(inc) == true);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
     tile_destroy(tile);
 }
@@ -92,12 +92,12 @@ Test(incantation_check_requirements, basic_lvl_4)
     incantation_t *inc = NULL;
 
     setup_dummy_tile_drone(tile, drone_tab, drone_nb, 4);
-    inc =  incantation_create(drone_tab[0]);
+    inc =  incantation_create(drone_tab[0], tile);
     setup_dummy_tile_resource(tile, RESOURCE_LINEMATE, 1);
     setup_dummy_tile_resource(tile, RESOURCE_DERAUMERE, 1);
     setup_dummy_tile_resource(tile, RESOURCE_SIBUR, 2);
     setup_dummy_tile_resource(tile, RESOURCE_PHIRAS, 1);
-    cr_assert(incantation_check_requirements(inc, tile) == true);
+    cr_assert(incantation_check_requirements(inc) == true);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
     tile_destroy(tile);
 }
@@ -110,12 +110,12 @@ Test(incantation_check_requirements, basic_lvl_5)
     incantation_t *inc = NULL;
 
     setup_dummy_tile_drone(tile, drone_tab, drone_nb, 5);
-    inc =  incantation_create(drone_tab[0]);
+    inc =  incantation_create(drone_tab[0], tile);
     setup_dummy_tile_resource(tile, RESOURCE_LINEMATE, 1);
     setup_dummy_tile_resource(tile, RESOURCE_DERAUMERE, 2);
     setup_dummy_tile_resource(tile, RESOURCE_SIBUR, 1);
     setup_dummy_tile_resource(tile, RESOURCE_MENDIANE, 3);
-    cr_assert(incantation_check_requirements(inc, tile) == true);
+    cr_assert(incantation_check_requirements(inc) == true);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
     tile_destroy(tile);
 }
@@ -128,12 +128,12 @@ Test(incantation_check_requirements, basic_lvl_6)
     incantation_t *inc = NULL;
 
     setup_dummy_tile_drone(tile, drone_tab, drone_nb, 6);
-    inc =  incantation_create(drone_tab[0]);
+    inc =  incantation_create(drone_tab[0], tile);
     setup_dummy_tile_resource(tile, RESOURCE_LINEMATE, 1);
     setup_dummy_tile_resource(tile, RESOURCE_DERAUMERE, 2);
     setup_dummy_tile_resource(tile, RESOURCE_SIBUR, 3);
     setup_dummy_tile_resource(tile, RESOURCE_PHIRAS, 1);
-    cr_assert(incantation_check_requirements(inc, tile) == true);
+    cr_assert(incantation_check_requirements(inc) == true);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
     tile_destroy(tile);
 }
@@ -146,14 +146,14 @@ Test(incantation_check_requirements, basic_lvl_7)
     incantation_t *inc = NULL;
 
     setup_dummy_tile_drone(tile, drone_tab, drone_nb, 7);
-    inc =  incantation_create(drone_tab[0]);
+    inc =  incantation_create(drone_tab[0], tile);
     setup_dummy_tile_resource(tile, RESOURCE_LINEMATE, 2);
     setup_dummy_tile_resource(tile, RESOURCE_DERAUMERE, 2);
     setup_dummy_tile_resource(tile, RESOURCE_SIBUR, 2);
     setup_dummy_tile_resource(tile, RESOURCE_MENDIANE, 2);
     setup_dummy_tile_resource(tile, RESOURCE_PHIRAS, 2);
     setup_dummy_tile_resource(tile, RESOURCE_THYSTAME, 1);
-    cr_assert(incantation_check_requirements(inc, tile) == true);
+    cr_assert(incantation_check_requirements(inc) == true);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
     tile_destroy(tile);
 }
@@ -166,9 +166,9 @@ Test(incantation_check_requirements, too_many_player_1)
     incantation_t *inc = NULL;
 
     setup_dummy_tile_drone(tile, drone_tab, drone_nb, 2);
-    inc =  incantation_create(drone_tab[0]);
+    inc =  incantation_create(drone_tab[0], tile);
     setup_dummy_tile_resource(tile, RESOURCE_LINEMATE, 1);
-    cr_assert(incantation_check_requirements(inc, tile) == false);
+    cr_assert(incantation_check_requirements(inc) == false);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
     tile_destroy(tile);
 }
@@ -182,12 +182,12 @@ Test(incantation_check_requirements, too_many_player_2)
     incantation_t *inc = NULL;
 
     setup_dummy_tile_drone(tile, drone_tab, drone_nb, 5);
-    inc =  incantation_create(drone_tab[0]);
+    inc =  incantation_create(drone_tab[0], tile);
     setup_dummy_tile_resource(tile, RESOURCE_LINEMATE, 1);
     setup_dummy_tile_resource(tile, RESOURCE_DERAUMERE, 1);
     setup_dummy_tile_resource(tile, RESOURCE_SIBUR, 2);
     setup_dummy_tile_resource(tile, RESOURCE_PHIRAS, 1);
-    cr_assert(incantation_check_requirements(inc, tile) == false);
+    cr_assert(incantation_check_requirements(inc) == false);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
     tile_destroy(tile);
 }
@@ -200,12 +200,12 @@ Test(incantation_check_requirements, not_enough_player_1)
     incantation_t *inc = NULL;
 
     setup_dummy_tile_drone(tile, drone_tab, drone_nb, 5);
-    inc =  incantation_create(drone_tab[0]);
+    inc =  incantation_create(drone_tab[0], tile);
     setup_dummy_tile_resource(tile, RESOURCE_LINEMATE, 1);
     setup_dummy_tile_resource(tile, RESOURCE_DERAUMERE, 1);
     setup_dummy_tile_resource(tile, RESOURCE_SIBUR, 2);
     setup_dummy_tile_resource(tile, RESOURCE_PHIRAS, 1);
-    cr_assert(incantation_check_requirements(inc, tile) == false);
+    cr_assert(incantation_check_requirements(inc) == false);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
     tile_destroy(tile);
 }
@@ -218,12 +218,12 @@ Test(incantation_check_requirements, bad_level)
     incantation_t *inc = NULL;
 
     setup_dummy_tile_drone(tile, drone_tab, drone_nb, 6);
-    inc =  incantation_create(drone_tab[0]);
+    inc =  incantation_create(drone_tab[0], tile);
     setup_dummy_tile_resource(tile, RESOURCE_LINEMATE, 1);
     setup_dummy_tile_resource(tile, RESOURCE_DERAUMERE, 2);
     setup_dummy_tile_resource(tile, RESOURCE_SIBUR, 1);
     setup_dummy_tile_resource(tile, RESOURCE_MENDIANE, 3);
-    cr_assert(incantation_check_requirements(inc, tile) == false);
+    cr_assert(incantation_check_requirements(inc) == false);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
     tile_destroy(tile);
 }
@@ -236,10 +236,10 @@ Test(incantation_check_requirements, not_enough_resources)
     incantation_t *inc = NULL;
 
     setup_dummy_tile_drone(tile, drone_tab, drone_nb, 5);
-    inc =  incantation_create(drone_tab[0]);
+    inc =  incantation_create(drone_tab[0], tile);
     setup_dummy_tile_resource(tile, RESOURCE_LINEMATE, 1);
     setup_dummy_tile_resource(tile, RESOURCE_MENDIANE, 3);
-    cr_assert(incantation_check_requirements(inc, tile) == false);
+    cr_assert(incantation_check_requirements(inc) == false);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
     tile_destroy(tile);
 }
@@ -252,14 +252,14 @@ Test(incantation_check_requirements, too_much_resources)
     incantation_t *inc = NULL;
 
     setup_dummy_tile_drone(tile, drone_tab, drone_nb, 7);
-    inc =  incantation_create(drone_tab[0]);
+    inc =  incantation_create(drone_tab[0], tile);
     setup_dummy_tile_resource(tile, RESOURCE_LINEMATE, 2);
     setup_dummy_tile_resource(tile, RESOURCE_DERAUMERE, 2);
     setup_dummy_tile_resource(tile, RESOURCE_SIBUR, 2);
     setup_dummy_tile_resource(tile, RESOURCE_MENDIANE, 10);
     setup_dummy_tile_resource(tile, RESOURCE_PHIRAS, 2);
     setup_dummy_tile_resource(tile, RESOURCE_THYSTAME, 1);
-    cr_assert(incantation_check_requirements(inc, tile) == false);
+    cr_assert(incantation_check_requirements(inc) == false);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
     tile_destroy(tile);
 }

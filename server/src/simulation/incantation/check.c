@@ -34,15 +34,15 @@ static bool incantation_check_item_count(incantation_t *inc, tile_t *tile)
     return true;
 }
 
-bool incantation_check_requirements(incantation_t *inc, tile_t *tile)
+bool incantation_check_requirements(incantation_t *inc)
 {
-    if (!inc || !inc->requirements || !tile)
+    if (!inc || !inc->requirements || !inc->owner || !inc->tile)
         return false;
-    if (incantation_check_drone_lvl(inc, tile) == false)
+    if (incantation_check_drone_lvl(inc, inc->tile) == false)
         return false;
-    if (incantation_check_drone_count(inc, tile) == false)
+    if (incantation_check_drone_count(inc, inc->tile) == false)
         return false;
-    if (incantation_check_item_count(inc, tile) == false)
+    if (incantation_check_item_count(inc, inc->tile) == false)
         return false;
     return true;
 }

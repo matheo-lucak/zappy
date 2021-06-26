@@ -20,8 +20,8 @@ Test(request_handler_cmd_set, simple_set)
 
     cr_assert(status == SERVER_SUCCESS);
     cr_assert(inventory_add_item(c->drone->inventory, RESOURCE_DERAUMERE, 1));
-    cr_assert(!generic_list_find(s.s.map->tiles[c->drone->y][c->drone->x]->items, RESOURCE_DERAUMERE, resource_type_t));
+    cr_assert(!generic_list_find(s.sim.map->tiles[c->drone->y][c->drone->x]->items, RESOURCE_DERAUMERE, resource_type_t));
     request_handler_cmd_set(&s, c, r);
-    cr_assert(generic_list_find(s.s.map->tiles[c->drone->y][c->drone->x]->items, RESOURCE_DERAUMERE, resource_type_t));
+    cr_assert(generic_list_find(s.sim.map->tiles[c->drone->y][c->drone->x]->items, RESOURCE_DERAUMERE, resource_type_t));
     server_stop(&s);
 }

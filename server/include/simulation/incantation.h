@@ -28,13 +28,18 @@ typedef struct incantation_s
 {
     const elevation_requirement_t * requirements;
     int                             time_until_elevation;
+    int                             elevation_lvl;
     drone_t *                       owner;
+    tile_t *                        tile;
 } incantation_t;
 
-incantation_t *incantation_create(drone_t *owner);
+incantation_t *incantation_create(drone_t *owner, tile_t *tile);
 void incantation_destroy(incantation_t *incantation);
 
-bool incantation_check_requirements(incantation_t *inc, tile_t *tile);
+bool incantation_check_requirements(incantation_t *inc);
+void incantation_elevate(incantation_t *inc);
+
+void incantation_remove_owner(incantation_t *incantation);
 
 const elevation_requirement_t *incantation_find_requirements(int drone_lvl);
 

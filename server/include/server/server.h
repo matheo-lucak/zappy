@@ -28,7 +28,7 @@ typedef size_t frequency_t;
 typedef struct server_s
 {
     network_t           n;
-    simulation_t        s;
+    simulation_t        sim;
     ptr_list_t *        clients;
     bool                is_running;
     frequency_t         freq;
@@ -48,5 +48,7 @@ void network_handle_client_connection(server_t *s);
 void server_handle_request(server_t *s);
 
 void server_remove_client(server_t *s, client_t *client);
+
+client_t *server_find_client_from_drone(server_t *s, drone_t *drone);
 
 #endif /* !SERVER_H_ */
