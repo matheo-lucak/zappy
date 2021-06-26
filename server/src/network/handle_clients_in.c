@@ -26,9 +26,9 @@ void network_handle_clients_in(server_t *s)
             continue;
         if (socket_selector_is_socket_ready(s->n.selector, SOCKET(c->socket))) {
             c_input = request_get_input(c);
-            if (c->pending_requests->__c.size < CLIENT_MAX_PENDING_REQUEST) {
+            if (list_len(c->pending_requests) < CLIENT_MAX_PENDING_REQUEST) {
                 c_request = request_parse_from_input(c_input, c->type);
-                ptr_list_push_back(c->pending_requests, c_request);
+                client_add_request(c, c_request);
             }
             free(c_input);
         }
