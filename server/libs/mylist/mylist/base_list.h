@@ -106,7 +106,7 @@
         size_t it##_index = (it)->index;    \
         node_iter_next(&it);                \
         if (it) {                           \
-            (it)->index -= 1;               \
+            (it)->index = it##_index;       \
         }                                   \
         list_pop(list, it##_index);         \
     }
@@ -117,7 +117,7 @@
         size_t it##_index = (it)->index;    \
         node_iter_prev(&it);                \
         if (it) {                           \
-            (it)->index += 1;               \
+            (it)->index = it##_index;       \
         }                                   \
         list_pop(list, it##_index);         \
     }
