@@ -38,6 +38,17 @@ void intern_ptr_list_pop_back(
     ptr_list_t *this
 );
 
+int intern_ptr_list_remove(
+    ptr_list_t *this,
+    const void *ptr
+);
+
+int intern_ptr_list_remove_cmp(
+    ptr_list_t *this,
+    const void *ptr,
+    node_cmp_t comparator
+);
+
 void intern_ptr_list_clear(
     ptr_list_t *this
 );
@@ -112,6 +123,8 @@ static const ptr_list_t PTR_LIST_MODEL =
     .pop = &intern_ptr_list_pop,
     .pop_front = &intern_ptr_list_pop_front,
     .pop_back = &intern_ptr_list_pop_back,
+    .ptr_remove = &intern_ptr_list_remove,
+    .ptr_remove_cmp = &intern_ptr_list_remove_cmp,
     .clear = &intern_ptr_list_clear,
     .duplicate = &intern_ptr_list_duplicate,
     .merge = &intern_ptr_list_merge,
