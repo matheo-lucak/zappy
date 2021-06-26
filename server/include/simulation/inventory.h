@@ -65,4 +65,12 @@ bool inventory_remove_item(inventory_t *inventory,
 const item_slot_t *inventory_get_item_info(inventory_t *inventory,
                                             resource_type_t type);
 
+unsigned int inventory_get_food_info(inventory_t *inventory);
+unsigned int inventory_get_linemate_info(inventory_t *inventory);
+unsigned int inventory_get_deraumere_info(inventory_t *inventory);
+unsigned int inventory_get_sibur_info(inventory_t *inventory);
+unsigned int inventory_get_mendiane_info(inventory_t *inventory);
+unsigned int inventory_get_phiras_info(inventory_t *inventory);
+unsigned int inventory_get_thystame_info(inventory_t *inventory);
+
 #endif /* !INVENTORY_H_ */

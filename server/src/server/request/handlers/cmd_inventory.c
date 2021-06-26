@@ -7,26 +7,20 @@
 
 #include "server/request/handler.h"
 #include "server/response/response.h"
+#include "simulation/inventory.h"
 
 void request_handler_cmd_inventory(server_t *s, client_t *c, request_t *r)
 {
-    response_t *response = NULL;
-    const item_slot_t *food_slot = inventory_get_item_info(c->drone->inventory, RESOURCE_FOOD);
-    unsigned int food_amount = food_slot ? food_slot->quantity : 0;
-    const item_slot_t *linemate_slot = inventory_get_item_info(c->drone->inventory, RESOURCE_LINEMATE);
-    unsigned int linemate_amount = linemate_slot ? linemate_slot->quantity : 0;
-    const item_slot_t *deraumere_slot = inventory_get_item_info(c->drone->inventory, RESOURCE_DERAUMERE);
-    unsigned int deraumere_amount = linemate_slot ? linemate_slot->quantity : 0;
-    const item_slot_t *sibur_slot = inventory_get_item_info(c->drone->inventory, RESOURCE_SIBUR);
-    unsigned int sibur_amount = linemate_slot ? linemate_slot->quantity : 0;
-    const item_slot_t *mendiane_slot = inventory_get_item_info(c->drone->inventory, RESOURCE_MENDIANE);
-    unsigned int mendiane_amount = linemate_slot ? linemate_slot->quantity : 0;
-    const item_slot_t *phiras_slot = inventory_get_item_info(c->drone->inventory, RESOURCE_PHIRAS);
-    unsigned int phiras_amount = phiras_slot ? phiras_slot->quantity : 0;
-    const item_slot_t *thystame_slot = inventory_get_item_info(c->drone->inventory, RESOURCE_THYSTAME);
-    unsigned int thystame_amount = thystame_slot ? thystame_slot->quantity : 0;
+    unsigned int food = inventory_get_food_info(c->drone->inventory);
+    unsigned int linemate = inventory_get_linemate_info(c->drone->inventory);
+    unsigned int deraumere = inventory_get_deraumere_info(c->drone->inventory);
+    unsigned int sibur = inventory_get_sibur_info(c->drone->inventory);
+    unsigned int mendiane = inventory_get_mendiane_info(c->drone->inventory);
+    unsigned int phiras = inventory_get_phiras_info(c->drone->inventory);
+    unsigned int thystame = inventory_get_thystame_info(c->drone->inventory);
 
     client_add_response(c, response_create(RESPONSE_INVENTORY,
-        food_amount, linemate_amount, deraumere_amount, sibur_amount,
-        mendiane_amount, phiras_amount, thystame_amount));
+        food, linemate, deraumere, sibur,
+        mendiane, phiras, thystame)
+    );
 }
