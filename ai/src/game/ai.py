@@ -89,7 +89,7 @@ class AI:
         else:
             print(f"Seeking {resource}...")
         while self.__player.inventory.get(resource) < resource.amount:
-            if self.__player.inventory.get("food") < self.__min_food.amount and not isinstance(resource, Food):
+            if self.__player.inventory.get(self.__min_food.name) < self.__min_food.amount and not isinstance(resource, Food):
                 print(f"Missing food")
                 yield from self.__seek_resource(self.__required_food, resource)
                 print("I have sufficient food")
