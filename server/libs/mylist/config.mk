@@ -26,6 +26,7 @@ SRC_LIB		=	array/array_to_generic_list.c			\
 				generic_list/generic_list_infos.c		\
 				generic_list/generic_list_merge.c		\
 				generic_list/generic_list_pop.c			\
+				generic_list/generic_list_remove.c		\
 				generic_list/generic_list_reverse.c		\
 				generic_list/generic_list_rotate.c		\
 				ptr_list/ptr_list_clear.c				\
@@ -39,6 +40,7 @@ SRC_LIB		=	array/array_to_generic_list.c			\
 				ptr_list/ptr_list_infos.c				\
 				ptr_list/ptr_list_merge.c				\
 				ptr_list/ptr_list_pop.c					\
+				ptr_list/ptr_list_remove.c				\
 				ptr_list/ptr_list_reverse.c				\
 				ptr_list/ptr_list_rotate.c				\
 				string_list/string_list_clear.c			\
@@ -54,6 +56,7 @@ SRC_LIB		=	array/array_to_generic_list.c			\
 				string_list/string_list_infos.c			\
 				string_list/string_list_merge.c			\
 				string_list/string_list_pop.c			\
+				string_list/string_list_remove.c		\
 				string_list/string_list_reverse.c		\
 				string_list/string_list_rotate.c		\
 
