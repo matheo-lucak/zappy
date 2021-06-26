@@ -27,5 +27,5 @@ void request_handler_cmd_inventory(server_t *s, client_t *c, request_t *r)
     unsigned int thystame_amount = thystame_slot ? thystame_slot->quantity : 0;
 
     response = response_create(RESPONSE_INVENTORY, food_amount, linemate_amount, deraumere_amount, sibur_amount, mendiane_amount, phiras_amount, thystame_amount);
-    generic_list_push_back(c->pending_responses, response, response_t *);
+    ptr_list_push_back(c->pending_responses, response);
 }

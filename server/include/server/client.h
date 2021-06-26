@@ -45,7 +45,7 @@ typedef struct client_s
     char *          input_stock;
     drone_t *       drone;
     ptr_list_t *    pending_requests;
-    list_t *        pending_responses;
+    ptr_list_t *    pending_responses;
 } client_t;
 
 client_t *client_create(void);

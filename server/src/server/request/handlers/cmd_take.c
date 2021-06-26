@@ -21,7 +21,7 @@ void request_handler_cmd_take(server_t *s, client_t *c, request_t *r)
     info = resource_get_info_from_name(node ? NODE_STR(node) : NULL);
     if (!info) {
         response = response_create(RESPONSE_KO);
-        generic_list_push_back(c->pending_responses, response, response_t *);
+        ptr_list_push_back(c->pending_responses, response);
         return;
     }
     type = info->type;
@@ -30,5 +30,5 @@ void request_handler_cmd_take(server_t *s, client_t *c, request_t *r)
         is_ok = inventory_add_item(c->drone->inventory, type, 1);
     }
     response = response_create(is_ok ? RESPONSE_OK : RESPONSE_KO);
-    generic_list_push_back(c->pending_responses, response, response_t *);
+    ptr_list_push_back(c->pending_responses, response);
 }

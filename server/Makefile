@@ -82,6 +82,7 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/direction/get_random.c)					\
 					$(addprefix $(SRC_PATH), simulation/drone/create.c)							\
 					$(addprefix $(SRC_PATH), simulation/drone/destroy.c)						\
+					$(addprefix $(SRC_PATH), simulation/drone/eject.c)							\
 					$(addprefix $(SRC_PATH), simulation/drone/move.c)							\
 					$(addprefix $(SRC_PATH), simulation/drone/rotate.c)							\
 					$(addprefix $(SRC_PATH), simulation/inventory/add_item.c)					\
@@ -193,6 +194,7 @@ TESTS_SRC		=	$(addprefix $(TESTS_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(TESTS_PATH), server/request/parse.c)						\
 					$(addprefix $(TESTS_PATH), server/response/create.c)					\
 					$(addprefix $(TESTS_PATH), server/remove_client.c)						\
+					$(addprefix $(TESTS_PATH), simulation/drone/eject.c)					\
 					$(addprefix $(TESTS_PATH), simulation/drone/move.c)						\
 					$(addprefix $(TESTS_PATH), simulation/drone/rotate.c)					\
 					$(addprefix $(TESTS_PATH), simulation/inventory/add_item.c)				\

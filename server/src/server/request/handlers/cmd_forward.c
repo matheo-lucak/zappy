@@ -14,5 +14,5 @@ void request_handler_cmd_forward(server_t *s, client_t *c, request_t *r)
 
     drone_move(c->drone, s->s.map);
     response = response_create(RESPONSE_OK);
-    generic_list_push_back(c->pending_responses, response, response_t *);
+    ptr_list_push_back(c->pending_responses, response);
 }

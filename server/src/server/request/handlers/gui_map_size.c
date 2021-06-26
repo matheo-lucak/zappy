@@ -13,5 +13,5 @@ void request_handler_gui_map_size(server_t *s, client_t *c, request_t *r)
     response_t *response = NULL;
 
     response = response_create(RESPONSE_MSZ, s->s.map->width, s->s.map->height);
-    generic_list_push_back(c->pending_responses, response, response_t *);
+    ptr_list_push_back(c->pending_responses, response);
 }
