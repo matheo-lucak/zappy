@@ -48,10 +48,16 @@ typedef struct client_s
     ptr_list_t *    pending_responses;
 } client_t;
 
+typedef struct request_s    request_t;
+typedef struct response_s   response_t;
+
 client_t *client_create(void);
 void client_destroy(client_t *client);
 
 void client_to_drone(client_t *client, drone_t *drone);
 void client_to_spectator(client_t *client);
+
+void client_add_request(client_t *client, request_t *request);
+void client_add_response(client_t *client, response_t *response);
 
 #endif /* !CLIENT_H_ */

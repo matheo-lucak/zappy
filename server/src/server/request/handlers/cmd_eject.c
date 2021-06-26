@@ -78,8 +78,7 @@ void request_handler_cmd_eject(server_t *s, client_t *c, request_t *r)
     local_direction_t eject_index;
 
     if (list_empty(s->s.map->tiles[c->drone->y][c->drone->x]->drones)) {
-        response = response_create(RESPONSE_KO);
-        ptr_list_push_back(c->pending_responses, response);
+        client_add_response(c, response_create(RESPONSE_KO));
         return;
     }
     list_foreach(d, s->s.map->tiles[c->drone->y][c->drone->x]->drones) {
@@ -89,10 +88,8 @@ void request_handler_cmd_eject(server_t *s, client_t *c, request_t *r)
         eject_c = get_client_from_drone(s, NODE_PTR(d, drone_t));
         if (eject_c) {
             eject_index = get_eject_direction(NODE_PTR(d, drone_t)->facing_direction, c->drone->facing_direction);
-            response = response_create(RESPONSE_EJECT, eject_index);
-            ptr_list_push_back(eject_c->pending_responses, response);
+            client_add_response(c, response_create(RESPONSE_EJECT, eject_index));
         }
     }
-    response = response_create(RESPONSE_OK);
-    ptr_list_push_back(c->pending_responses, response);
+    client_add_response(c, response_create(RESPONSE_OK));
 }

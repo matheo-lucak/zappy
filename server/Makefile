@@ -36,6 +36,8 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), network/handle_clients_out.c)						\
 					$(addprefix $(SRC_PATH), network/start.c)									\
 					$(addprefix $(SRC_PATH), network/stop.c)									\
+					$(addprefix $(SRC_PATH), server/client/add_request.c)						\
+					$(addprefix $(SRC_PATH), server/client/add_response.c)						\
 					$(addprefix $(SRC_PATH), server/client/create.c)							\
 					$(addprefix $(SRC_PATH), server/client/destroy.c)							\
 					$(addprefix $(SRC_PATH), server/client/to.c)								\

@@ -26,6 +26,7 @@ void request_handler_cmd_inventory(server_t *s, client_t *c, request_t *r)
     const item_slot_t *thystame_slot = inventory_get_item_info(c->drone->inventory, RESOURCE_THYSTAME);
     unsigned int thystame_amount = thystame_slot ? thystame_slot->quantity : 0;
 
-    response = response_create(RESPONSE_INVENTORY, food_amount, linemate_amount, deraumere_amount, sibur_amount, mendiane_amount, phiras_amount, thystame_amount);
-    ptr_list_push_back(c->pending_responses, response);
+    client_add_response(c, response_create(RESPONSE_INVENTORY,
+        food_amount, linemate_amount, deraumere_amount, sibur_amount,
+        mendiane_amount, phiras_amount, thystame_amount));
 }
