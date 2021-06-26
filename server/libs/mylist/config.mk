@@ -11,8 +11,9 @@ SRC_LIB		=	array/array_to_generic_list.c			\
 				container/container_remove_node.c		\
 				container/container_reverse.c			\
 				container/container_rotate.c			\
-				container/create_node.c					\
-				container/destroy_node.c				\
+				node/create_node.c						\
+				node/destroy_node.c						\
+				node/node_iterator.c					\
 				generic_list/generic_list_clear.c		\
 				generic_list/generic_list_create.c		\
 				generic_list/generic_list_contains.c	\
@@ -25,6 +26,7 @@ SRC_LIB		=	array/array_to_generic_list.c			\
 				generic_list/generic_list_infos.c		\
 				generic_list/generic_list_merge.c		\
 				generic_list/generic_list_pop.c			\
+				generic_list/generic_list_remove.c		\
 				generic_list/generic_list_reverse.c		\
 				generic_list/generic_list_rotate.c		\
 				ptr_list/ptr_list_clear.c				\
@@ -38,6 +40,7 @@ SRC_LIB		=	array/array_to_generic_list.c			\
 				ptr_list/ptr_list_infos.c				\
 				ptr_list/ptr_list_merge.c				\
 				ptr_list/ptr_list_pop.c					\
+				ptr_list/ptr_list_remove.c				\
 				ptr_list/ptr_list_reverse.c				\
 				ptr_list/ptr_list_rotate.c				\
 				string_list/string_list_clear.c			\
@@ -53,6 +56,7 @@ SRC_LIB		=	array/array_to_generic_list.c			\
 				string_list/string_list_infos.c			\
 				string_list/string_list_merge.c			\
 				string_list/string_list_pop.c			\
+				string_list/string_list_remove.c		\
 				string_list/string_list_reverse.c		\
 				string_list/string_list_rotate.c		\
 

@@ -5,11 +5,8 @@
 ** main
 */
 
-#include <fcntl.h>
 #include "arg_parser.h"
 #include "server/server.h"
-
-#include "server/response/response.h"
 
 int main(int ac, char **av)
 {

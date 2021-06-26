@@ -5,12 +5,17 @@
 ** handle_clients_in
 */
 
+#include <stdlib.h>
+
 #include "server/server.h"
 #include "server/client.h"
+#include "server/request/request.h"
 
 void network_handle_clients_in(server_t *s)
 {
     client_t *c = NULL;
+    char *c_input = NULL;
+    request_t *c_request = NULL;
 
     if (socket_selector_wait(s->n.selector, 500, WATCH_RD) <= 0)
         return;
@@ -20,6 +25,12 @@ void network_handle_clients_in(server_t *s)
         if (!c)
             continue;
         if (socket_selector_is_socket_ready(s->n.selector, SOCKET(c->socket))) {
+            c_input = request_get_input(c);
+            if (list_len(c->pending_requests) < CLIENT_MAX_PENDING_REQUEST) {
+                c_request = request_parse_from_input(c_input, c->type);
+                client_add_request(c, c_request);
+            }
+            free(c_input);
         }
     }
 }

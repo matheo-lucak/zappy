@@ -28,6 +28,9 @@ struct string_linked_list
     void (*const pop)(string_list_t *this, long index);
     void (*const pop_front)(string_list_t *this);
     void (*const pop_back)(string_list_t *this);
+    int (*const str_remove)(string_list_t *this, const char *str);
+    int (*const str_remove_cmp)(string_list_t *this,
+                                const char *str, node_cmp_t comparator);
 
     void (*const clear)(string_list_t *this);
     string_list_t *(*const duplicate)(const string_list_t *this);
@@ -123,6 +126,22 @@ char *string_list_concat(
 // Returns a pointer to the allocated storage, or NULL in case of failure
 #define string_list_emplace_back(list, size) \
     ((char *)((list)->str_emplace_back((list), (size))))
+//////////////////////////////////////////////////
+
+///////////// Remove data in list /////////////
+
+// Remove the first occurence of a string from the list
+// Returns LIST_SUCCESS (1) if it was a success, LIST_ERROR (0) otherwise
+#define string_list_remove(list, str) \
+    (list)->str_remove((list), (str))
+
+// Remove the first occurence of a string from the list using a comparator
+// The comparator function must returns 0 if the data match,
+// non-zero value otherwise
+// Returns LIST_SUCCESS (1) if it was a success, LIST_ERROR (0) otherwise
+// Returns LIST_ERROR for NULL comparator
+#define string_list_remove_cmp(list, str, comparator) \
+    (list)->str_remove_cmp((list), (str), (node_cmp_t)(comparator))
 //////////////////////////////////////////////////
 
 ///////////// Find node in list /////////////

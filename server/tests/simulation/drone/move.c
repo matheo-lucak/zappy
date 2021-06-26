@@ -7,6 +7,7 @@
 
 #include <criterion/criterion.h>
 #include "simulation/drone.h"
+#include "simulation/map.h"
 
 Test(drone_move, small_easy_move_in_x)
 {

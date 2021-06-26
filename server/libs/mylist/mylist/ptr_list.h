@@ -24,6 +24,9 @@ struct pointer_linked_list
     void (*const pop)(ptr_list_t *this, long index);
     void (*const pop_front)(ptr_list_t *this);
     void (*const pop_back)(ptr_list_t *this);
+    int (*const ptr_remove)(ptr_list_t *this, const void *ptr);
+    int (*const ptr_remove_cmp)(ptr_list_t *this,
+                                const void *ptr, node_cmp_t comparator);
 
     void (*const clear)(ptr_list_t *this);
     ptr_list_t *(*const duplicate)(const ptr_list_t *this);
@@ -100,6 +103,22 @@ ptr_list_t *array_to_ptr_list(const void *array, node_dtor_t destructor);
 #define ptr_list_push_back(list, ptr) \
     (list)->ptr_push_back((list), (ptr))
 ///////////////////////////////////////////////////////////////
+
+///////////// Remove data in list /////////////
+
+// Remove the first occurence of a pointer from the list
+// Returns LIST_SUCCESS (1) if it was a success, LIST_ERROR (0) otherwise
+#define ptr_list_remove(list, ptr) \
+    (list)->ptr_remove((list), (ptr))
+
+// Remove the first occurence of a pointer from the list using a comparator
+// The comparator function must returns 0 if the data match,
+// non-zero value otherwise
+// Returns LIST_SUCCESS (1) if it was a success, LIST_ERROR (0) otherwise
+// Returns LIST_ERROR for NULL comparator
+#define ptr_list_remove_cmp(list, ptr, comparator) \
+    (list)->ptr_remove_cmp((list), (ptr), (node_cmp_t)(comparator))
+//////////////////////////////////////////////////
 
 ///////////// Find node in list /////////////
 

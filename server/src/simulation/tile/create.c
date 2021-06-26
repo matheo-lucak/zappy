@@ -8,22 +8,19 @@
 #include <stdlib.h>
 #include "simulation/tile.h"
 
-tile_t *tile_create(unsigned int pos_x, unsigned int pos_y)
+tile_t *tile_create(void)
 {
-    tile_t *tile = malloc(sizeof(tile_t));
+    tile_t *tile = calloc(1, sizeof(tile_t));
 
     if (!tile)
         return NULL;
-    *tile = (tile_t){0};
-    tile->pos_x = pos_x;
-    tile->pos_y = pos_y;
-    tile->players_on_tile = ptr_list_create(NULL);
-    if (!tile->players_on_tile) {
+    tile->drones = ptr_list_create(NULL);
+    if (!tile->drones) {
         tile_destroy(tile);
         return NULL;
     }
-    tile->objects_on_tile = ptr_list_create(NULL);
-    if (!tile->objects_on_tile) {
+    tile->items = generic_list_create(NULL);
+    if (!tile->items) {
         tile_destroy(tile);
         return NULL;
     }

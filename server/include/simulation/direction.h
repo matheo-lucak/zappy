@@ -16,6 +16,19 @@ typedef enum direction_e
     RIGHT
 } direction_t;
 
+typedef enum local_direction_e
+{
+    LCL_UNKNOWN = 0,
+    LCL_UP = 1,
+    LCL_UP_LEFT = 2,
+    LCL_LEFT = 3,
+    LCL_DOWN_LEFT = 4,
+    LCL_DOWN = 5,
+    LCL_DOWN_RIGHT = 6,
+    LCL_RIGHT = 7,
+    LCL_UP_RIGHT = 8,
+} local_direction_t;
+
 direction_t direction_get_random();
 
 #endif /* !DIRECTION_H_ */

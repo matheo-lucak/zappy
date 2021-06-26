@@ -11,7 +11,7 @@ void intern_ptr_list_pop(ptr_list_t *this, long index)
 {
     container_list_t *list = (container_list_t *)&this->__c;
 
-    destroy_ptr_node(container_remove(list, index), list->__dtor__);
+    destroy_ptr_node(container_remove_node(list, index), list->__dtor__);
 }
 
 void intern_ptr_list_pop_front(ptr_list_t *this)

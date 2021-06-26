@@ -11,22 +11,22 @@
 static void simulation_handle_team_eggs(team_t *team)
 {
     egg_t *egg = NULL;
-    const node_t *node = NULL;
-    const node_t *node_to_delete = NULL;
+    node_iterator_t *it = NULL;
+    node_iterator_t *it_to_del = NULL;
 
-    for (node = list_begin(team->eggs); node;) {
-        egg = NODE_PTR(node, egg_t);
+    for (it = list_iter_begin(team->eggs); it;) {
+        egg = NODE_PTR(it, egg_t);
         if (egg->time_until_hatch <= 0) {
-            node_to_delete = node;
-            node = node->next;
+            it_to_del = it;
+            node_iter_next(&it);
             team_add_drone(team, drone_create(egg->x, egg->y, false));
             server_log(LOG_SIMULATION_EGG_HATCHED, egg->x, egg->y);
             team->free_slots_nb += 1;
-            list_pop(team->eggs, node_to_delete->index);
+            list_pop(team->eggs, it_to_del->index);
             continue;
         }
         egg->time_until_hatch -= 1;
-        node = (node)->next;
+        node_iter_next(&it);
     }
 }
 

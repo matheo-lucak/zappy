@@ -10,5 +10,5 @@
 void intern_string_list_clear(string_list_t *this)
 {
     while (!list_empty(this))
-        list_pop_front(this);
+        list_pop_back(this);
 }

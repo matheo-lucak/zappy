@@ -12,7 +12,7 @@ const node_t *intern_string_list_find(const string_list_t *this, const char *s)
 {
     if (!s)
         return NULL;
-    list_foreach(node, this) {
+    for (const node_t *node = list_begin(this); node; node = node->next) {
         if (strcmp(NODE_STR(node), s) == 0)
             return node;
     }
@@ -25,7 +25,7 @@ const node_t *intern_string_list_find_cmp(const string_list_t *this,
 {
     if (!s || !comparator)
         return NULL;
-    list_foreach(node, this) {
+    for (const node_t *node = list_begin(this); node; node = node->next) {
         if (comparator(NODE_STR(node), s) == 0)
             return node;
     }

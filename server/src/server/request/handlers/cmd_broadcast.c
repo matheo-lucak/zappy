@@ -6,6 +6,7 @@
 */
 
 #include "server/request/handler.h"
+#include "server/response/response.h"
 
 void request_handler_cmd_broadcast(server_t *s, client_t *c, request_t *r)
 {
