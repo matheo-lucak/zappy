@@ -75,6 +75,7 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), server/response/create.c)							\
 					$(addprefix $(SRC_PATH), server/response/destroy.c)							\
 					$(addprefix $(SRC_PATH), server/launch.c)									\
+					$(addprefix $(SRC_PATH), server/remove_client.c)							\
 					$(addprefix $(SRC_PATH), server/run.c)										\
 					$(addprefix $(SRC_PATH), server/start.c)									\
 					$(addprefix $(SRC_PATH), server/stop.c)										\
@@ -88,6 +89,11 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/incantation/destroy.c)					\
 					$(addprefix $(SRC_PATH), simulation/incantation/find_requirements.c)		\
 					$(addprefix $(SRC_PATH), simulation/incantation/requirements.c)				\
+					$(addprefix $(SRC_PATH), simulation/inventory/add_item.c)					\
+					$(addprefix $(SRC_PATH), simulation/inventory/create.c)						\
+					$(addprefix $(SRC_PATH), simulation/inventory/destroy.c)					\
+					$(addprefix $(SRC_PATH), simulation/inventory/get_item_info.c)				\
+					$(addprefix $(SRC_PATH), simulation/inventory/remove_item.c)				\
 					$(addprefix $(SRC_PATH), simulation/map/create.c)							\
 					$(addprefix $(SRC_PATH), simulation/map/destroy.c)							\
 					$(addprefix $(SRC_PATH), simulation/resource/get_info.c)					\
@@ -97,8 +103,14 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/team/delete_drone.c)					\
 					$(addprefix $(SRC_PATH), simulation/team/destroy.c)							\
 					$(addprefix $(SRC_PATH), simulation/team/has_drone.c)						\
+					$(addprefix $(SRC_PATH), simulation/tile/add_drone.c)						\
+					$(addprefix $(SRC_PATH), simulation/tile/add_item.c)						\
+					$(addprefix $(SRC_PATH), simulation/tile/count_drone.c)						\
+					$(addprefix $(SRC_PATH), simulation/tile/count_item.c)						\
 					$(addprefix $(SRC_PATH), simulation/tile/create.c)							\
 					$(addprefix $(SRC_PATH), simulation/tile/destroy.c)							\
+					$(addprefix $(SRC_PATH), simulation/tile/remove_drone.c)					\
+					$(addprefix $(SRC_PATH), simulation/tile/remove_item.c)						\
 					$(addprefix $(SRC_PATH), simulation/start.c)								\
 					$(addprefix $(SRC_PATH), simulation/stop.c)									\
 					$(addprefix $(SRC_PATH), arguments_default_values.c)						\
@@ -179,12 +191,30 @@ TESTS_SRC		=	$(addprefix $(TESTS_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(TESTS_PATH), arg_parser/parse.c)							\
 					$(addprefix $(TESTS_PATH), server/request/checkers/is_positive_int.c)	\
 					$(addprefix $(TESTS_PATH), server/request/checkers/is_resource.c)		\
+					$(addprefix $(TESTS_PATH), server/request/handler/cmd_forward.c)		\
+					$(addprefix $(TESTS_PATH), server/request/handler/cmd_left.c)			\
+					$(addprefix $(TESTS_PATH), server/request/handler/cmd_right.c)			\
+					$(addprefix $(TESTS_PATH), server/request/handler/cmd_set.c)			\
+					$(addprefix $(TESTS_PATH), server/request/handler/cmd_take.c)			\
 					$(addprefix $(TESTS_PATH), server/request/get_input.c)					\
 					$(addprefix $(TESTS_PATH), server/request/parse.c)						\
 					$(addprefix $(TESTS_PATH), server/response/create.c)					\
+					$(addprefix $(TESTS_PATH), server/remove_client.c)						\
 					$(addprefix $(TESTS_PATH), simulation/drone/move.c)						\
 					$(addprefix $(TESTS_PATH), simulation/drone/rotate.c)					\
+					$(addprefix $(TESTS_PATH), simulation/incantation/check.c)				\
+					$(addprefix $(TESTS_PATH), simulation/inventory/add_item.c)				\
+					$(addprefix $(TESTS_PATH), simulation/inventory/get_item_info.c)		\
+					$(addprefix $(TESTS_PATH), simulation/inventory/remove_item.c)			\
 					$(addprefix $(TESTS_PATH), simulation/teams/has_drone.c)				\
+					$(addprefix $(TESTS_PATH), simulation/tile/add_drone.c)					\
+					$(addprefix $(TESTS_PATH), simulation/tile/add_item.c)					\
+					$(addprefix $(TESTS_PATH), simulation/tile/count_drone.c)				\
+					$(addprefix $(TESTS_PATH), simulation/tile/count_item.c)				\
+					$(addprefix $(TESTS_PATH), simulation/tile/remove_drone.c)				\
+					$(addprefix $(TESTS_PATH), simulation/tile/remove_item.c)				\
+					$(addprefix $(TESTS_PATH), simulation/start.c)							\
+
 
 TESTS_OBJ		=	$(TESTS_SRC:.c=.o)
 

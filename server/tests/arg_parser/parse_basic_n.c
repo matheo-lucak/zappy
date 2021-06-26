@@ -8,6 +8,7 @@
 #include <criterion/criterion.h>
 
 #include "arg_parser.h"
+#include "server/request/request.h"
 
 Test(parse_arguments, success_basic_n_one_name)
 {
@@ -62,6 +63,64 @@ Test(parse_arguments, fail_n_duplicated_names)
         "Team name 1",
         "Team name 2",
         "Team name 1",
+    };
+    int ac = sizeof(av) / sizeof(*av);
+    arguments_t args = {0};
+
+    cr_assert(parse_arguments(ac, av, &args));
+}
+
+Test(parse_arguments, fail_magic_gui)
+{
+    char * av[] = {
+        "./a.out",
+        "-n",
+        RQ_MAGIC_GUI
+    };
+    int ac = sizeof(av) / sizeof(*av);
+    arguments_t args = {0};
+
+    cr_assert(parse_arguments(ac, av, &args));
+}
+
+Test(parse_arguments, fail_magic_gui_w_multiple_names_1)
+{
+    char * av[] = {
+        "./a.out",
+        "-n",
+        RQ_MAGIC_GUI,
+        "Team name 1",
+        "Team name 2",
+    };
+    int ac = sizeof(av) / sizeof(*av);
+    arguments_t args = {0};
+
+    cr_assert(parse_arguments(ac, av, &args));
+}
+
+Test(parse_arguments, fail_magic_gui_w_multiple_names_2)
+{
+    char * av[] = {
+        "./a.out",
+        "-n",
+        "Team name 1",
+        RQ_MAGIC_GUI,
+        "Team name 2",
+    };
+    int ac = sizeof(av) / sizeof(*av);
+    arguments_t args = {0};
+
+    cr_assert(parse_arguments(ac, av, &args));
+}
+
+Test(parse_arguments, fail_magic_gui_w_multiple_names_3)
+{
+    char * av[] = {
+        "./a.out",
+        "-n",
+        "Team name 1",
+        "Team name 2",
+        RQ_MAGIC_GUI,
     };
     int ac = sizeof(av) / sizeof(*av);
     arguments_t args = {0};

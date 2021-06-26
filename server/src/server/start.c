@@ -16,7 +16,7 @@ int server_start(const arguments_t *args, server_t *s)
     if (!s || !args)
         return SERVER_EXIT;
     memset(s, 0, sizeof(server_t));
-    s->clients = ptr_list_create(&free);
+    s->clients = ptr_list_create((void *)&client_destroy);
     if (!s->clients)
         return SERVER_EXIT;
     if (network_start(args, &s->n) != NETWORK_SUCCESS)

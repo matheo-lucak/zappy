@@ -15,8 +15,10 @@
 #include "server/request/handler.h"
 #include "server/request/checker.h"
 
-#define RQ_SEPARATORS " "
-#define RQ_DELIMITER '\n'
+#define RQ_SEPARATORS   " "
+#define RQ_DELIMITER    '\n'
+
+#define RQ_MAGIC_GUI    "0xea83f3_gui_application"
 
 typedef enum request_type_e
 {

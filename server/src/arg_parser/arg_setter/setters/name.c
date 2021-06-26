@@ -9,13 +9,22 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
 
 #include "arg_parser/arg_checker.h"
 #include "arg_parser/arg_setter.h"
 
-static int arg_setter_name_error(void)
+#include "server/request/request.h"
+
+static int arg_setter_unique_name_error(void)
 {
     fprintf(stderr, "-n option only accepts unique team names\n");
+    return 1;
+}
+
+static int arg_setter_magic_gui_name_error(void)
+{
+    fprintf(stderr, "-n option must not match \"%s\"\n", RQ_MAGIC_GUI);
     return 1;
 }
 
@@ -26,8 +35,10 @@ int arg_setter_name_set_all_names(arguments_t *arg, int ac, char **av)
     for (; index < ac; index++) {
         if (!av[index] || av[index][0] == '-')
             break;
+        if (!strcmp(av[index], RQ_MAGIC_GUI))
+            return arg_setter_magic_gui_name_error();
         if (string_list_contains(arg->team_names, av[index]))
-            return arg_setter_name_error();
+            return arg_setter_unique_name_error();
         string_list_push_back(arg->team_names, av[index]);
     }
     optind = index - 1;
