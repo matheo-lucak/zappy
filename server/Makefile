@@ -36,6 +36,8 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), network/handle_clients_out.c)						\
 					$(addprefix $(SRC_PATH), network/start.c)									\
 					$(addprefix $(SRC_PATH), network/stop.c)									\
+					$(addprefix $(SRC_PATH), server/client/add_request.c)						\
+					$(addprefix $(SRC_PATH), server/client/add_response.c)						\
 					$(addprefix $(SRC_PATH), server/client/create.c)							\
 					$(addprefix $(SRC_PATH), server/client/destroy.c)							\
 					$(addprefix $(SRC_PATH), server/client/to.c)								\
@@ -79,9 +81,11 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), server/run.c)										\
 					$(addprefix $(SRC_PATH), server/start.c)									\
 					$(addprefix $(SRC_PATH), server/stop.c)										\
+					$(addprefix $(SRC_PATH), simulation/direction/get_eject_direction.c)		\
 					$(addprefix $(SRC_PATH), simulation/direction/get_random.c)					\
 					$(addprefix $(SRC_PATH), simulation/drone/create.c)							\
 					$(addprefix $(SRC_PATH), simulation/drone/destroy.c)						\
+					$(addprefix $(SRC_PATH), simulation/drone/eject.c)							\
 					$(addprefix $(SRC_PATH), simulation/drone/move.c)							\
 					$(addprefix $(SRC_PATH), simulation/drone/rotate.c)							\
 					$(addprefix $(SRC_PATH), simulation/incantation/check.c)					\
@@ -92,7 +96,14 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/inventory/add_item.c)					\
 					$(addprefix $(SRC_PATH), simulation/inventory/create.c)						\
 					$(addprefix $(SRC_PATH), simulation/inventory/destroy.c)					\
+					$(addprefix $(SRC_PATH), simulation/inventory/get_deraumere_info.c)			\
+					$(addprefix $(SRC_PATH), simulation/inventory/get_food_info.c)				\
 					$(addprefix $(SRC_PATH), simulation/inventory/get_item_info.c)				\
+					$(addprefix $(SRC_PATH), simulation/inventory/get_linemate_info.c)			\
+					$(addprefix $(SRC_PATH), simulation/inventory/get_mendiane_info.c)			\
+					$(addprefix $(SRC_PATH), simulation/inventory/get_phiras_info.c)			\
+					$(addprefix $(SRC_PATH), simulation/inventory/get_sibur_info.c)				\
+					$(addprefix $(SRC_PATH), simulation/inventory/get_thystame_info.c)			\
 					$(addprefix $(SRC_PATH), simulation/inventory/remove_item.c)				\
 					$(addprefix $(SRC_PATH), simulation/map/create.c)							\
 					$(addprefix $(SRC_PATH), simulation/map/destroy.c)							\
@@ -200,6 +211,7 @@ TESTS_SRC		=	$(addprefix $(TESTS_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(TESTS_PATH), server/request/parse.c)						\
 					$(addprefix $(TESTS_PATH), server/response/create.c)					\
 					$(addprefix $(TESTS_PATH), server/remove_client.c)						\
+					$(addprefix $(TESTS_PATH), simulation/drone/eject.c)					\
 					$(addprefix $(TESTS_PATH), simulation/drone/move.c)						\
 					$(addprefix $(TESTS_PATH), simulation/drone/rotate.c)					\
 					$(addprefix $(TESTS_PATH), simulation/incantation/check.c)				\

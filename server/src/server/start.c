@@ -16,6 +16,7 @@ int server_start(const arguments_t *args, server_t *s)
     if (!s || !args)
         return SERVER_EXIT;
     memset(s, 0, sizeof(server_t));
+    s->freq = args->freq;
     s->clients = ptr_list_create((void *)&client_destroy);
     if (!s->clients)
         return SERVER_EXIT;

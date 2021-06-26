@@ -11,30 +11,35 @@
 #include "server/server.h"
 #include "server/response/response.h"
 
+static bool network_handle_one_response_per_client(server_t *s)
+{
+    bool left_to_send = false;
+    client_t *c = NULL;
+    response_t *r = NULL;
+
+    if (list_empty(s->clients))
+        return false;
+    list_foreach(node, s->clients) {
+        c = NODE_PTR(node, client_t);
+        if (!socket_selector_is_socket_ready(s->n.selector, SOCKET(c->socket)))
+            continue;
+        r = NODE_PTR(list_begin(c->pending_responses), response_t);
+        tcp_socket_send(c->socket, r->data, strlen(r->data));
+        list_pop_front(c->pending_responses);
+        if (!list_empty(c->pending_responses))
+            left_to_send = true;
+    }
+    return left_to_send;
+}
+
 int network_handle_clients_out(server_t *s)
 {
-    selector_status_t status;
-    response_t *response = NULL;
-    char *r_data = NULL;
-    size_t data_size = 0;
     bool left_to_send = false;
 
     do {
-        left_to_send = false;
-        status = socket_selector_wait(s->n.selector, 1, WATCH_WRT);
-        if (status != SELECTOR_OK)
+        if (socket_selector_wait(s->n.selector, 1, WATCH_WRT) != SELECTOR_OK)
             return SERVER_ERROR;
-        list_foreach(c, s->clients) {
-            if (!socket_selector_is_socket_ready(s->n.selector, SOCKET(NODE_PTR(c, client_t)->socket)))
-                continue;
-            response = NODE_PTR(list_begin(NODE_PTR(c, client_t)->pending_responses), response_t);
-            r_data = response->data;
-            data_size = strlen(r_data);
-            tcp_socket_send(NODE_PTR(c, client_t)->socket, r_data, data_size);
-            list_pop_front(NODE_PTR(c, client_t)->pending_responses);
-            if (!list_empty(NODE_PTR(c, client_t)->pending_responses))
-                left_to_send = true;
-        }
+        left_to_send = network_handle_one_response_per_client(s);
     } while (left_to_send);
     return SERVER_SUCCESS;
 }
