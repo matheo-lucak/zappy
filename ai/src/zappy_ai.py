@@ -1,5 +1,6 @@
 # -*- coding: Utf-8 -*
 
+from sys import stderr
 from typing import NamedTuple, Optional
 
 from .api_server import APIServer
@@ -52,7 +53,7 @@ class ZappyAI:
         look_request: LookRequest = LookRequest(self.__player.vision.update)
         self.__server.send(inventory_request)
         self.__server.send(look_request)
-        while inventory_request.response is None and look_request.response is None:
+        while inventory_request.response is None or look_request.response is None:
             self.__server.fetch()
         print("AI setup finished.")
 
@@ -61,8 +62,6 @@ class ZappyAI:
         while True:
             if not self.__server.has_request_to_handle(ConnectNbrRequest):
                 self.__server.send(ConnectNbrRequest(self.__team.update))
-            if not self.__server.has_request_to_handle(LookRequest):
-                self.__server.send(LookRequest(self.__player.vision.update))
             self.__server.fetch()
             try:
                 next(algo)
@@ -75,11 +74,11 @@ class ZappyAI:
             ai: ZappyAI = ZappyAI(machine, port, team_name)
             ai.run()
         except (ConnectionError, BlockingIOError, ZappyError) as e:
-            print(e)
+            print(e, file=stderr)
         except EOFError:
-            print("Remote server closes this connection. Disconnecting...")
+            print("Remote server closes this connection. Disconnecting...", file=stderr)
         except KeyboardInterrupt:
-            print("\n" "AI stopped by user. Disconnecting...")
+            print("\n" "AI stopped by user. Disconnecting...", file=stderr)
 
 
 def zappy_ai(args: ZappyAIArgs) -> None:

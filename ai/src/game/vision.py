@@ -32,7 +32,7 @@ class Tile:
         for r in self.__resources:
             if r.name == resource:
                 return r.amount
-        return 0
+        raise KeyError(resource)
 
     def __contains__(self, resource: Union[str, BaseResource]) -> bool:
         if isinstance(resource, BaseResource):
@@ -67,7 +67,7 @@ class Coords(NamedTuple):
     divergence: int
 
 
-Grid = Dict[Coords, Tile]
+Grid = Dict[Tuple[int, int], Tile]
 
 
 class Vision:
@@ -79,10 +79,10 @@ class Vision:
         self.__vision_unit: int = 0
 
     def get(self, unit: int, divergence: int) -> Tile:
-        return self.__grid[Coords(unit=unit, divergence=divergence)]
+        return self.__grid[unit, divergence]
 
     def get_coord(self, coords: Coords) -> Tile:
-        return self.__grid[coords]
+        return self.get(coords.unit, coords.divergence)
 
     def __contains__(self, resource: Union[str, BaseResource]) -> bool:
         return any(resource in tile for tile in self.__grid.values())
@@ -103,10 +103,10 @@ class Vision:
             raise ResponseError(str(response), "I don't see anything")
         for index, (unit, divergence) in enumerate(self.iter_units(vision_unit)):
             try:
-                new_grid[Coords(unit=unit, divergence=divergence)] = Tile(unit, divergence, index, response.tiles[index])
+                new_grid[unit, divergence] = Tile(unit, divergence, index, response.tiles[index])
             except ResourceError as e:
                 raise ResponseError(str(response), str(e))
-        if new_grid[Coords(unit=0, divergence=0)].nb_players < 1:
+        if new_grid[0, 0].nb_players < 1:
             raise ResponseError(str(response), "I'm a ghost, so what ?")
 
         self.__vision_unit = vision_unit
@@ -122,5 +122,5 @@ class Vision:
         coords_list: List[Coords] = list()
         for coord, tile in self.__grid.items():
             if resource in tile:
-                coords_list.append(coord)
+                coords_list.append(Coords(*coord))
         return coords_list

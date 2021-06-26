@@ -7,6 +7,7 @@ from .player import Player
 from .team import Team
 from .vision import Coords, Tile
 from .role import Role
+from .position import Position
 from .algorithm import Algorithm, Implementation
 from .framerate import Framerate
 from .message import Message
@@ -58,68 +59,88 @@ class AI:
                 print(self.__player.inventory)
                 return
             yield
-        yield
-        # yield from self.__seek_resource()
 
     def __on_level_2(self) -> Implementation:
         yield
         # set role
 
-    def __seek_resource(self, resource: BaseResource) -> Implementation:
+    def __seek_resource(self, resource: BaseResource, *resources_to_get_with: BaseResource) -> Implementation:
         action: Callable[..., None]
         position: Coords
+        all_positions: List[Coords]
+        tile: Tile
         last_action: Optional[Callable[..., None]] = None
 
-        def go_to_take_resource(resource: str, unit: int, divergence: int) -> Implementation:
-            if (unit, divergence) != (0, 0):
-                self.__player.move_forward(abs(unit))
-                if divergence < 0:
-                    self.__player.turn_left()
-                elif divergence > 0:
-                    self.__player.turn_right()
-                self.__player.move_forward(abs(divergence))
+        def go_to_take_resource(resource: str, amount: int, position: Position) -> Implementation:
+            self.__player.go_to_position(position)
             while self.__player.moving:
                 yield
-            tile: Tile = self.__player.vision.get(unit, divergence)
-            nb_resources_in_tile: int = tile[resource]
-            print(f"Nb {resource} in tile: {nb_resources_in_tile}")
-            self.__player.take_object(resource, nb_resources_in_tile)
+            print(f"Nb {resource} in tile: {amount}")
+            self.__player.take_object(resource, amount)
             while self.__player.taking_object(resource):
                 yield
+            self.__player.look()
+            self.__player.check_inventory()
+            while self.__player.looking or self.__player.checking_inventory:
+                yield
 
-        print(f"Seeking {resource}({resource.amount})...")
+        if resource.amount > 0:
+            print(f"Seeking {resource}({resource.amount})...")
+        else:
+            print(f"Seeking {resource}...")
         while self.__player.inventory.get(resource) < resource.amount:
             if self.__player.inventory.get("food") < self.__min_food.amount and not isinstance(resource, Food):
                 print(f"Missing food")
-                yield from self.__seek_resource(self.__required_food)
-                print(f"I have sufficient food")
+                yield from self.__seek_resource(self.__required_food, resource)
+                print("I have sufficient food")
                 print(f"Seeking {resource} again...")
-            all_positions: List[Coords] = self.__player.vision.find(resource)
-            if not all_positions:
-                for rare_resource in MetaResource.get_rare_resources():
-                    all_positions = self.__player.vision.find(rare_resource)
-                    if all_positions:
-                        print(f"-- YES! I found {len(all_positions)} {rare_resource}{'s' if len(all_positions) > 1 else ''}")
-                        for p in all_positions:
-                            yield from go_to_take_resource(rare_resource, p.unit, p.divergence)
-                        last_action = None
+                continue
 
+            positions_to_go: List[Tuple[str, Position, int]] = list()
+            for rare_resource in MetaResource.get_rare_resources():
+                if rare_resource == resource.name or any(r.name == rare_resource for r in resources_to_get_with):
+                    continue
+                if self.__player.inventory.get(rare_resource) >= 3:
+                    continue
+                all_positions = self.__player.vision.find(rare_resource)
+                if all_positions:
+                    print(f"-- YES! I found a {rare_resource} in {len(all_positions)} tiles")
+                    for p in all_positions:
+                        tile = self.__player.vision.get_coord(p)
+                        positions_to_go.append(
+                            (rare_resource, self.__player.project_position(p.unit, p.divergence), tile[rare_resource])
+                        )
+
+            for search in resources_to_get_with:
+                if search.amount > 0 and self.__player.inventory.get(search) >= search.amount:
+                    continue
+                for p in self.__player.vision.find(search):
+                    tile = self.__player.vision.get_coord(p)
+                    positions_to_go.append((search.name, self.__player.project_position(p.unit, p.divergence), tile[search]))
+
+            for resource_name, resource_pos, amount in positions_to_go:
+                yield from go_to_take_resource(resource_name, amount, resource_pos)
+            all_positions = self.__player.vision.find(resource)
+            if not all_positions:
                 if last_action is self.__player.move_forward:
                     action = random_choice([self.__player.move_forward, self.__player.turn_left, self.__player.turn_right])
                 else:
                     action = self.__player.move_forward
                 action()
-                while self.__player.moving:
+                self.__player.look()
+                while self.__player.moving or self.__player.looking:
                     yield
             else:
+                print(f">> {resource} found")
                 actual_nb: int = self.__player.inventory.get(resource)
                 position = all_positions[0]
-                yield from go_to_take_resource(resource.name, position.unit, position.divergence)
-                if actual_nb < self.__player.inventory.get(resource):
+                tile = self.__player.vision.get_coord(position)
+                yield from go_to_take_resource(
+                    resource.name, tile[resource], self.__player.project_position(position.unit, position.divergence)
+                )
+                if actual_nb < self.__player.inventory.get(resource) and resource.amount > 0:
                     print(f"--> {resource}: {self.__player.inventory.get(resource)}/{resource.amount}")
-                last_action = None
             yield
-        yield
 
     def __spy(self) -> Implementation:
         yield

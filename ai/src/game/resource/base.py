@@ -42,7 +42,9 @@ class MetaResource(type):
 
     @classmethod
     def get_rare_resources(metacls) -> Tuple[str, ...]:
-        return tuple(resource for resource, density in metacls.__resources_density.items() if density < metacls.__rarity_ceiling)
+        resources: Tuple[Tuple[str, float], ...]
+        resources = tuple(sorted(metacls.__resources_density.items(), key=lambda item: item[1]))
+        return tuple(resource for resource, density in resources if density < metacls.__rarity_ceiling)
 
     @classmethod
     def get_resource_density(metacls, resource: str) -> float:
