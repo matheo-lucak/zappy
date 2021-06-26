@@ -5,6 +5,7 @@
 ** move
 */
 
+#include <stdbool.h>
 #include "simulation/drone.h"
 #include "simulation/direction.h"
 
@@ -48,15 +49,15 @@ static void drone_rotate_right(drone_t *drone)
     }
 }
 
-int drone_rotate(drone_t *drone, direction_t direction)
+bool drone_rotate(drone_t *drone, direction_t direction)
 {
     if (!drone)
-        return 0;
+        return false;
     if (direction == LEFT)
         drone_rotate_left(drone);
     else if (direction == RIGHT)
         drone_rotate_right(drone);
     else
-        return 0;
-    return 1;
+        return false;
+    return true;
 }

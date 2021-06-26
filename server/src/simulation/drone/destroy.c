@@ -13,5 +13,6 @@ void drone_destroy(drone_t *d)
 {
     if (!d)
         return;
+    inventory_destroy(d->inventory);
     free(d);
 }

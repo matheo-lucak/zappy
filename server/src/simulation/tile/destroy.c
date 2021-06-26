@@ -12,7 +12,7 @@ void tile_destroy(tile_t *tile)
 {
     if (!tile)
         return;
-    ptr_list_destroy(tile->players_on_tile);
-    ptr_list_destroy(tile->objects_on_tile);
+    ptr_list_destroy(tile->drones);
+    generic_list_destroy(tile->items);
     free(tile);
 }

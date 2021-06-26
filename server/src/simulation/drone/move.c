@@ -5,10 +5,11 @@
 ** move
 */
 
+#include <stdbool.h>
 #include "simulation/drone.h"
 #include "simulation/map.h"
 
-static int drone_get_move(drone_t *drone, int *x, int *y)
+static bool drone_get_move(drone_t *drone, int *x, int *y)
 {
     switch (drone->facing_direction) {
         case UP:
@@ -24,9 +25,9 @@ static int drone_get_move(drone_t *drone, int *x, int *y)
             *x = 1;
             break;
         default:
-            return 0;
+            return false;
     }
-    return 1;
+    return true;
 }
 
 static void drone_apply_move(drone_t *drone, int x_move, int y_move, const map_t *map)
@@ -46,13 +47,13 @@ static void drone_apply_move(drone_t *drone, int x_move, int y_move, const map_t
     drone->y = future_y_pos;
 }
 
-int drone_move(drone_t *drone, const map_t *map)
+bool drone_move(drone_t *drone, const map_t *map)
 {
     int x_move = 0;
     int y_move = 0;
 
     if (!drone_get_move(drone, &x_move, &y_move))
-        return 0;
+        return false;
     drone_apply_move(drone, x_move, y_move, map);
-    return 1;
+    return true;
 }

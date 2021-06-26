@@ -37,7 +37,7 @@ map_t *map_create(unsigned int width, unsigned int height)
             return NULL;
         }
         for (unsigned int x = 0; x < width; x++) {
-            map->tiles[y][x] = tile_create(x, y);
+            map->tiles[y][x] = tile_create();
             if (!map->tiles[y][x]) {
                 map_destroy_until(map, y + 1, x + 1);
                 return NULL;
