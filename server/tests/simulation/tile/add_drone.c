@@ -12,7 +12,7 @@
 Test(tile_add_drone, simple_add_drone)
 {
     tile_t *tile = tile_create();
-    drone_t *drone = drone_create(0, 0);
+    drone_t *drone = drone_create(0, 0, true);
 
     cr_assert(!ptr_list_find(tile->drones, drone));
     cr_assert(tile_add_drone(tile, drone));
@@ -24,7 +24,7 @@ Test(tile_add_drone, simple_add_drone)
 Test(tile_add_drone, several_add_same_drone)
 {
     tile_t *tile = tile_create();
-    drone_t *drone = drone_create(0, 0);
+    drone_t *drone = drone_create(0, 0, true);
 
     cr_assert(!ptr_list_find(tile->drones, drone));
     cr_assert(tile_add_drone(tile, drone));
