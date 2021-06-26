@@ -31,6 +31,8 @@ void response_destroy(response_t *response);
 
 #define RESPONSE_BROADCAST          "message %d, %s\n"
 
+#define RESPONSE_EJECT              "eject: %d\n"
+
 #define RESPONSE_INCANTATION_START  "Elevation underway\n"
 #define RESPONSE_INCANTATION_ENDS   "Current level: %d\n"
 

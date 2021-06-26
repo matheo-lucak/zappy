@@ -14,9 +14,7 @@
 int network_handle_clients_out(server_t *s)
 {
     selector_status_t status;
-    response_t *response = NULL;
-    char *r_data = NULL;
-    size_t data_size = 0;
+    response_t *r = NULL;
     bool left_to_send = false;
 
     do {
@@ -27,10 +25,8 @@ int network_handle_clients_out(server_t *s)
         list_foreach(c, s->clients) {
             if (!socket_selector_is_socket_ready(s->n.selector, SOCKET(NODE_PTR(c, client_t)->socket)))
                 continue;
-            response = NODE_PTR(list_begin(NODE_PTR(c, client_t)->pending_responses), response_t);
-            r_data = response->data;
-            data_size = strlen(r_data);
-            tcp_socket_send(NODE_PTR(c, client_t)->socket, r_data, data_size);
+            r = NODE_PTR(list_begin(NODE_PTR(c, client_t)->pending_responses), response_t);
+            tcp_socket_send(NODE_PTR(c, client_t)->socket, r->data, strlen(r->data));
             list_pop_front(NODE_PTR(c, client_t)->pending_responses);
             if (!list_empty(NODE_PTR(c, client_t)->pending_responses))
                 left_to_send = true;

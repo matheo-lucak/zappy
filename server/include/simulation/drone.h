@@ -30,5 +30,6 @@ void drone_destroy(drone_t *d);
 
 bool drone_move(drone_t *drone, const map_t *map);
 bool drone_rotate(drone_t *drone, direction_t direction);
+bool drone_eject(drone_t *drone, const map_t *map, direction_t direction);
 
 #endif /* !DRONE_H_ */
