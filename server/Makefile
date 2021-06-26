@@ -75,6 +75,7 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), server/response/create.c)							\
 					$(addprefix $(SRC_PATH), server/response/destroy.c)							\
 					$(addprefix $(SRC_PATH), server/launch.c)									\
+					$(addprefix $(SRC_PATH), server/remove_client.c)							\
 					$(addprefix $(SRC_PATH), server/run.c)										\
 					$(addprefix $(SRC_PATH), server/start.c)									\
 					$(addprefix $(SRC_PATH), server/stop.c)										\
@@ -191,6 +192,7 @@ TESTS_SRC		=	$(addprefix $(TESTS_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(TESTS_PATH), server/request/get_input.c)					\
 					$(addprefix $(TESTS_PATH), server/request/parse.c)						\
 					$(addprefix $(TESTS_PATH), server/response/create.c)					\
+					$(addprefix $(TESTS_PATH), server/remove_client.c)						\
 					$(addprefix $(TESTS_PATH), simulation/drone/move.c)						\
 					$(addprefix $(TESTS_PATH), simulation/drone/rotate.c)					\
 					$(addprefix $(TESTS_PATH), simulation/inventory/add_item.c)				\
@@ -201,6 +203,8 @@ TESTS_SRC		=	$(addprefix $(TESTS_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(TESTS_PATH), simulation/tile/add_item.c)					\
 					$(addprefix $(TESTS_PATH), simulation/tile/remove_drone.c)				\
 					$(addprefix $(TESTS_PATH), simulation/tile/remove_item.c)				\
+					$(addprefix $(TESTS_PATH), simulation/start.c)							\
+
 
 TESTS_OBJ		=	$(TESTS_SRC:.c=.o)
 
