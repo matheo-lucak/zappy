@@ -30,7 +30,7 @@ void network_handle_clients_in(server_t *s)
 {
     client_t *c = NULL;
 
-    if (socket_selector_wait(s->n.selector, 500, WATCH_RD) <= 0)
+    if (socket_selector_wait(s->n.selector, 1, WATCH_RD) <= 0)
         return;
     network_handle_client_connection(s);
     list_foreach(node, s->clients) {
