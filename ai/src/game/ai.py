@@ -130,6 +130,7 @@ class AI:
                 self.__player.look()
                 while self.__player.moving or self.__player.looking:
                     yield
+                last_action = action
             else:
                 print(f">> {resource} found")
                 actual_nb: int = self.__player.inventory.get(resource)
