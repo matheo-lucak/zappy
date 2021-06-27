@@ -20,6 +20,7 @@ class MultiResponseNotHandledError(ResponseError):
 
 
 SpontaneousResponseHandler = Callable[[List[SpontaneousResponse]], None]
+FetchCallback = Callable[[], None]
 
 
 class FramerateAverage:
@@ -57,6 +58,8 @@ class APIServer:
         self.__pending_responses: List[str] = list()
         self.__multiresponse_buffer: Dict[Request, List[str]] = dict()
         self.__buffer: str = str()
+
+        self.__fetch_callbacks: List[FetchCallback] = list()
 
         self.__framerate: FramerateAverage = FramerateAverage()
         self.__clock_dict: Dict[Request, Clock] = dict()
@@ -110,7 +113,20 @@ class APIServer:
     def set_spontaneous_response_handler(self, callback: Optional[SpontaneousResponseHandler]) -> None:
         self.__spontaneous_response_handler = callback
 
+    def add_fetch_callback(self, callback: FetchCallback) -> None:
+        if callback not in self.__fetch_callbacks:
+            self.__fetch_callbacks.append(callback)
+
+    def remove_fetch_callback(self, callback: FetchCallback) -> None:
+        try:
+            self.__fetch_callbacks.remove(callback)
+        except ValueError:
+            pass
+
     def fetch(self) -> None:
+        for callback in self.__fetch_callbacks:
+            callback()
+
         self.__send_all_requests()
 
         if self.__socket in select([self.__socket], [], [], 0.001)[0]:

@@ -7,7 +7,7 @@ from .api_server import APIServer
 from .api_server.request import TeamRequest, ConnectNbrRequest
 from .api_server.request.response import MapSizeAtBeginningResponse, WelcomeResponse
 from .errors import ZappyError
-from .game import Player, Team, AI, Algorithm, Framerate
+from .game import Player, Team, AI, Framerate
 from .log import Logger
 
 
@@ -44,22 +44,12 @@ class ZappyAI:
         self.__ai: AI = AI(self.__player, self.__team, Framerate(self.__server.get_framerate))
 
     def run(self) -> None:
-        self.__player.look()
-        self.__player.check_inventory()
-        while self.__player.looking or self.__player.checking_inventory:
-            self.__server.fetch()
-        print("AI setup finished.")
-
-        algo: Algorithm = self.__ai.start()
-
-        while True:
+        def team_update() -> None:
             if not self.__server.has_request_to_handle(ConnectNbrRequest):
                 self.__server.send(ConnectNbrRequest(self.__team.update))
-            self.__server.fetch()
-            try:
-                next(algo)
-            except StopIteration:
-                break
+
+        self.__server.add_fetch_callback(team_update)
+        self.__ai.start()
 
     @staticmethod
     def start(machine: str, port: int, team_name: str) -> None:

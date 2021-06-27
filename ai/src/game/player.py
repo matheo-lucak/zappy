@@ -34,7 +34,6 @@ MessageListener = Callable[[Message], None]
 
 
 class Action(BaseAction):
-    broadcasting: int
     checking_inventory: int
     forwarding: int
     looking: int
@@ -64,6 +63,9 @@ class Player:
         self.__setting_resource: Dict[str, int] = dict()
 
         self.__api.set_spontaneous_response_handler(self.__handle_spontaneous_responses)
+
+    def update(self) -> None:
+        self.__api.fetch()
 
     def look(self) -> None:
         def look_handler(response: LookResponse) -> None:
@@ -201,17 +203,9 @@ class Player:
         if len(message) == 0:
             return
 
-        def broadcast_handler() -> None:
-            self.__action.broadcasting -= 1
-
         message = f"{self.__team}: lvl {self.level}({self.role.value}): {message}"
         print(f"Broadcasting: {repr(message)}")
-        self.__action.broadcasting += 1
-        self.__api.send(BroadcastRequest(message, callback=lambda rp: broadcast_handler()), have_priority=True)
-
-    @property
-    def broadcasting(self) -> int:
-        return self.__action.broadcasting
+        self.__api.send(BroadcastRequest(message), have_priority=True)
 
     def set_message_listener(self, callback: Optional[MessageListener]) -> Optional[MessageListener]:
         former_listener: Optional[MessageListener] = self.__message_listener
