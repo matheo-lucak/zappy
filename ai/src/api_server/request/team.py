@@ -14,16 +14,15 @@ class TeamResponse(Response):
 
         if response == "ko":
             return
-        if response.isdigit():
-            self.__client_num = int(response)
-        else:
+        if not response.isdigit():
             raise ResponseParsingError(response, "Should receive 'ko' or a positive integer")
+        self.__client_num = int(response)
 
     @property
     def client_num(self) -> Optional[int]:
         return self.__client_num
 
 
-class TeamRequest(BaseRequest[TeamResponse]):
+class TeamRequest(BaseRequest[TeamResponse], process_time=0):
     def __init__(self, team_name: str) -> None:
         super().__init__(team_name)

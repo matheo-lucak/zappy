@@ -1,29 +1,37 @@
 # -*- coding: Utf-8 -*
 
-from typing import Any, Callable, Generic, Optional, Tuple, Type, TypeVar
-from .response import Response, SpontaneousResponse
+from typing import Any, Callable, Generic, Optional, Tuple, Type, TypeVar, cast
+
+from .response import Response, SpontaneousResponse, MultiResponse
 
 
 T = TypeVar("T", bound=Response)
 ResponseCallback = Callable[[T], None]
 
 
-class BaseRequest(Generic[T]):
+class MetaRequest(type):
+    def __call__(cls, *args: Any, **kwds: Any) -> Any:
+        if cls is BaseRequest:
+            raise TypeError(f"{cls.__name__} can't be instantiated")
+        return super().__call__(*args, **kwds)
+
+
+class BaseRequest(Generic[T], metaclass=MetaRequest):
 
     SEPARATOR: str = " "
     END_REQUEST: str = "\n"
 
-    def __init_subclass__(cls) -> None:
+    def __init_subclass__(cls, /, *, process_time: int) -> None:
         super().__init_subclass__()
         response: Type[T] = getattr(getattr(cls, "__orig_bases__")[0], "__args__")[0]
         if issubclass(response, SpontaneousResponse):
             raise TypeError("A request cannot have a spontaneous response.")
+        if response is MultiResponse:
+            raise TypeError("Cannot use base class MultiResponse as response class.")
         setattr(cls, "__response_class__", response)
-
-    def __new__(cls, *args: Any, **kwargs: Any) -> Any:
-        if cls is BaseRequest:
-            raise TypeError(f"{cls.__name__} can't be instantiated")
-        return super().__new__(cls)
+        if process_time < 0:
+            raise ValueError(f"Process time can't be a negative number: {process_time}")
+        setattr(cls, "__process_time__", int(process_time))
 
     def __init__(self, command: str, *args: str, callback: Optional[ResponseCallback[T]] = None) -> None:
         self.__command: str = command
@@ -49,15 +57,26 @@ class BaseRequest(Generic[T]):
     def response(self) -> Optional[T]:
         return self.__response
 
-    def set_response(self, response: str) -> None:
-        ResponseClass: Type[T] = getattr(type(self), "__response_class__")
-        self.__response = ResponseClass(response)
+    @response.setter
+    def response(self, rp: T) -> None:
+        if not isinstance(rp, Response):
+            raise TypeError(f"Not a Response type")
+        self.__response = rp
         if callable(self.__callback):
-            self.__callback(self.__response)
+            self.__callback(rp)
 
-    def has_response(self) -> bool:
-        return self.response is not None
+    @classmethod
+    def get_response_type(cls) -> Type[T]:
+        return cast(Type[T], getattr(cls, "__response_class__"))
+
+    @classmethod
+    def get_process_time(cls) -> int:
+        return int(getattr(cls, "__process_time__"))
+
+    @classmethod
+    def get_real_process_time(cls, framerate: float) -> float:
+        return cls.get_process_time() / framerate if framerate > 0 else 0
 
 
-class Request(BaseRequest[Response]):
+class Request(BaseRequest[Response], process_time=0):
     pass

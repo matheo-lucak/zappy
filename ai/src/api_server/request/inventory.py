@@ -36,6 +36,6 @@ class InventoryResponse(Response):
         return self.__resources
 
 
-class InventoryRequest(BaseRequest[InventoryResponse]):
+class InventoryRequest(BaseRequest[InventoryResponse], process_time=1):
     def __init__(self, callback: Optional[ResponseCallback[InventoryResponse]] = None) -> None:
         super().__init__("Inventory", callback=callback)

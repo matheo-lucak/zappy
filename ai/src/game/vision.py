@@ -1,6 +1,6 @@
 # -*- coding: Utf-8 -*
 
-from typing import Dict, Iterator, List, Tuple
+from typing import Dict, Iterator, List, NamedTuple, Tuple, Union
 from math import isqrt
 
 from ..api_server.request.look import LookResponse
@@ -15,25 +15,38 @@ class Tile:
         self.__divergence: int = divergence
         self.__index: int = index
         self.__players: int = 0
+        self.__resources: Tuple[BaseResource, ...] = tuple()
+        self.update(content)
+
+    def __repr__(self) -> str:
+        return f"{type(self).__name__}(resources={self.__resources}, nb_players={self.__players})"
+
+    def __getitem__(self, resource: Union[str, BaseResource]) -> int:
+        if isinstance(resource, BaseResource):
+            resource = resource.name
+        for r in self.__resources:
+            if r.name == resource:
+                return r.amount
+        return 0
+
+    def __iter__(self) -> Iterator[BaseResource]:
+        return iter(self.__resources)
+
+    def __contains__(self, resource: Union[str, BaseResource]) -> bool:
+        if isinstance(resource, BaseResource):
+            resource = resource.name
+        if resource == "player":
+            return self.nb_players > 0
+        return any(r.name == resource for r in self.__resources)
+
+    def update(self, content: Dict[str, int]) -> None:
         resources: List[BaseResource] = list()
         for obj, amount in content.items():
             if obj == "player":
                 self.__players += amount
             else:
                 resources.append(MetaResource.create(obj, amount))
-        self.__resources: Tuple[BaseResource, ...] = tuple(resources)
-
-    def __repr__(self) -> str:
-        return f"{type(self).__name__}(resources={self.__resources}, nb_players={self.__players})"
-
-    def __getitem__(self, resource: str) -> int:
-        for r in self.__resources:
-            if r.name == resource:
-                return r.amount
-        raise KeyError(resource)
-
-    def __contains__(self, resource: str) -> bool:
-        return any(r.name == resource for r in self.__resources)
+        self.__resources = tuple(resources)
 
     @property
     def unit(self) -> int:
@@ -56,8 +69,12 @@ class Tile:
         return self.__players
 
 
-Coords = Tuple[int, int]
-Grid = Dict[Coords, Tile]
+class Coords(NamedTuple):
+    unit: int
+    divergence: int
+
+
+Grid = Dict[Tuple[int, int], Tile]
 
 
 class Vision:
@@ -66,12 +83,19 @@ class Vision:
 
     def __init__(self) -> None:
         self.__grid: Grid = dict()
-        self.__vision_unit: int = self.DEFAULT_UNIT
-        for index, (unit, divergence) in enumerate(self.iter_units(self.__vision_unit)):
-            self.__grid[unit, divergence] = Tile(unit, divergence, index)
+        self.__vision_unit: int = 0
+
+    def __str__(self) -> str:
+        return f"Vision: [{', '.join([' '.join(f'({r.name} {r.amount})' for r in tile) for tile in self.tiles])}]"
 
     def get(self, unit: int, divergence: int) -> Tile:
         return self.__grid[unit, divergence]
+
+    def get_coord(self, coords: Coords) -> Tile:
+        return self.get(coords.unit, coords.divergence)
+
+    def __contains__(self, resource: Union[str, BaseResource]) -> bool:
+        return any(resource in tile for tile in self.__grid.values())
 
     @property
     def max_unit(self) -> int:
@@ -103,3 +127,10 @@ class Vision:
         for unit in range(max_unit + 1):
             for divergence in range(-unit, unit + 1):
                 yield (unit, divergence)
+
+    def find(self, resource: Union[str, BaseResource]) -> List[Coords]:
+        coords_list: List[Coords] = list()
+        for coord, tile in self.__grid.items():
+            if resource in tile:
+                coords_list.append(Coords(*coord))
+        return coords_list

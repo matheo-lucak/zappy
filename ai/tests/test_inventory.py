@@ -9,7 +9,7 @@ from src.api_server.request.inventory import InventoryResponse
 
 def test_inventory() -> None:
     inventory: Inventory = Inventory()
-    assert inventory["food"] == 10
+    assert inventory["food"] == 0
     assert inventory["linemate"] == 0
     assert inventory["deraumere"] == 0
     assert inventory["sibur"] == 0
@@ -29,6 +29,9 @@ def test_inventory_update_by_response() -> None:
     assert inventory["phiras"] == 1
     assert inventory["thystame"] == 3
 
+    assert "food" in inventory
+    assert "sibur" not in inventory
+
 
 def test_inventory_update_by_response_invalid() -> None:
     inventory: Inventory = Inventory()
@@ -42,7 +45,7 @@ def test_inventory_update_by_response_invalid() -> None:
     with pytest.raises(ResponseError):  # Unknown resource
         inventory.update(rp)
 
-    assert inventory["food"] == 10
+    assert inventory["food"] == 0
     assert inventory["linemate"] == 0
     assert inventory["deraumere"] == 0
     assert inventory["sibur"] == 0
