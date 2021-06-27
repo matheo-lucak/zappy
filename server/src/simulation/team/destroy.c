@@ -14,11 +14,8 @@ void team_destroy(team_t *team)
 {
     if (!team)
         return;
-    if (team->drones)
-        ptr_list_destroy(team->drones);
-    if (team->eggs)
-        ptr_list_destroy(team->eggs);
-    if (team->name)
-        free(team->name);
+    ptr_list_destroy(team->drones);
+    ptr_list_destroy(team->eggs);
+    free(team->name);
     free(team);
 }

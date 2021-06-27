@@ -15,5 +15,7 @@ bool team_delete_drone(team_t *team, drone_t *drone)
         return false;
     if (team->free_slots_nb > team->default_slots_nb)
         team->free_slots_nb -= 1;
+    else if (team->free_slots_nb < team->default_slots_nb)
+        team->free_slots_nb += 1;
     return true;
 }

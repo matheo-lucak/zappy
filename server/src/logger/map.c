@@ -89,6 +89,10 @@ const log_info_t log_info_map[] =
         .type = LOG_SIMULATION_EGG_HATCHED,
         .message = "An egg has hatched at (%d, %d)"
     },
+    {
+        .type = LOG_SIMULATION_DRONE_DIED,
+        .message = "A drone ran out of food and died at (%d, %d)"
+    },
 };
 
 const size_t log_info_map_size = sizeof(log_info_map) / sizeof(log_info_map[0]);
