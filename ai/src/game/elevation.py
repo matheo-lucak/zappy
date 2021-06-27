@@ -19,6 +19,13 @@ class Elevation:
         return Elevation.__SECRETS[level]
 
     @staticmethod
+    def get_required_number(level: int, resource: str) -> int:
+        for r in Elevation.get_requirements(level).resources:
+            if r.name == resource:
+                return r.amount
+        return 0
+
+    @staticmethod
     def max_level() -> int:
         return max(Elevation.__SECRETS.keys()) + 1
 

@@ -56,7 +56,7 @@ class AI:
             if requirements.nb_players == 1:
                 for resource in requirements.resources:
                     yield from self.__seek_resource(resource)
-                print(self.__player.inventory)
+                yield from self.__start_incantation(requirements)
                 return
             yield
 
@@ -143,6 +143,36 @@ class AI:
                 if actual_nb < self.__player.inventory.get(resource) and resource.amount > 0:
                     print(f"--> {resource}: {self.__player.inventory.get(resource)}/{resource.amount}")
             yield
+
+    def __start_incantation(self, requirements: Requirements) -> Implementation:
+        self.__player.move_forward(5)
+        self.__player.look()
+        while self.__player.moving or self.__player.looking:
+            yield
+        if requirements.nb_players == 1:
+            tile: Tile = self.__player.vision.get(0, 0)
+            print(repr(tile))
+            while any(r not in requirements.resources and not isinstance(r, Food) for r in tile.resources):
+                for tile in self.__player.vision.tiles:
+                    for resource in tile.resources:
+                        if isinstance(resource, Food):
+                            continue
+                        self.__player.take_object(
+                            resource.name, resource.amount - Elevation.get_required_number(self.__player.level, resource.name)
+                        )
+                self.__player.look()
+                self.__player.check_inventory()
+                while self.__player.taking_object() or self.__player.looking or self.__player.checking_inventory:
+                    yield
+            for resource in requirements.resources:
+                self.__player.set_object_down(resource.name, resource.amount - tile[resource])
+            self.__player.look()
+            self.__player.check_inventory()
+            while self.__player.setting_object_down() or self.__player.looking or self.__player.checking_inventory:
+                yield
+            print(self.__player.inventory)
+            print(self.__player.vision)
+        yield
 
     def __spy(self) -> Implementation:
         yield

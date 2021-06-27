@@ -32,7 +32,10 @@ class Tile:
         for r in self.__resources:
             if r.name == resource:
                 return r.amount
-        raise KeyError(resource)
+        return 0
+
+    def __iter__(self) -> Iterator[BaseResource]:
+        return iter(self.__resources)
 
     def __contains__(self, resource: Union[str, BaseResource]) -> bool:
         if isinstance(resource, BaseResource):
@@ -77,6 +80,11 @@ class Vision:
     def __init__(self) -> None:
         self.__grid: Grid = dict()
         self.__vision_unit: int = 0
+
+    def __str__(self) -> str:
+        return (
+            f"Vision: [{', '.join([' '.join(f'{resource.name} {resource.amount}' for resource in tile) for tile in self.tiles])}]"
+        )
 
     def get(self, unit: int, divergence: int) -> Tile:
         return self.__grid[unit, divergence]

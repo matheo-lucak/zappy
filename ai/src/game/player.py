@@ -223,7 +223,9 @@ class Player:
             self.__taking_resource[resource] = self.taking_object(resource) + 1
             self.__api.send(TakeObjectRequest(resource, callback=take_handler))
 
-    def taking_object(self, resource: str) -> int:
+    def taking_object(self, resource: Optional[str] = None) -> int:
+        if resource is None:
+            return sum(self.__taking_resource.values())
         return self.__taking_resource.get(resource, 0)
 
     def set_object_down(self, resource: str, number: int = 1) -> None:
@@ -238,7 +240,9 @@ class Player:
             self.__setting_resource[resource] = self.setting_object_down(resource) + 1
             self.__api.send(SetObjectDownRequest(resource, callback=take_handler))
 
-    def setting_object_down(self, resource: str) -> int:
+    def setting_object_down(self, resource: Optional[str] = None) -> int:
+        if resource is None:
+            return sum(self.__setting_resource.values())
         return self.__setting_resource.get(resource, 0)
 
     def eject_from_this_tile(self) -> None:
