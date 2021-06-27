@@ -25,7 +25,7 @@ void request_handler_cmd_set(server_t *s, client_t *c, request_t *r)
     type = info->type;
     is_ok = inventory_remove_item(c->drone->inventory, type, 1);
     if (is_ok) {
-        is_ok = tile_add_item(s->s.map->tiles[c->drone->y][c->drone->x], type);
+        is_ok = tile_add_item(s->sim.map->tiles[c->drone->y][c->drone->x], type);
     }
     client_add_response(c, response_create(is_ok ? RESPONSE_OK : RESPONSE_KO));
 }

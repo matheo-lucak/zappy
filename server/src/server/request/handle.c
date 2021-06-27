@@ -21,11 +21,12 @@ static void server_handle_single_request(server_t *s, client_t *c)
         list_pop_front(c->pending_requests);
         return;
     }
+    if (c->blocked == true)
+        return;
     if (request->time_limit > 0) {
         request->time_limit -= 1;
         return;
     }
-    request->time_limit -= 1;
     if (request->handler)
         request->handler(s, c, request);
     list_pop_front(c->pending_requests);

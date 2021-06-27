@@ -24,9 +24,9 @@ client_t *client_create(void)
     client->pending_responses = ptr_list_create(
                                 (node_dtor_t)&response_destroy);
     client->type = CLIENT_UNKNOWN;
-    if (!client->socket
-        || !client->pending_requests
-        || !client->pending_responses) {
+    client->blocked = false;
+    if (!client->drone || !client->socket
+        || !client->pending_requests || !client->pending_responses) {
         client_destroy(client);
         return NULL;
     }

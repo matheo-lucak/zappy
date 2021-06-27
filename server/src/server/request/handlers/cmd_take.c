@@ -23,7 +23,7 @@ void request_handler_cmd_take(server_t *s, client_t *c, request_t *r)
         return;
     }
     type = info->type;
-    is_ok = tile_remove_item(s->s.map->tiles[c->drone->y][c->drone->x], type);
+    is_ok = tile_remove_item(s->sim.map->tiles[c->drone->y][c->drone->x], type);
     if (is_ok) {
         is_ok = inventory_add_item(c->drone->inventory, type, 1);
     }
