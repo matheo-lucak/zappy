@@ -17,6 +17,7 @@ bool inventory_add_item(inventory_t *inventory,
     list_foreach(node, inventory->slots) {
         if (NODE_PTR(node, item_slot_t)->type == type) {
             NODE_PTR(node, item_slot_t)->quantity += quantity;
+            node_iter_end(&node);
             return true;
         }
     }
