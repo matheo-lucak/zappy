@@ -66,3 +66,14 @@ class MessageResponse(SpontaneousResponse, response=r"message +([0-9]+) *, *([^\
     @property
     def text(self) -> str:
         return self.__text
+
+
+class EjectedResponse(SpontaneousResponse, response=r"eject: +([0-9]+)"):
+    def __init__(self, response: str) -> None:
+        super().__init__(response)
+
+        self.__tile: int = int(self.match.group(1))
+
+    @property
+    def tile(self) -> int:
+        return self.__tile
