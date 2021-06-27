@@ -118,10 +118,6 @@ class Vision:
                 raise ResponseError(str(response), str(e))
         if new_grid[0, 0].nb_players < 1:
             raise ResponseError(str(response), "I'm a ghost, so what ?")
-        for coords, tile in self.__grid.items():
-            if coords in new_grid:
-                tile.update(response.tiles[tile.index])
-                new_grid[coords] = tile
 
         self.__vision_unit = vision_unit
         self.__grid = new_grid

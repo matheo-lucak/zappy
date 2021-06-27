@@ -162,6 +162,7 @@ class AI:
                 self.__player.check_inventory()
                 while self.__player.doing_an_action():
                     yield
+                tile = self.__player.vision.get(0, 0)
             for resource in requirements.resources:
                 self.__player.set_object_down(resource.name, resource.amount - tile[resource])
             self.__player.look()
