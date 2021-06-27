@@ -5,8 +5,10 @@ from typing import Any, Dict, Tuple, Union, cast
 
 class MetaAction(type):
     def __new__(metacls, name: str, bases: Tuple[type, ...], attrs: Dict[str, Any]) -> "MetaAction":
-        annotations: Dict[str, Union[type, str]] = attrs.get("__annotations__", {})
-        for action in annotations:
+        annotations: Dict[str, type] = attrs.get("__annotations__", {})
+        for action, t in annotations.items():
+            if not issubclass(t, int):
+                raise TypeError(f"{action}: Must be an int")
             attrs[action] = metacls.make_property(action)
         return cast(MetaAction, super(MetaAction, metacls).__new__(metacls, name, bases, attrs))
 
