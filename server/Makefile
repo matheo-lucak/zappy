@@ -34,6 +34,7 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), network/handle_client_connection.c)				\
 					$(addprefix $(SRC_PATH), network/handle_clients_in.c)						\
 					$(addprefix $(SRC_PATH), network/handle_clients_out.c)						\
+					$(addprefix $(SRC_PATH), network/remove_connection.c)						\
 					$(addprefix $(SRC_PATH), network/start.c)									\
 					$(addprefix $(SRC_PATH), network/stop.c)									\
 					$(addprefix $(SRC_PATH), server/client/add_request.c)						\
@@ -77,6 +78,7 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), server/request/parse.c)							\
 					$(addprefix $(SRC_PATH), server/response/create.c)							\
 					$(addprefix $(SRC_PATH), server/response/destroy.c)							\
+					$(addprefix $(SRC_PATH), server/clear_client.c)								\
 					$(addprefix $(SRC_PATH), server/find_client_from_drone.c)					\
 					$(addprefix $(SRC_PATH), server/launch.c)									\
 					$(addprefix $(SRC_PATH), server/remove_client.c)							\

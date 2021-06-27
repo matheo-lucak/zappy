@@ -20,6 +20,7 @@ typedef struct network_s
 {
     socket_selector_t * selector;
     tcp_listener_t *    listener;
+    unsigned            client_next_id;
 } network_t;
 
 int network_start(const arguments_t *args, network_t *n);
