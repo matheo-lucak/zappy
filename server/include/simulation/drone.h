@@ -53,4 +53,10 @@ bool drone_move(drone_t *drone, const map_t *map);
 bool drone_rotate(drone_t *drone, direction_t direction);
 bool drone_eject(drone_t *drone, const map_t *map, direction_t direction);
 
+char *drone_get_look_format(const map_t *m, drone_t *d);
+char *drone_get_look_format_down(const map_t *m, drone_t *d);
+char *drone_get_look_format_left(const map_t *m, drone_t *d);
+char *drone_get_look_format_right(const map_t *m, drone_t *d);
+char *drone_get_look_format_up(const map_t *m, drone_t *d);
+
 #endif /* !DRONE_H_ */

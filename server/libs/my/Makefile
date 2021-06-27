@@ -27,6 +27,8 @@ COPIED_HEADERS		=	$(addprefix $(PATH_TO_COPY), $(LIBRARY_HEADERS))
 
 SRC					=	my_get_nbr.c	\
 						my_is_digit.c	\
+						my_str_cat.c	\
+						my_str_len.c	\
 
 OBJ					=	$(SRC:.c=.o)
 
