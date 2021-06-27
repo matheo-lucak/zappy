@@ -15,8 +15,13 @@ class Tile:
         self.__divergence: int = divergence
         self.__index: int = index
         self.__players: int = 0
-        self.__resources: Tuple[BaseResource, ...] = tuple()
-        self.update(content)
+        resources: List[BaseResource] = list()
+        for obj, amount in content.items():
+            if obj == "player":
+                self.__players += amount
+            else:
+                resources.append(MetaResource.create(obj, amount))
+        self.__resources: Tuple[BaseResource, ...] = tuple(resources)
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}(resources={self.__resources}, nb_players={self.__players})"
@@ -38,15 +43,6 @@ class Tile:
         if resource == "player":
             return self.nb_players > 0
         return any(r == resource for r in self.__resources)
-
-    def update(self, content: Dict[str, int]) -> None:
-        resources: List[BaseResource] = list()
-        for obj, amount in content.items():
-            if obj == "player":
-                self.__players += amount
-            else:
-                resources.append(MetaResource.create(obj, amount))
-        self.__resources = tuple(resources)
 
     @property
     def unit(self) -> int:
@@ -128,9 +124,17 @@ class Vision:
             for divergence in range(-unit, unit + 1):
                 yield (unit, divergence)
 
+    @staticmethod
+    def iter_units_nearest(max_unit: int) -> Iterator[Tuple[int, int]]:
+        for unit in range(max_unit + 1):
+            yield (unit, 0)
+            for divergence in range(1, unit + 1):
+                yield (unit, -divergence)
+                yield (unit, divergence)
+
     def find(self, resource: Union[str, BaseResource]) -> List[Coords]:
         coords_list: List[Coords] = list()
-        for coord, tile in self.__grid.items():
-            if resource in tile:
-                coords_list.append(Coords(*coord))
+        for unit, divergence in self.iter_units_nearest(self.max_unit):
+            if resource in self.__grid[unit, divergence]:
+                coords_list.append(Coords(unit, divergence))
         return coords_list
