@@ -18,10 +18,11 @@
 
 typedef struct team_s
 {
-    char *          name;
-    unsigned int    free_slots_nb;
-    ptr_list_t *    drones;
-    ptr_list_t *    eggs;
+    unsigned int  default_slots_nb;
+    unsigned int        free_slots_nb;
+    char *              name;
+    ptr_list_t *        drones;
+    ptr_list_t *        eggs;
 } team_t;
 
 team_t *team_create(const char *name, unsigned int free_slots_nb);
