@@ -12,7 +12,7 @@
 Test(drone_get_look_format, simple_get_look_left_lvl_1)
 {
     map_t *map = map_create(10, 10);
-    drone_t *drone = drone_create(5, 5);
+    drone_t *drone = drone_create(5, 5, true);
     char *result = NULL;
 
     cr_assert(tile_add_drone(map->tiles[drone->y][drone->x], drone));
@@ -25,7 +25,7 @@ Test(drone_get_look_format, simple_get_look_left_lvl_1)
 Test(drone_get_look_format, simple_get_look_left_lvl_3)
 {
     map_t *map = map_create(10, 10);
-    drone_t *drone = drone_create(5, 5);
+    drone_t *drone = drone_create(5, 5, true);
     char *result = NULL;
 
     cr_assert(tile_add_drone(map->tiles[drone->y][drone->x], drone));
@@ -39,7 +39,7 @@ Test(drone_get_look_format, simple_get_look_left_lvl_3)
 Test(drone_get_look_format, hard_1_get_look_left_lvl_3)
 {
     map_t *map = map_create(10, 10);
-    drone_t *drone = drone_create(5, 5);
+    drone_t *drone = drone_create(5, 5, true);
     char *result = NULL;
 
     cr_assert(tile_add_drone(map->tiles[drone->y][drone->x], drone));
@@ -54,7 +54,7 @@ Test(drone_get_look_format, hard_1_get_look_left_lvl_3)
 Test(drone_get_look_format, hard_2_get_look_left_lvl_3)
 {
     map_t *map = map_create(10, 10);
-    drone_t *drone = drone_create(5, 5);
+    drone_t *drone = drone_create(5, 5, true);
     char *result = NULL;
 
     cr_assert(tile_add_drone(map->tiles[drone->y][drone->x], drone));
@@ -70,7 +70,7 @@ Test(drone_get_look_format, hard_2_get_look_left_lvl_3)
 Test(drone_get_look_format, hard_3_get_look_left_lvl_2)
 {
     map_t *map = map_create(10, 10);
-    drone_t *drone = drone_create(5, 5);
+    drone_t *drone = drone_create(5, 5, true);
     char *result = NULL;
 
     cr_assert(tile_add_drone(map->tiles[drone->y][drone->x], drone));
@@ -86,7 +86,7 @@ Test(drone_get_look_format, hard_3_get_look_left_lvl_2)
 Test(drone_get_look_format, hard_4_get_look_left_lvl_2)
 {
     map_t *map = map_create(10, 10);
-    drone_t *drone = drone_create(5, 5);
+    drone_t *drone = drone_create(5, 5, true);
     char *result = NULL;
 
     cr_assert(tile_add_drone(map->tiles[drone->y][drone->x], drone));
@@ -103,10 +103,10 @@ Test(drone_get_look_format, hard_4_get_look_left_lvl_2)
 Test(drone_get_look_format, hard_5_get_look_left_lvl_3)
 {
     map_t *map = map_create(10, 10);
-    drone_t *d1 = drone_create(5, 5);
-    drone_t *d2 = drone_create(3, 4);
-    drone_t *d3 = drone_create(2, 5);
-    drone_t *d4 = drone_create(2, 5);
+    drone_t *d1 = drone_create(5, 5, true);
+    drone_t *d2 = drone_create(3, 4, true);
+    drone_t *d3 = drone_create(2, 5, true);
+    drone_t *d4 = drone_create(2, 5, true);
     char *result = NULL;
 
     cr_assert(tile_add_drone(map->tiles[d1->y][d1->x], d1));
@@ -123,10 +123,10 @@ Test(drone_get_look_format, hard_5_get_look_left_lvl_3)
 Test(drone_get_look_format, hard_6_get_look_left_lvl_3)
 {
     map_t *map = map_create(10, 10);
-    drone_t *d1 = drone_create(0, 5);
-    drone_t *d2 = drone_create(7, 5);
-    drone_t *d3 = drone_create(7, 8);
-    drone_t *d4 = drone_create(8, 8);
+    drone_t *d1 = drone_create(0, 5, true);
+    drone_t *d2 = drone_create(7, 5, true);
+    drone_t *d3 = drone_create(7, 8, true);
+    drone_t *d4 = drone_create(8, 8, true);
     char *result = NULL;
 
     cr_assert(tile_add_drone(map->tiles[d1->y][d1->x], d1));
@@ -143,11 +143,11 @@ Test(drone_get_look_format, hard_6_get_look_left_lvl_3)
 Test(drone_get_look_format, hard_7_get_look_left_lvl_3)
 {
     map_t *map = map_create(10, 10);
-    drone_t *d1 = drone_create(0, 7);
-    drone_t *d2 = drone_create(7, 0);
-    drone_t *d3 = drone_create(7, 5);
-    drone_t *d4 = drone_create(7, 6);
-    drone_t *d5 = drone_create(7, 8);
+    drone_t *d1 = drone_create(0, 7, true);
+    drone_t *d2 = drone_create(7, 0, true);
+    drone_t *d3 = drone_create(7, 5, true);
+    drone_t *d4 = drone_create(7, 6, true);
+    drone_t *d5 = drone_create(7, 8, true);
     char *result = NULL;
 
     cr_assert(tile_add_drone(map->tiles[d1->y][d1->x], d1));
@@ -165,7 +165,7 @@ Test(drone_get_look_format, hard_7_get_look_left_lvl_3)
 Test(drone_get_look_format, simple_get_look_right_lvl_1)
 {
     map_t *map = map_create(10, 10);
-    drone_t *drone = drone_create(5, 5);
+    drone_t *drone = drone_create(5, 5, true);
     char *result = NULL;
 
     cr_assert(tile_add_drone(map->tiles[drone->y][drone->x], drone));
@@ -178,7 +178,7 @@ Test(drone_get_look_format, simple_get_look_right_lvl_1)
 Test(drone_get_look_format, simple_get_look_right_lvl_3)
 {
     map_t *map = map_create(10, 10);
-    drone_t *drone = drone_create(5, 5);
+    drone_t *drone = drone_create(5, 5, true);
     char *result = NULL;
 
     cr_assert(tile_add_drone(map->tiles[drone->y][drone->x], drone));
@@ -192,7 +192,7 @@ Test(drone_get_look_format, simple_get_look_right_lvl_3)
 Test(drone_get_look_format, hard_1_get_look_right_lvl_3)
 {
     map_t *map = map_create(10, 10);
-    drone_t *drone = drone_create(5, 5);
+    drone_t *drone = drone_create(5, 5, true);
     char *result = NULL;
 
     cr_assert(tile_add_drone(map->tiles[drone->y][drone->x], drone));
@@ -207,7 +207,7 @@ Test(drone_get_look_format, hard_1_get_look_right_lvl_3)
 Test(drone_get_look_format, hard_2_get_look_right_lvl_3)
 {
     map_t *map = map_create(10, 10);
-    drone_t *drone = drone_create(5, 5);
+    drone_t *drone = drone_create(5, 5, true);
     char *result = NULL;
 
     cr_assert(tile_add_drone(map->tiles[drone->y][drone->x], drone));
@@ -223,7 +223,7 @@ Test(drone_get_look_format, hard_2_get_look_right_lvl_3)
 Test(drone_get_look_format, hard_3_get_look_right_lvl_3)
 {
     map_t *map = map_create(10, 10);
-    drone_t *drone = drone_create(9, 5);
+    drone_t *drone = drone_create(9, 5, true);
     char *result = NULL;
 
     cr_assert(tile_add_drone(map->tiles[drone->y][drone->x], drone));
@@ -239,7 +239,7 @@ Test(drone_get_look_format, hard_3_get_look_right_lvl_3)
 Test(drone_get_look_format, simple_get_look_up_lvl_1)
 {
     map_t *map = map_create(10, 10);
-    drone_t *drone = drone_create(5, 5);
+    drone_t *drone = drone_create(5, 5, true);
     char *result = NULL;
 
     cr_assert(tile_add_drone(map->tiles[drone->y][drone->x], drone));
@@ -252,7 +252,7 @@ Test(drone_get_look_format, simple_get_look_up_lvl_1)
 Test(drone_get_look_format, simple_get_look_up_lvl_3)
 {
     map_t *map = map_create(10, 10);
-    drone_t *drone = drone_create(5, 5);
+    drone_t *drone = drone_create(5, 5, true);
     char *result = NULL;
 
     cr_assert(tile_add_drone(map->tiles[drone->y][drone->x], drone));
@@ -268,7 +268,7 @@ Test(drone_get_look_format, simple_get_look_up_lvl_3)
 Test(drone_get_look_format, simple_get_look_down_lvl_1)
 {
     map_t *map = map_create(10, 10);
-    drone_t *drone = drone_create(5, 5);
+    drone_t *drone = drone_create(5, 5, true);
     char *result = NULL;
 
     cr_assert(tile_add_drone(map->tiles[drone->y][drone->x], drone));
@@ -281,7 +281,7 @@ Test(drone_get_look_format, simple_get_look_down_lvl_1)
 Test(drone_get_look_format, hard_get_look_down_lvl_3)
 {
     map_t *map = map_create(10, 10);
-    drone_t *drone = drone_create(5, 5);
+    drone_t *drone = drone_create(5, 5, true);
     char *result = NULL;
 
     cr_assert(tile_add_drone(map->tiles[drone->y][drone->x], drone));
