@@ -17,6 +17,7 @@ drone_t *drone_create(int x, int y)
         return NULL;
     new_drone->x = x;
     new_drone->y = y;
+    new_drone->elevation_lvl = 1;
     new_drone->inventory = inventory_create();
     if (!new_drone->inventory) {
         drone_destroy(new_drone);
