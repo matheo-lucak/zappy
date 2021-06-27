@@ -52,6 +52,11 @@ zappy_server
 *.idb
 *.pdb
 
+
+# Gcov files
+*.gcda
+*.gcno
+
 # Kernel Module Compile Results
 *.mod*
 *.cmd
