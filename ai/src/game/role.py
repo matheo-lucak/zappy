@@ -7,4 +7,3 @@ from enum import IntEnum, unique, auto
 class Role(IntEnum):
     NewPlayer = auto()
     StoneSeeker = auto()
-    Spy = auto()

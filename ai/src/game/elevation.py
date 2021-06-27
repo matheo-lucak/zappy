@@ -11,7 +11,7 @@ class Requirements(NamedTuple):
 
     def get_number(self, resource: str) -> int:
         for r in self.resources:
-            if r.name == resource:
+            if r == resource:
                 return r.amount
         return 0
 

@@ -25,7 +25,7 @@ class Tile:
         if isinstance(resource, BaseResource):
             resource = resource.name
         for r in self.__resources:
-            if r.name == resource:
+            if r == resource:
                 return r.amount
         return 0
 
@@ -37,7 +37,7 @@ class Tile:
             resource = resource.name
         if resource == "player":
             return self.nb_players > 0
-        return any(r.name == resource for r in self.__resources)
+        return any(r == resource for r in self.__resources)
 
     def update(self, content: Dict[str, int]) -> None:
         resources: List[BaseResource] = list()
@@ -86,7 +86,7 @@ class Vision:
         self.__vision_unit: int = 0
 
     def __str__(self) -> str:
-        return f"Vision: [{', '.join([' '.join(f'({r.name} {r.amount})' for r in tile) for tile in self.tiles])}]"
+        return f"Vision: [{', '.join([' '.join([f'(player {tile.nb_players})', *(f'({r.name} {r.amount})' for r in tile)]) for tile in self.tiles])}]"
 
     def get(self, unit: int, divergence: int) -> Tile:
         return self.__grid[unit, divergence]

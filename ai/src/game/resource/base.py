@@ -67,6 +67,16 @@ class BaseResource(metaclass=MetaResource, resource=str(), density=0):
     def __str__(self) -> str:
         return self.name
 
+    def __eq__(self, o: object) -> bool:
+        if isinstance(o, BaseResource):
+            return self.name == o.name
+        if isinstance(o, str):
+            return self.name == o
+        return False
+
+    def __ne__(self, o: object) -> bool:
+        return not self == o
+
     @classmethod
     def get_name(cls) -> str:
         if cls is BaseResource:

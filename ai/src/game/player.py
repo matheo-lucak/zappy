@@ -13,6 +13,7 @@ from ..api_server import APIServer
 from ..api_server.request.broadcast import BroadcastRequest
 from ..api_server.request.eject import EjectRequest, EjectResponse
 from ..api_server.request.forward import ForwardRequest
+from ..api_server.request.incantation import IncantationRequest, IncantationResponse
 from ..api_server.request.inventory import InventoryRequest, InventoryResponse
 from ..api_server.request.look import LookRequest, LookResponse
 from ..api_server.request.left import LeftRequest
@@ -20,6 +21,7 @@ from ..api_server.request.right import RightRequest
 from ..api_server.request.set_object_down import SetObjectDownRequest, SetObjectDownResponse
 from ..api_server.request.take_object import TakeObjectRequest, TakeObjectResponse
 from ..api_server.request.response.spontaneous import SpontaneousResponse, DeadResponse, MessageResponse
+from ..api_server.request.response.exceptions import ResponseError
 from ..errors import ZappyError
 
 
@@ -32,7 +34,6 @@ MessageListener = Callable[[Message], None]
 
 
 class Action(BaseAction):
-    broadcasting: int
     checking_inventory: int
     forwarding: int
     looking: int
@@ -41,6 +42,7 @@ class Action(BaseAction):
     ejecting: int
     taking_resource: int
     setting_resource: int
+    elevating: int
 
 
 class Player:
@@ -61,6 +63,9 @@ class Player:
         self.__setting_resource: Dict[str, int] = dict()
 
         self.__api.set_spontaneous_response_handler(self.__handle_spontaneous_responses)
+
+    def update(self) -> None:
+        self.__api.fetch()
 
     def look(self) -> None:
         def look_handler(response: LookResponse) -> None:
@@ -198,20 +203,14 @@ class Player:
         if len(message) == 0:
             return
 
-        def broadcast_handler() -> None:
-            self.__action.broadcasting -= 1
-
         message = f"{self.__team}: lvl {self.level}({self.role.value}): {message}"
         print(f"Broadcasting: {repr(message)}")
-        self.__action.broadcasting += 1
-        self.__api.send(BroadcastRequest(message, callback=lambda rp: broadcast_handler()))
+        self.__api.send(BroadcastRequest(message), have_priority=True)
 
-    @property
-    def broadcasting(self) -> int:
-        return self.__action.broadcasting
-
-    def set_message_listener(self, callback: Optional[MessageListener]) -> None:
+    def set_message_listener(self, callback: Optional[MessageListener]) -> Optional[MessageListener]:
+        former_listener: Optional[MessageListener] = self.__message_listener
         self.__message_listener = callback
+        return former_listener
 
     def take_object(self, resource: str, number: int = 1) -> None:
         def take_handler(response: TakeObjectResponse) -> None:
@@ -262,6 +261,27 @@ class Player:
     @property
     def ejecting_player(self) -> int:
         return self.__action.ejecting
+
+    def start_incantation(self) -> None:
+        def incantation_handler(response: IncantationResponse) -> None:
+            if response.result is None:
+                print("Elevation underway")
+                return
+            if response.result is False:
+                print("Elevation Failed")
+            else:
+                if response.level <= self.__level.value:
+                    raise ResponseError(str(response), "Cannot have a level lower than or equal to mine")
+                self.__level.value = response.level
+                print(f"Elevation success. Current level: {self.level}")
+            self.__action.elevating -= 1
+
+        self.__action.elevating += 1
+        self.__api.send(IncantationRequest(incantation_handler))
+
+    @property
+    def elevating(self) -> int:
+        return self.__action.elevating
 
     def doing_an_action(self) -> bool:
         return self.__action.ongoing()
