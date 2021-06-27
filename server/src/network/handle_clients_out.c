@@ -7,7 +7,10 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <errno.h>
+
 #include <epinet.h>
+
 #include "server/server.h"
 #include "server/response/response.h"
 
@@ -21,6 +24,8 @@ static bool network_handle_one_response_per_client(server_t *s)
         return false;
     list_foreach(node, s->clients) {
         c = NODE_PTR(node, client_t);
+        if (list_empty(c->pending_responses))
+            continue;
         if (!socket_selector_is_socket_ready(s->n.selector, SOCKET(c->socket)))
             continue;
         r = NODE_PTR(list_begin(c->pending_responses), response_t);
@@ -32,14 +37,19 @@ static bool network_handle_one_response_per_client(server_t *s)
     return left_to_send;
 }
 
-int network_handle_clients_out(server_t *s)
+void network_handle_clients_out(server_t *s)
 {
     bool left_to_send = false;
+    socket_status_t status = 0;
 
     do {
-        if (socket_selector_wait(s->n.selector, 1, WATCH_WRT) != SELECTOR_OK)
-            return SERVER_ERROR;
+        status = socket_selector_wait(s->n.selector, 1, WATCH_WRT);
+        if (status == SOCKET_ERROR && (errno == EBADF || errno == EINVAL)) {
+            epinet_perror("Socket selector WATCH_RD failed");
+            s->status = SERVER_ERROR;
+            return;
+        } else if (status == 0)
+            return;
         left_to_send = network_handle_one_response_per_client(s);
     } while (left_to_send);
-    return SERVER_SUCCESS;
 }

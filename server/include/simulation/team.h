@@ -32,6 +32,10 @@ bool team_add_drone(team_t *team, drone_t *drone);
 bool team_delete_drone(team_t *team, drone_t *drone);
 bool team_has_drone(team_t *team, const drone_t *drone);
 
+drone_t *team_new_active_drone(team_t *team, int x, int y);
+
+drone_t *team_find_unactive_drone(team_t *team);
+
 bool team_add_egg(team_t *team, egg_t *egg);
 
 #endif /* !TEAM_H_ */
