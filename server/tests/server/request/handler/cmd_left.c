@@ -88,7 +88,7 @@ Test(request_handler_cmd_left, simple_go_down_and_walk)
     client->drone->facing_direction = LEFT;
     request_handler_cmd_left(&server, client, request);
     cr_assert(client->drone->facing_direction == DOWN);
-    cr_assert(drone_move(client->drone, server.s.map));
+    cr_assert(drone_move(client->drone, server.sim.map));
     cr_assert(client->drone->x == 4);
     cr_assert(client->drone->y == 5);
     server_stop(&server);

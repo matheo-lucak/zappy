@@ -19,6 +19,7 @@ client_t *client_create(void)
         return NULL;
     client->type = CLIENT_UNKNOWN;
     client->alive = true;
+    client->blocked = false;
     client->socket = tcp_socket_create();
     client->input_stock = NULL;
     client->drone = NULL;
