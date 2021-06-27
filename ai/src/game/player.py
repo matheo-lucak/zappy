@@ -179,23 +179,18 @@ class Player:
         if x_diff == 0:
             if y_diff < 0:
                 self.turn_left(2)
+            self.move_forward(abs(y_diff))
         else:
-            if x_diff < 0:
-                self.turn_left()
-            else:
-                self.turn_right()
-            self.move_forward(abs(x_diff))
-            if x_diff < 0:
-                if y_diff < 0:
-                    self.turn_left()
-                elif y_diff > 0:
-                    self.turn_right()
-            else:
-                if y_diff < 0:
-                    self.turn_right()
-                elif y_diff > 0:
-                    self.turn_left()
-        self.move_forward(abs(y_diff))
+            turn: Callable[..., None] = self.turn_left if x_diff < 0 else self.turn_right
+            if y_diff < 0:
+                turn()
+                self.move_forward(abs(x_diff))
+                turn()
+                self.move_forward(abs(y_diff))
+            elif y_diff > 0:
+                self.move_forward(y_diff)
+                turn()
+                self.move_forward(abs(x_diff))
 
     def broadcast(self, message: str) -> None:
         message = message.strip()
@@ -265,7 +260,7 @@ class Player:
 
     @property
     def ejecting_player(self) -> int:
-        return self.__ejecting
+        return self.__action.ejecting
 
     def doing_an_action(self) -> bool:
         return self.__action.ongoing()
