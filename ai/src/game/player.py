@@ -182,15 +182,16 @@ class Player:
             self.move_forward(abs(y_diff))
         else:
             turn: Callable[..., None] = self.turn_left if x_diff < 0 else self.turn_right
-            if y_diff < 0:
-                turn()
-                self.move_forward(abs(x_diff))
-                turn()
-                self.move_forward(abs(y_diff))
-            elif y_diff > 0:
+            if y_diff > 0:
                 self.move_forward(y_diff)
                 turn()
                 self.move_forward(abs(x_diff))
+            else:
+                turn()
+                self.move_forward(abs(x_diff))
+                if y_diff != 0:
+                    turn()
+                    self.move_forward(abs(y_diff))
 
     def broadcast(self, message: str) -> None:
         message = message.strip()

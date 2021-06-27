@@ -27,6 +27,7 @@ class AI:
         self.__player: Player = player
         self.__team: Team = team
         self.__framerate: Framerate = framerate
+        self.__resource_sought: Optional[BaseResource] = None
 
     def start(self) -> Algorithm:
         return Algorithm(self.__implementation())
@@ -54,6 +55,7 @@ class AI:
             requirements: Requirements = Elevation.get_requirements(self.__player.level)
             if requirements.nb_players == 1:
                 for resource in requirements.resources:
+                    self.__resource_sought = resource
                     yield from self.__seek_resource(resource)
                 yield from self.__start_incantation(requirements)
                 return
@@ -82,13 +84,17 @@ class AI:
             self.__player.check_inventory()
             while self.__player.doing_an_action():
                 yield
+            if resource == Food.get_name():
+                return
+            if self.__resource_sought is not None and self.__resource_sought.name != resource:
+                self.__player.broadcast(f"{resource} found")
 
         if resource.amount > 0:
             print(f"Seeking {resource}({resource.amount})...")
         else:
             print(f"Seeking {resource}...")
         while self.__player.inventory.get(resource) < resource.amount:
-            if self.__player.inventory.get(self.__min_food.name) < self.__min_food.amount and not isinstance(resource, Food):
+            if self.__player.inventory.get(Food.get_name()) < self.__min_food.amount and not isinstance(resource, Food):
                 print(f"Missing food")
                 yield from self.__seek_resource(self.__required_food, resource)
                 print("I have sufficient food")

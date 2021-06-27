@@ -67,13 +67,25 @@ class BaseResource(metaclass=MetaResource, resource=str(), density=0):
     def __str__(self) -> str:
         return self.name
 
+    @classmethod
+    def get_name(cls) -> str:
+        if cls is BaseResource:
+            raise AttributeError("Base class for Resource does not have this attribute")
+        return str(getattr(cls, "__resource_name__"))
+
+    @classmethod
+    def get_density(cls) -> float:
+        if cls is BaseResource:
+            raise AttributeError("Base class for Resource does not have this attribute")
+        return float(getattr(cls, "__resource_density__"))
+
     @property
     def name(self) -> str:
-        return str(getattr(type(self), "__resource_name__"))
+        return self.get_name()
 
     @property
     def density(self) -> float:
-        return float(getattr(type(self), "__resource_density__"))
+        return self.get_density()
 
     @property
     def amount(self) -> int:
