@@ -3,7 +3,7 @@
 import pytest
 from re import Pattern
 from typing import Optional
-from src.api_server.request.response.exceptions import ResponseParsingError
+from src.api_server.request.response.exceptions import SpontaneousResponseMatchError, ResponseParsingError
 
 from src.api_server.request.response.spontaneous import SpontaneousResponse, DeadResponse, MessageResponse
 
@@ -41,7 +41,7 @@ def test_dead_response() -> None:
 
 
 def test_dead_response_invalid() -> None:
-    with pytest.raises(ResponseParsingError):
+    with pytest.raises(SpontaneousResponseMatchError):
         rp: DeadResponse = DeadResponse("nope")
 
 
@@ -73,14 +73,14 @@ def test_message_response_invalid() -> None:
     with pytest.raises(ResponseParsingError):
         rp: MessageResponse = MessageResponse("message a, Yo")
 
-    with pytest.raises(ResponseParsingError):
+    with pytest.raises(SpontaneousResponseMatchError):
         rp = MessageResponse("message, Yo")
 
-    with pytest.raises(ResponseParsingError):
+    with pytest.raises(SpontaneousResponseMatchError):
         rp = MessageResponse("message 5, ")
 
-    with pytest.raises(ResponseParsingError):
+    with pytest.raises(SpontaneousResponseMatchError):
         rp = MessageResponse("messge 4, Yo")
 
-    with pytest.raises(ResponseParsingError):
+    with pytest.raises(SpontaneousResponseMatchError):
         rp = MessageResponse("message4, Yo")

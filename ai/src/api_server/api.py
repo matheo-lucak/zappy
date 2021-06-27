@@ -165,7 +165,11 @@ class APIServer:
                     yield response
 
         for received_response in recv_response_from_server():
-            response: Optional[SpontaneousResponse] = SpontaneousResponse.find(received_response)
+            try:
+                response: Optional[SpontaneousResponse] = SpontaneousResponse.find(received_response)
+            except ResponseError as e:
+                print(f"Spontaneous response error: {type(e).__name__}: {e}")
+                continue
             if response is not None:
                 self.__spontaneous_responses.append(response)
             else:
