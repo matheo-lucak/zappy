@@ -13,7 +13,6 @@ from .framerate import Framerate
 from .message import Message
 from .resource import MetaResource, BaseResource, Food
 from .elevation import Elevation, Requirements
-from ..utils.clock import Clock
 
 NEW_PLAYER = "I'm new"
 WELCOME = "Welcome"

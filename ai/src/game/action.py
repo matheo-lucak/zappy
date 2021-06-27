@@ -1,6 +1,6 @@
 # -*- coding: Utf-8 -*
 
-from typing import Any, Dict, Tuple, Union, cast
+from typing import Any, Dict, Tuple, cast
 
 
 class MetaAction(type):
