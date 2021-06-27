@@ -32,6 +32,7 @@ class AI:
         self.__team: Team = team
         self.__framerate: Framerate = framerate
         self.__stone_sought: Optional[BaseResource] = None
+        self.__last_action: Optional[Callable[..., None]] = None
 
     def start(self) -> None:
         self.__player.look()
@@ -83,8 +84,8 @@ class AI:
         position: Coords
         all_positions: List[Coords]
         tile: Tile
-        last_action: Optional[Callable[..., None]] = None
 
+        self.__last_action = None
         def go_to_take_resource(resource: str, tile: Tile, position: Position) -> None:
             amount: int = tile[resource]
             self.__player.go_to_position(position)
@@ -135,14 +136,14 @@ class AI:
             go_to_take_resource(resource_name, tile, resource_pos)
         all_positions = self.__player.vision.find(resource)
         if not all_positions:
-            if last_action is self.__player.move_forward:
+            if self.__last_action is self.__player.move_forward:
                 action = random_choice([self.__player.move_forward, self.__player.turn_left, self.__player.turn_right])
             else:
                 action = self.__player.move_forward
             action()
             self.__player.look()
             self.__wait()
-            last_action = action
+            self.__last_action = action
         else:
             print(f">> {resource} found")
             actual_nb: int = self.__player.inventory.get(resource)
