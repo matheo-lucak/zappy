@@ -27,10 +27,11 @@ typedef size_t frequency_t;
 
 typedef struct server_s
 {
+    bool                is_running;
+    int                 status;
     network_t           n;
     simulation_t        s;
     ptr_list_t *        clients;
-    bool                is_running;
     frequency_t         freq;
 } server_t;
 
