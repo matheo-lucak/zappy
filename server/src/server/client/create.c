@@ -25,8 +25,9 @@ client_t *client_create(void)
                                 (node_dtor_t)&response_destroy);
     client->type = CLIENT_UNKNOWN;
     client->blocked = false;
-    if (!client->drone || !client->socket
-        || !client->pending_requests || !client->pending_responses) {
+    if (!client->socket
+        || !client->pending_requests
+        || !client->pending_responses) {
         client_destroy(client);
         return NULL;
     }
