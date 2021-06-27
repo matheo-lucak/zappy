@@ -48,6 +48,7 @@ typedef enum
     LOG_SIMULATION_NEW_DRONE,
     LOG_SIMULATION_NEW_EGG,
     LOG_SIMULATION_EGG_HATCHED,
+    LOG_SIMULATION_DRONE_DIED,
 } log_type_t;
 
 void server_log(log_type_t type, ...);

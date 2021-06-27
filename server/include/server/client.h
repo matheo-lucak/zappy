@@ -44,6 +44,7 @@ typedef enum client_type_e
 typedef struct client_s
 {
     client_type_t   type;
+    bool            alive;
     bool            blocked;
     tcp_socket_t *  socket;
     char *          input_stock;

@@ -12,7 +12,8 @@ void simulation_stop(simulation_t *n)
 {
     if (!n)
         return;
-    if (n->map)
-        map_destroy(n->map);
+    map_destroy(n->map);
+    ptr_list_destroy(n->teams);
+    ptr_list_destroy(n->incantations);
     server_log(LOG_SIMULATION_STOPPED);
 }

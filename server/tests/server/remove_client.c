@@ -17,9 +17,9 @@ void set_dummy_server(server_t *s, size_t team_nb, size_t drone_p_team)
     drone_t *drone = NULL;
     client_t *client = NULL;
 
-    s->clients = ptr_list_create((void *)&client_destroy);
-    s->sim.teams = ptr_list_create((void *)&drone_destroy);
-    s->sim.incantations = ptr_list_create((void *)&incantation_destroy);
+    s->clients = ptr_list_create((node_dtor_t)&client_destroy);
+    s->sim.teams = ptr_list_create((node_dtor_t)&team_destroy);
+    s->sim.incantations = ptr_list_create((node_dtor_t)&incantation_destroy);
     s->sim.map = map_create(10, 10);
     for (; team_nb; team_nb--) {
         team = team_create("Dummy team", 4096);

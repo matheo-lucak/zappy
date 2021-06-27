@@ -9,6 +9,7 @@
 
 #include "logger/logger.h"
 #include "simulation/simulation.h"
+#include "simulation/incantation.h"
 
 static void simulation_create_all_teams(const arguments_t *args,
                                                 simulation_t *sim)
@@ -32,7 +33,8 @@ int simulation_start(const arguments_t *args, simulation_t *sim)
         return SIMULATION_EXIT;
     sim->map = map_create(args->width, args->height);
     sim->teams = ptr_list_create((node_dtor_t)&team_destroy);
-    if (!sim->map || !sim->teams)
+    sim->incantations = ptr_list_create((node_dtor_t)&incantation_destroy);
+    if (!sim->map || !sim->teams || !sim->incantations)
         return SIMULATION_EXIT;
     sim->default_team_free_slot = args->clients_nb;
     simulation_create_all_teams(args, sim);
