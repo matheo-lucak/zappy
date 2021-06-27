@@ -233,7 +233,7 @@ class Player:
         return self.__taking_resource.get(resource, 0)
 
     def set_object_down(self, resource: str, number: int = 1) -> None:
-        def take_handler(response: SetObjectDownResponse) -> None:
+        def set_handler(response: SetObjectDownResponse) -> None:
             print(f"{repr(resource)}: {'set down' if response.ok else 'not set down'}")
             self.__action.setting_resource -= 1
             self.__setting_resource[resource] = self.setting_object_down(resource) - 1
@@ -244,7 +244,7 @@ class Player:
             print(f"Setting {resource} down...")
             self.__action.setting_resource += 1
             self.__setting_resource[resource] = self.setting_object_down(resource) + 1
-            self.__api.send(SetObjectDownRequest(resource, callback=take_handler))
+            self.__api.send(SetObjectDownRequest(resource, callback=set_handler))
 
     def setting_object_down(self, resource: Optional[str] = None) -> int:
         if resource is None:

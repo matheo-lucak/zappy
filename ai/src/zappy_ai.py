@@ -4,8 +4,7 @@ from sys import stderr
 from typing import NamedTuple, Optional
 
 from .api_server import APIServer
-from .api_server.request import TeamRequest, LookRequest, InventoryRequest, ConnectNbrRequest
-from .api_server.request.inventory import InventoryResponse
+from .api_server.request import TeamRequest, ConnectNbrRequest
 from .api_server.request.response import MapSizeAtBeginningResponse, WelcomeResponse
 from .errors import ZappyError
 from .game import Player, Team, AI, Algorithm, Framerate
@@ -45,15 +44,9 @@ class ZappyAI:
         self.__ai: AI = AI(self.__player, self.__team, Framerate(self.__server.get_framerate))
 
     def run(self) -> None:
-        def first_inventory_update(response: InventoryResponse) -> None:
-            self.__player.inventory.update(response)
-            print(self.__player.inventory)
-
-        inventory_request: InventoryRequest = InventoryRequest(first_inventory_update)
-        look_request: LookRequest = LookRequest(self.__player.vision.update)
-        self.__server.send(inventory_request)
-        self.__server.send(look_request)
-        while inventory_request.response is None or look_request.response is None:
+        self.__player.look()
+        self.__player.check_inventory()
+        while self.__player.looking and self.__player.checking_inventory:
             self.__server.fetch()
         print("AI setup finished.")
 

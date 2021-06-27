@@ -17,7 +17,7 @@ class MultiResponse(Response):
         if cls is MultiResponse:
             raise TypeError(f"{cls.__name__} can't be instantiated")
         nb_responses: int = len(other_responses) + 1
-        if nb_responses > cls.nb_responses() or (not cls.wait_for_all() and nb_responses < cls.nb_responses()):
+        if nb_responses > cls.nb_responses() or (cls.wait_for_all() and nb_responses < cls.nb_responses()):
             raise ValueError(f"Number of response isn't correct: actual=`{nb_responses}`, expected=`{cls.nb_responses()}`")
         return super().__new__(cls)
 
