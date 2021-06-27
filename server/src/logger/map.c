@@ -26,6 +26,14 @@ const log_info_t log_info_map[] =
         .message = "A client has left"
     },
     {
+        .type = LOG_SERVER_CLIENT_BLOCKED,
+        .message = "A client is blocked"
+    },
+    {
+        .type = LOG_SERVER_CLIENT_UNBLOCKED,
+        .message = "A client is unblocked"
+    },
+    {
         .type = LOG_SERVER_CLIENT_TO_DRONE,
         .message = "A client became a drone"
     },

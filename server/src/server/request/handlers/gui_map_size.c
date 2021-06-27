@@ -11,6 +11,6 @@
 void request_handler_gui_map_size(server_t *s, client_t *c, request_t *r)
 {
     client_add_response(c, response_create(RESPONSE_MSZ,
-        s->s.map->width, s->s.map->height)
+        s->sim.map->width, s->sim.map->height)
     );
 }
