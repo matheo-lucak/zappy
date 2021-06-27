@@ -4,6 +4,7 @@ from .base import BaseRequest, Request
 from .broadcast import BroadcastRequest
 from .connect_nbr import ConnectNbrRequest
 from .eject import EjectRequest
+from .fork import ForkRequest
 from .forward import ForwardRequest
 from .incantation import IncantationRequest
 from .inventory import InventoryRequest
@@ -20,6 +21,7 @@ __all__ = [
     "BroadcastRequest",
     "ConnectNbrRequest",
     "EjectRequest",
+    "ForkRequest",
     "ForwardRequest",
     "IncantationRequest",
     "InventoryRequest",

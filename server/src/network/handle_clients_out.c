@@ -14,6 +14,17 @@
 #include "server/server.h"
 #include "server/response/response.h"
 
+static bool is_client_able_to_receive(server_t *s, client_t *c)
+{
+    if (list_empty(c->pending_responses))
+        return false;
+    if (c->alive == false)
+        return false;
+    if (!socket_selector_is_socket_ready(s->n.selector, SOCKET(c->socket)))
+        return false;
+    return true;
+}
+
 static bool network_handle_one_response_per_client(server_t *s)
 {
     bool left_to_send = false;
@@ -24,12 +35,12 @@ static bool network_handle_one_response_per_client(server_t *s)
         return false;
     list_foreach(node, s->clients) {
         c = NODE_PTR(node, client_t);
-        if (list_empty(c->pending_responses))
-            continue;
-        if (!socket_selector_is_socket_ready(s->n.selector, SOCKET(c->socket)))
+        if (!is_client_able_to_receive(s, c))
             continue;
         r = NODE_PTR(list_begin(c->pending_responses), response_t);
-        tcp_socket_send(c->socket, r->data, strlen(r->data));
+        if (tcp_socket_send(c->socket, r->data, strlen(r->data))
+            == SOCKET_DISCONNECTED)
+            c->alive = false;
         list_pop_front(c->pending_responses);
         if (!list_empty(c->pending_responses))
             left_to_send = true;
