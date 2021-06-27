@@ -37,10 +37,15 @@ typedef enum client_type_e
 /// Requests:
 /// A client can't exceed CLIENT_MAX_PENDING_REQUEST requests in pending.
 /// Beyond that, incoming requests are not taken in account
+///
+/// A client can be bloqued. It means the client
+/// can't treat it's pending requests until it is unblocked
 ////////////////////////////////////////////////////////////////////////////////
 typedef struct client_s
 {
     client_type_t   type;
+    bool            alive;
+    bool            blocked;
     tcp_socket_t *  socket;
     char *          input_stock;
     drone_t *       drone;
@@ -53,6 +58,9 @@ typedef struct response_s   response_t;
 
 client_t *client_create(void);
 void client_destroy(client_t *client);
+
+void client_block(client_t *client);
+void client_unblock(client_t *client);
 
 void client_to_drone(client_t *client, drone_t *drone);
 void client_to_spectator(client_t *client);

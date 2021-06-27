@@ -31,7 +31,7 @@ void inventory_destroy(inventory_t *inventory);
 *        is in the inventory, it adds the given quantity
 *        to the existing stack. Otherwise, it adds it
 *        with the given quantity.
-* 
+*
 * @param inventory The iventory in which the item is added.
 * @param type The type of item to be added.
 * @param quantity The quantity to add to the item.
@@ -44,7 +44,7 @@ bool inventory_add_item(inventory_t *inventory,
 
 /**
  * @brief Removes an item and a quantity associated with from an inventory.
- * 
+ *
  * @param inventory The inventory concerned.
  * @param type The type of item to remove.
  * @param quantity The quantity to remove of the item type.
@@ -57,7 +57,7 @@ bool inventory_remove_item(inventory_t *inventory,
 
 /**
  * @brief Gets an item slot information from an inventory.
- * 
+ *
  * @param inventory The inventory concerned.
  * @param type The type of item to get information on.
  * @return const item_slot_t* The pointer of the node.

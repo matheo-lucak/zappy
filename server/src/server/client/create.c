@@ -17,13 +17,19 @@ client_t *client_create(void)
 
     if (!client)
         return NULL;
-    client->drone = drone_create(0, 0);
-    client->socket = tcp_socket_create();
-    client->pending_requests = ptr_list_create((void *)&request_destroy);
-    client->pending_responses = ptr_list_create((void *)&response_destroy);
     client->type = CLIENT_UNKNOWN;
-    if (!client->drone || !client->socket
-        || !client->pending_requests || !client->pending_responses) {
+    client->alive = true;
+    client->blocked = false;
+    client->socket = tcp_socket_create();
+    client->input_stock = NULL;
+    client->drone = NULL;
+    client->pending_requests = ptr_list_create(
+                                (node_dtor_t)&request_destroy);
+    client->pending_responses = ptr_list_create(
+                                (node_dtor_t)&response_destroy);
+    if (!client->socket
+        || !client->pending_requests
+        || !client->pending_responses) {
         client_destroy(client);
         return NULL;
     }

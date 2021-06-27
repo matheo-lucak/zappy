@@ -6,6 +6,8 @@
 */
 
 #include <criterion/criterion.h>
+#include <string.h>
+
 #include "server/request/handler.h"
 #include "server/request/request.h"
 
@@ -17,6 +19,7 @@ Test(request_handler_cmd_forward, simple_go_forward)
     server_t server;
     int status = server_start(&args, &server);
 
+    client_to_drone(client, drone_create(0, 0, false));
     cr_assert(status == SERVER_SUCCESS);
     cr_assert(client->drone->x == 0);
     cr_assert(client->drone->y == 0);
@@ -35,6 +38,7 @@ Test(request_handler_cmd_forward, simple_go_other_side_of_map)
     server_t server;
     int status = server_start(&args, &server);
 
+    client_to_drone(client, drone_create(0, 0, false));
     cr_assert(status == SERVER_SUCCESS);
     cr_assert(client->drone->x == 0);
     cr_assert(client->drone->y == 0);

@@ -9,7 +9,5 @@
 
 bool team_has_drone(team_t *team, const drone_t *drone)
 {
-    if (!team || !team->drones || !drone)
-        return false;
-    return ptr_list_find(team->drones, drone) ? true : false;
+    return ptr_list_contains(team->drones, drone);
 }

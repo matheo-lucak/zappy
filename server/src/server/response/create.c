@@ -35,6 +35,7 @@ static int response_create_data(response_t * res, const char *format,
         return response_create_data_error(ap, ap_copy);
     if (vsnprintf(res->data, needed + 1, format, ap_copy) < 0)
         return response_create_data_error(ap, ap_copy);
+    va_end(ap_copy);
     return 0;
 }
 
@@ -56,5 +57,6 @@ response_t *response_create(const char *format, ...)
         response_destroy(res);
         return NULL;
     }
+    va_end(ap);
     return res;
 }

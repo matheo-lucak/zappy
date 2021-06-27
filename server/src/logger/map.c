@@ -26,6 +26,14 @@ const log_info_t log_info_map[] =
         .message = "A client has left"
     },
     {
+        .type = LOG_SERVER_CLIENT_BLOCKED,
+        .message = "A client is blocked"
+    },
+    {
+        .type = LOG_SERVER_CLIENT_UNBLOCKED,
+        .message = "A client is unblocked"
+    },
+    {
         .type = LOG_SERVER_CLIENT_TO_DRONE,
         .message = "A client became a drone"
     },
@@ -65,13 +73,25 @@ const log_info_t log_info_map[] =
         .type = LOG_SIMULATION_STARTED,
         .message = "Started"
     },
-        {
+    {
         .type = LOG_SIMULATION_STOPPED,
         .message = "Stopped"
     },
     {
-        .type = LOG_SIMULATION_NEW_FORK,
-        .message = "An egg has hatched at (%d, %d) facing %d"
+        .type = LOG_SIMULATION_NEW_DRONE,
+        .message = "A new drone spawned at (%d, %d) facing %d"
+    },
+    {
+        .type = LOG_SIMULATION_NEW_EGG,
+        .message = "A new egg spawned at (%d, %d)"
+    },
+    {
+        .type = LOG_SIMULATION_EGG_HATCHED,
+        .message = "An egg has hatched at (%d, %d)"
+    },
+    {
+        .type = LOG_SIMULATION_DRONE_DIED,
+        .message = "A drone ran out of food and died at (%d, %d)"
     },
 };
 

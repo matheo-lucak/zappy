@@ -37,8 +37,8 @@ Test(response_create, basic_drone_response_B)
 {
     response_t *res1 = response_create(RESPONSE_LOOK, "player food,,, food");
     response_t *res2 = response_create(RESPONSE_INVENTORY, 12, 3, 2, 0, 1, 0, 1);
-    response_t *res3 = response_create(RESPONSE_INCANTATION_START);
-    response_t *res4 = response_create(RESPONSE_INCANTATION_ENDS, 6);
+    response_t *res3 = response_create(RESPONSE_INCANTATION);
+    response_t *res4 = response_create(RESPONSE_ELEVATION, 6);
 
     cr_assert(res1 && !strcmp(res1->data, "[ player food,,, food ]\n"));
     cr_assert(res2 && !strcmp(res2->data,

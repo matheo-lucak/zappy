@@ -10,16 +10,18 @@
 
 #include "simulation/team.h"
 
-team_t *team_create(char *name, unsigned int free_slots_nb)
+team_t *team_create(const char *name, unsigned int free_slots_nb)
 {
     team_t *team = malloc(sizeof(team_t));
 
     if (!team)
         return NULL;
-    team->name = strdup(name ? name : TEAM_DEFAULT_NAME);
+    team->default_slots_nb = free_slots_nb;
     team->free_slots_nb = free_slots_nb;
-    team->drones = ptr_list_create((void *)&drone_destroy);
-    if (!team->name || !team->drones) {
+    team->name = strdup(name ? name : TEAM_DEFAULT_NAME);
+    team->drones = ptr_list_create((node_dtor_t)&drone_destroy);
+    team->eggs = ptr_list_create((node_dtor_t)&egg_destroy);
+    if (!team->name || !team->drones || !team->eggs) {
         team_destroy(team);
         return NULL;
     }
