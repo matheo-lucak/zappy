@@ -21,6 +21,8 @@ static bool network_handle_one_response_per_client(server_t *s)
         return false;
     list_foreach(node, s->clients) {
         c = NODE_PTR(node, client_t);
+        if (list_empty(c->pending_responses))
+            continue;
         if (!socket_selector_is_socket_ready(s->n.selector, SOCKET(c->socket)))
             continue;
         r = NODE_PTR(list_begin(c->pending_responses), response_t);
@@ -32,14 +34,13 @@ static bool network_handle_one_response_per_client(server_t *s)
     return left_to_send;
 }
 
-int network_handle_clients_out(server_t *s)
+void network_handle_clients_out(server_t *s)
 {
     bool left_to_send = false;
 
     do {
-        if (socket_selector_wait(s->n.selector, 1, WATCH_WRT) != SELECTOR_OK)
-            return SERVER_ERROR;
+        if (socket_selector_wait(s->n.selector, 1, WATCH_WRT) <= 0)
+            return;
         left_to_send = network_handle_one_response_per_client(s);
     } while (left_to_send);
-    return SERVER_SUCCESS;
 }

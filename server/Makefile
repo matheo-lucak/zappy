@@ -112,7 +112,9 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/team/create.c)							\
 					$(addprefix $(SRC_PATH), simulation/team/delete_drone.c)					\
 					$(addprefix $(SRC_PATH), simulation/team/destroy.c)							\
+					$(addprefix $(SRC_PATH), simulation/team/find_unactive_drone.c)				\
 					$(addprefix $(SRC_PATH), simulation/team/has_drone.c)						\
+					$(addprefix $(SRC_PATH), simulation/team/new_active_drone.c)				\
 					$(addprefix $(SRC_PATH), simulation/tile/add_drone.c)						\
 					$(addprefix $(SRC_PATH), simulation/tile/add_item.c)						\
 					$(addprefix $(SRC_PATH), simulation/tile/create.c)							\

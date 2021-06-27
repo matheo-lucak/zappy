@@ -40,7 +40,7 @@ int server_run(server_t *s)
         network_handle_clients_in(s);
         server_handle_request(s);
         simulation_handle(&s->s);
-        status = network_handle_clients_out(s);
+        network_handle_clients_out(s);
     }
     return status;
 }
