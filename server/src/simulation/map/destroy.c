@@ -16,6 +16,7 @@ static void map_destroy_tile(map_t *map)
         for (unsigned int x = 0; x < map->width; x++) {
             tile_destroy(map->tiles[y][x]);
         }
+        free(map->tiles[y]);
     }
     free(map->tiles);
 }

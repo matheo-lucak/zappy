@@ -10,8 +10,6 @@
 
 void request_handler_cmd_right(server_t *s, client_t *c, request_t *r)
 {
-    response_t *response = NULL;
-
     drone_rotate(c->drone, RIGHT);
     client_add_response(c, response_create(RESPONSE_OK));
 }

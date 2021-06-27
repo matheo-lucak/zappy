@@ -12,17 +12,14 @@ static void simulation_handle_team_eggs(team_t *team)
 {
     egg_t *egg = NULL;
     node_iterator_t *it = NULL;
-    node_iterator_t *it_to_del = NULL;
 
     for (it = list_iter_begin(team->eggs); it;) {
         egg = NODE_PTR(it, egg_t);
         if (egg->time_until_hatch <= 0) {
-            it_to_del = it;
-            node_iter_next(&it);
             team_add_drone(team, drone_create(egg->x, egg->y, false));
             server_log(LOG_SIMULATION_EGG_HATCHED, egg->x, egg->y);
             team->free_slots_nb += 1;
-            list_pop(team->eggs, it_to_del->index);
+            list_pop_iter_next(team->eggs, it);
             continue;
         }
         egg->time_until_hatch -= 1;

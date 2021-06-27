@@ -12,19 +12,16 @@ bool inventory_remove_item(inventory_t *inventory,
                             resource_type_t type,
                             unsigned int quantity)
 {
-    int index = 0;
-
-    if (list_empty(inventory->slots))
-        return false;
-    list_foreach(node, inventory->slots) {
-        if (NODE_PTR(node, item_slot_t)->type == type) {
-            if (NODE_PTR(node, item_slot_t)->quantity <= quantity) {
-                list_pop(inventory->slots, index);
-            } else
-                NODE_PTR(node, item_slot_t)->quantity -= quantity;
+    list_foreach(it, inventory->slots) {
+        if (NODE_PTR(it, item_slot_t)->type == type) {
+            if (NODE_PTR(it, item_slot_t)->quantity <= quantity) {
+                list_pop(inventory->slots, it->index);
+            } else {
+                NODE_PTR(it, item_slot_t)->quantity -= quantity;
+            }
+            node_iter_end(&it);
             return true;
         }
-        index += 1;
     }
     return false;
 }

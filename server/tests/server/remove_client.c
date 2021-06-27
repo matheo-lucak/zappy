@@ -16,8 +16,8 @@ void set_dummy_server(server_t *s, size_t team_nb, size_t drone_p_team)
     drone_t *drone = NULL;
     client_t *client = NULL;
 
-    s->clients = ptr_list_create((void *)&client_destroy);
-    s->s.teams = ptr_list_create((void *)&drone_destroy);
+    s->clients = ptr_list_create((node_dtor_t)&client_destroy);
+    s->s.teams = ptr_list_create((node_dtor_t)&drone_destroy);
     for (; team_nb; team_nb--) {
         team = team_create("Dummy team", 4096);
         ptr_list_push_back(s->s.teams, team);

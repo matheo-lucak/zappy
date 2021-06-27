@@ -33,13 +33,13 @@ map_t *map_create(unsigned int width, unsigned int height)
     for (unsigned int y = 0; y < height; y++) {
         map->tiles[y] = malloc(sizeof(tile_t) * width);
         if (!map->tiles[y]) {
-            map_destroy_until(map, width, height);
+            map_destroy_until(map, width, y);
             return NULL;
         }
         for (unsigned int x = 0; x < width; x++) {
             map->tiles[y][x] = tile_create();
             if (!map->tiles[y][x]) {
-                map_destroy_until(map, y + 1, x + 1);
+                map_destroy_until(map, x, y);
                 return NULL;
             }
         }

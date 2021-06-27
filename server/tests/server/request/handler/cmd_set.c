@@ -18,6 +18,7 @@ Test(request_handler_cmd_set, simple_set)
     server_t s;
     int status = server_start(&args, &s);
 
+    client_to_drone(c, drone_create(0, 0, false));
     cr_assert(status == SERVER_SUCCESS);
     cr_assert(inventory_add_item(c->drone->inventory, RESOURCE_DERAUMERE, 1));
     cr_assert(!generic_list_find(s.s.map->tiles[c->drone->y][c->drone->x]->items, RESOURCE_DERAUMERE, resource_type_t));

@@ -29,7 +29,6 @@ static void eject_drone_from_tile(server_t *s, client_t *ejector, drone_t *d)
 {
     client_t *eject_c = NULL;
     local_direction_t eject_index = LCL_UNKNOWN;
-    response_t *response = NULL;
 
     drone_eject(d, s->s.map, ejector->drone->facing_direction);
     eject_c = get_client_from_drone(s, d);
@@ -38,19 +37,21 @@ static void eject_drone_from_tile(server_t *s, client_t *ejector, drone_t *d)
             d->facing_direction,
             ejector->drone->facing_direction
         );
-        response = response_create(RESPONSE_EJECT, eject_index);
-        client_add_response(ejector, response);
+        client_add_response(ejector,
+            response_create(RESPONSE_EJECT, eject_index));
     }
 }
 
 void request_handler_cmd_eject(server_t *s, client_t *c, request_t *r)
 {
     drone_t *d = NULL;
-    if (list_empty(s->s.map->tiles[c->drone->y][c->drone->x]->drones)) {
+    tile_t *tile = s->s.map->tiles[c->drone->y][c->drone->x];
+
+    if (list_empty(tile->drones)) {
         client_add_response(c, response_create(RESPONSE_KO));
         return;
     }
-    list_foreach(node, s->s.map->tiles[c->drone->y][c->drone->x]->drones) {
+    list_foreach(node, tile->drones) {
         d = NODE_PTR(node, drone_t);
         if ((void *)d == (void *)c->drone)
             continue;

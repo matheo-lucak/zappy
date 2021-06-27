@@ -11,7 +11,6 @@
 
 bool tile_add_item(tile_t *tile, resource_type_t type)
 {
-    int status = generic_list_push_back(tile->items, type, resource_type_t);
-
-    return status == LIST_SUCCESS ? true : false;
+    return generic_list_push_back(tile->items, type, resource_type_t)
+        == LIST_SUCCESS;
 }

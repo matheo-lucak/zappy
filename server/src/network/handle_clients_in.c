@@ -35,8 +35,6 @@ void network_handle_clients_in(server_t *s)
     network_handle_client_connection(s);
     list_foreach(node, s->clients) {
         c = NODE_PTR(node, client_t);
-        if (!c)
-            continue;
         network_handle_client_input_from_socket(s, c);
     }
 }
