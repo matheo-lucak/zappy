@@ -31,7 +31,7 @@ class AI:
         self.__player: Player = player
         self.__team: Team = team
         self.__framerate: Framerate = framerate
-        self.__resource_sought: Optional[BaseResource] = None
+        self.__stone_sought: Optional[BaseResource] = None
 
     def start(self) -> None:
         self.__player.look()
@@ -62,8 +62,9 @@ class AI:
         self.__player.broadcast(NEW_LEVEL_SEND.format(self.__player.level))
 
     def __go_to_superior_level_lonely(self, requirements: Requirements) -> None:
+        self.__stone_sought = None
         for resource in requirements.resources:
-            self.__resource_sought = resource
+            self.__stone_sought = resource
             print(f"Seeking {resource}({resource.amount})")
             while self.__player.inventory.get(resource) < resource.amount:
                 self.__seek_resource(resource)
@@ -77,7 +78,7 @@ class AI:
         self.__player.check_inventory()
         self.__wait()
 
-    def __seek_resource(self, resource: BaseResource, *resources_to_get_with: BaseResource) -> None:
+    def __seek_resource(self, resource: BaseResource) -> None:
         action: Callable[..., None]
         position: Coords
         all_positions: List[Coords]
@@ -97,20 +98,20 @@ class AI:
             self.__wait()
             if resource == Food.get_name():
                 return
-            if self.__resource_sought is not None and self.__resource_sought.name != resource:
+            if self.__stone_sought is not None and self.__stone_sought.name != resource:
                 self.__player.broadcast(f"{resource} found")
 
         if self.__player.inventory.get(Food.get_name()) < self.__min_food.amount and not isinstance(resource, Food):
             print(f"Missing food")
             while self.__player.inventory.get(Food.get_name()) < self.__required_food.amount:
-                self.__seek_resource(self.__required_food, resource)
+                self.__seek_resource(self.__required_food)
             print("I have sufficient food")
             print(f"Seeking {resource} again...")
             return
 
         positions_to_go: List[Tuple[str, Position, Tile]] = list()
         for rare_resource in MetaResource.get_rare_resources():
-            if rare_resource == resource.name or any(r.name == rare_resource for r in resources_to_get_with):
+            if rare_resource == resource.name or (self.__stone_sought is not None and self.__stone_sought == resource):
                 continue
             if self.__player.inventory.get(rare_resource) >= 3:
                 continue
@@ -121,12 +122,14 @@ class AI:
                     tile = self.__player.vision.get_coord(p)
                     positions_to_go.append((rare_resource, self.__player.project_position(p.unit, p.divergence), tile))
 
-        for search in resources_to_get_with:
-            if search.amount > 0 and self.__player.inventory.get(search) >= search.amount:
-                continue
-            for p in self.__player.vision.find(search):
+        if (
+            isinstance(resource, Food)
+            and self.__stone_sought is not None
+            and self.__player.inventory.get(self.__stone_sought) < self.__stone_sought.amount
+        ):
+            for p in self.__player.vision.find(self.__stone_sought):
                 tile = self.__player.vision.get_coord(p)
-                positions_to_go.append((search.name, self.__player.project_position(p.unit, p.divergence), tile))
+                positions_to_go.append((self.__stone_sought.name, self.__player.project_position(p.unit, p.divergence), tile))
 
         for resource_name, resource_pos, tile in positions_to_go:
             go_to_take_resource(resource_name, tile, resource_pos)
