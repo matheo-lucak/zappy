@@ -46,7 +46,7 @@ class ZappyAI:
     def run(self) -> None:
         self.__player.look()
         self.__player.check_inventory()
-        while self.__player.looking and self.__player.checking_inventory:
+        while self.__player.looking or self.__player.checking_inventory:
             self.__server.fetch()
         print("AI setup finished.")
 
