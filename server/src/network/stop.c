@@ -9,9 +9,7 @@
 
 void network_stop(network_t *n)
 {
-    if (n->selector)
-        socket_selector_destroy(n->selector);
-    if (n->listener)
-        tcp_listener_destroy(n->listener);
+    socket_selector_destroy(n->selector);
+    tcp_listener_destroy(n->listener);
     server_log(LOG_NETWORK_STOPPED);
 }

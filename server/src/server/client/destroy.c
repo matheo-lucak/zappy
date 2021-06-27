@@ -13,9 +13,8 @@ void client_destroy(client_t *c)
 {
     if (!c)
         return;
-    if (c->socket)
-        tcp_socket_destroy(c->socket);
-    if (c->pending_requests)
-        ptr_list_destroy(c->pending_requests);
+    tcp_socket_destroy(c->socket);
+    ptr_list_destroy(c->pending_requests);
+    ptr_list_destroy(c->pending_responses);
     free(c);
 }

@@ -33,6 +33,7 @@ void simulation_stop(simulation_t *sim);
 void simulation_handle(server_t *s);
 void simulation_handle_eggs(simulation_t *sim);
 void simulation_handle_incantation(server_t *s);
+void simulation_handle_food(server_t *s);
 
 void simulation_remove_drone(simulation_t *sim, drone_t *drone);
 

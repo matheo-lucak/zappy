@@ -24,6 +24,8 @@ drone_t *drone_create(int x, int y, bool activated)
         drone_destroy(new_drone);
         return NULL;
     }
+    inventory_add_item(new_drone->inventory,
+        RESOURCE_FOOD, DRONE_DEFAULT_FOOD_QUANTITY);
     new_drone->facing_direction = direction_get_random();
     new_drone->elevation_lvl = DRONE_DEFAULT_ELEVATION_LVL;
     server_log(LOG_SIMULATION_NEW_DRONE, x, y, new_drone->facing_direction);
