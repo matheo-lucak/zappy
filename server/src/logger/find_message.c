@@ -11,10 +11,10 @@ static char *logger_find_header(log_type_t type)
 {
     if (LOG_SERVER_RANGE_L <= type && LOG_SERVER_RANGE_H >= type)
         return LOG_SERVER_HEADER;
-    if (LOG_SERVER_RANGE_L <= type && LOG_SERVER_RANGE_H >= type)
-        return LOG_SERVER_HEADER;
-    if (LOG_SERVER_RANGE_L <= type && LOG_SERVER_RANGE_H >= type)
-        return LOG_SERVER_HEADER;
+    if (LOG_NETWORK_RANGE_L <= type && LOG_NETWORK_RANGE_H >= type)
+        return LOG_NETWORK_HEADER;
+    if (LOG_SIMULATION_RANGE_L <= type && LOG_SIMULATION_RANGE_H >= type)
+        return LOG_SIMULATION_HEADER;
     return LOG_DEFAULT_HEADER;
 }
 

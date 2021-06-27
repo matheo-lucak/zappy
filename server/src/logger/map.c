@@ -18,12 +18,12 @@ const log_info_t log_info_map[] =
         .message = "Stopped"
     },
     {
-        .type = LOG_SERVER_NEW_CLIENT,
-        .message = "New client from: %s"
+        .type = LOG_SERVER_CLIENT_BLOCKED,
+        .message = "A client is blocked"
     },
     {
-        .type = LOG_SERVER_CLIENT_LEFT,
-        .message = "A client has left"
+        .type = LOG_SERVER_CLIENT_UNBLOCKED,
+        .message = "A client is unblocked"
     },
     {
         .type = LOG_SERVER_CLIENT_TO_DRONE,
@@ -62,6 +62,15 @@ const log_info_t log_info_map[] =
         .message = "Listening on port %d"
     },
     {
+        .type = LOG_NETWORK_NEW_CLIENT,
+        .message = "New client %d from: %s"
+    },
+    {
+        .type = LOG_NETWORK_CLIENT_LEFT,
+        .message = "Client %d has left"
+    },
+
+    {
         .type = LOG_SIMULATION_STARTED,
         .message = "Started"
     },
@@ -80,6 +89,10 @@ const log_info_t log_info_map[] =
     {
         .type = LOG_SIMULATION_EGG_HATCHED,
         .message = "An egg has hatched at (%d, %d)"
+    },
+    {
+        .type = LOG_SIMULATION_DRONE_DIED,
+        .message = "A drone ran out of food and died at (%d, %d)"
     },
 };
 

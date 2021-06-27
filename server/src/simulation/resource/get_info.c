@@ -23,7 +23,7 @@ const resource_info_t *resource_get_info_from_name(char *name)
 const resource_info_t *resource_get_info_from_type(resource_type_t type)
 {
     for (size_t i = 0; i < resource_infos_size; i++) {
-        if (resource_infos->type == type)
+        if (resource_infos[i].type == type)
             return &resource_infos[i];
     }
     return NULL;
