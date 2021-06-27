@@ -38,8 +38,6 @@ void server_handle_request(server_t *s)
 
     list_foreach(node, s->clients) {
         c = NODE_PTR(node, client_t);
-        if (!c)
-            continue;
         server_handle_single_request(s, c);
     }
 }

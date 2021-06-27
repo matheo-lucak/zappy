@@ -13,7 +13,6 @@
 void request_handler_cmd_set(server_t *s, client_t *c, request_t *r)
 {
     bool is_ok = false;
-    response_t *response = NULL;
     resource_type_t type = RESOURCE_FOOD;
     const node_t *node = list_get(r->arguments, 0);
     const resource_info_t *info = NULL;

@@ -17,10 +17,12 @@ client_t *client_create(void)
 
     if (!client)
         return NULL;
-    client->drone = drone_create(0, 0, true);
+    client->drone = NULL;
     client->socket = tcp_socket_create();
-    client->pending_requests = ptr_list_create((void *)&request_destroy);
-    client->pending_responses = ptr_list_create((void *)&response_destroy);
+    client->pending_requests =  ptr_list_create(
+                                (node_dtor_t)&request_destroy);
+    client->pending_responses = ptr_list_create(
+                                (node_dtor_t)&response_destroy);
     client->type = CLIENT_UNKNOWN;
     client->blocked = false;
     if (!client->drone || !client->socket

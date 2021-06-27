@@ -21,5 +21,5 @@ void request_handler_cmd_fork(server_t *s, client_t *c, request_t *r)
     }
     egg = egg_create(drone->x, drone->y);
     team_add_egg(team, egg);
-    client_add_response(c, response_create(RESPONSE_KO));
+    client_add_response(c, response_create(RESPONSE_OK));
 }

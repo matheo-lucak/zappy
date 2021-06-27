@@ -17,6 +17,7 @@ Test(request_handler_cmd_right, simple_go_left_to_up)
     server_t server;
     int status = server_start(&args, &server);
 
+    client_to_drone(client, drone_create(0, 0, false));
     cr_assert(status == SERVER_SUCCESS);
     client->drone->facing_direction = LEFT;
     request_handler_cmd_right(&server, client, request);
@@ -32,6 +33,7 @@ Test(request_handler_cmd_right, simple_go_up_to_right)
     server_t server;
     int status = server_start(&args, &server);
 
+    client_to_drone(client, drone_create(0, 0, false));
     cr_assert(status == SERVER_SUCCESS);
     client->drone->facing_direction = UP;
     request_handler_cmd_right(&server, client, request);
@@ -47,6 +49,7 @@ Test(request_handler_cmd_right, simple_go_right_to_down)
     server_t server;
     int status = server_start(&args, &server);
 
+    client_to_drone(client, drone_create(0, 0, false));
     cr_assert(status == SERVER_SUCCESS);
     client->drone->facing_direction = RIGHT;
     request_handler_cmd_right(&server, client, request);
@@ -62,6 +65,7 @@ Test(request_handler_cmd_right, simple_go_down_to_left)
     server_t server;
     int status = server_start(&args, &server);
 
+    client_to_drone(client, drone_create(0, 0, false));
     cr_assert(status == SERVER_SUCCESS);
     client->drone->facing_direction = DOWN;
     request_handler_cmd_right(&server, client, request);
@@ -77,6 +81,7 @@ Test(request_handler_cmd_right, simple_go_down_and_walk)
     server_t server;
     int status = server_start(&args, &server);
 
+    client_to_drone(client, drone_create(0, 0, false));
     cr_assert(status == SERVER_SUCCESS);
     client->drone->x = 4;
     client->drone->y = 4;
