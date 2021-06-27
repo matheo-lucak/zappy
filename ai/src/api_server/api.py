@@ -138,22 +138,19 @@ class APIServer:
 
     def __fetch_all_responses(self) -> None:
         def read_socket(chunck_size: int) -> Iterator[bytes]:
-            self.__socket.setblocking(True)
             while True:
                 try:
                     data: bytes = self.__socket.recv(chunck_size)
                 except BlockingIOError:
-                    self.__socket.setblocking(True)
                     break
                 length: int = len(data)
                 if length == 0:
-                    self.__socket.setblocking(True)
                     raise EOFError
                 yield data
                 if length < chunck_size:
                     break
-                self.__socket.setblocking(False)
-            self.__socket.setblocking(True)
+                if self.__socket not in select([self.__socket], [], [], 0)[0]:
+                    break
 
         def recv_response_from_server() -> Iterator[str]:
             for data in read_socket(4096):
