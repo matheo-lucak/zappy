@@ -1,8 +1,6 @@
 # -*- coding: Utf-8 -*
 
-from typing import Any, Callable, Dict, List, Optional, Tuple, Type, NoReturn
-
-from src.game.resource import Sibur
+from typing import Any, Callable, Dict, List, Optional, Type, NoReturn
 
 from .inventory import Inventory
 from .vision import Vision
@@ -10,6 +8,7 @@ from .level import Level
 from .message import Message, MessageError
 from .role import Role
 from .position import Position, Orientation
+from .action import BaseAction
 from ..api_server import APIServer
 from ..api_server.request.broadcast import BroadcastRequest
 from ..api_server.request.eject import EjectRequest, EjectResponse
@@ -32,6 +31,18 @@ class PlayerDeadError(ZappyError):
 MessageListener = Callable[[Message], None]
 
 
+class Action(BaseAction):
+    broadcasting: int
+    checking_inventory: int
+    forwarding: int
+    looking: int
+    turning_left: int
+    turning_right: int
+    ejecting: int
+    taking_resource: int
+    setting_resource: int
+
+
 class Player:
     def __init__(self, team_name: str, api: APIServer) -> None:
         self.__team: str = team_name
@@ -44,13 +55,7 @@ class Player:
         self.__pos: Position = Position(0, 0)
         self.__orientation: Orientation = Orientation.North
 
-        self.__broadcasting: int = 0
-        self.__checking_inventory: int = 0
-        self.__forwarding: int = 0
-        self.__looking: int = 0
-        self.__turning_left: int = 0
-        self.__turning_right: int = 0
-        self.__ejecting: int = 0
+        self.__action: Action = Action()
 
         self.__taking_resource: Dict[str, int] = dict()
         self.__setting_resource: Dict[str, int] = dict()
@@ -61,28 +66,29 @@ class Player:
         def look_handler(response: LookResponse) -> None:
             self.__vision.update(response)
             print("Vision up-to-date")
-            self.__looking -= 1
+            print("->", self.__vision)
+            self.__action.looking -= 1
 
-        self.__looking += 1
+        self.__action.looking += 1
         self.__api.send(LookRequest(look_handler))
 
     @property
     def looking(self) -> int:
-        return self.__looking
+        return self.__action.looking
 
     def check_inventory(self) -> None:
         def inventory_handler(response: InventoryResponse) -> None:
             self.__inventory.update(response)
             print("Inventory up-to-date")
             print("->", self.__inventory)
-            self.__checking_inventory -= 1
+            self.__action.checking_inventory -= 1
 
-        self.__checking_inventory += 1
+        self.__action.checking_inventory += 1
         self.__api.send(InventoryRequest(inventory_handler))
 
     @property
     def checking_inventory(self) -> int:
-        return self.__checking_inventory
+        return self.__action.checking_inventory
 
     @property
     def moving(self) -> int:
@@ -91,7 +97,7 @@ class Player:
     def move_forward(self, nb_times: int = 1) -> None:
         def forward_handler() -> None:
             print("Move forward action completed")
-            self.__forwarding -= 1
+            self.__action.forwarding -= 1
             new_pos: Dict[Orientation, Position] = {
                 Orientation.North: Position(self.pos.x, self.pos.y + 1),
                 Orientation.South: Position(self.pos.x, self.pos.y - 1),
@@ -102,17 +108,17 @@ class Player:
 
         for _ in range(nb_times):
             print("Moving forward...")
-            self.__forwarding += 1
+            self.__action.forwarding += 1
             self.__api.send(ForwardRequest(lambda rp: forward_handler()))
 
     @property
     def moving_forward(self) -> int:
-        return self.__forwarding
+        return self.__action.forwarding
 
     def turn_left(self, nb_times: int = 1) -> None:
         def turn_handler() -> None:
             print("Left rotation completed")
-            self.__turning_left -= 1
+            self.__action.turning_left -= 1
             new_orientation: Dict[Orientation, Orientation] = {
                 Orientation.North: Orientation.West,
                 Orientation.West: Orientation.South,
@@ -123,17 +129,17 @@ class Player:
 
         for _ in range(nb_times):
             print("Turning 90deg left...")
-            self.__turning_left += 1
+            self.__action.turning_left += 1
             self.__api.send(LeftRequest(lambda rp: turn_handler()))
 
     @property
     def turning_left(self) -> int:
-        return self.__turning_left
+        return self.__action.turning_left
 
     def turn_right(self, nb_times: int = 1) -> None:
         def turn_handler() -> None:
             print("Right rotation completed")
-            self.__turning_right -= 1
+            self.__action.turning_right -= 1
             new_orientation: Dict[Orientation, Orientation] = {
                 Orientation.North: Orientation.East,
                 Orientation.East: Orientation.South,
@@ -144,12 +150,12 @@ class Player:
 
         for _ in range(nb_times):
             print("Turning 90deg right...")
-            self.__turning_right += 1
+            self.__action.turning_right += 1
             self.__api.send(RightRequest(lambda rp: turn_handler()))
 
     @property
     def turning_right(self) -> int:
-        return self.__turning_right
+        return self.__action.turning_right
 
     def go_to_position(self, position: Position) -> None:
         if position == self.pos:
@@ -197,16 +203,16 @@ class Player:
             return
 
         def broadcast_handler() -> None:
-            self.__broadcasting -= 1
+            self.__action.broadcasting -= 1
 
         message = f"{self.__team}: lvl {self.level}({self.role.value}): {message}"
         print(f"Broadcasting: {repr(message)}")
-        self.__broadcasting += 1
+        self.__action.broadcasting += 1
         self.__api.send(BroadcastRequest(message, callback=lambda rp: broadcast_handler()))
 
     @property
     def broadcasting(self) -> int:
-        return self.__broadcasting
+        return self.__action.broadcasting
 
     def set_message_listener(self, callback: Optional[MessageListener]) -> None:
         self.__message_listener = callback
@@ -214,53 +220,55 @@ class Player:
     def take_object(self, resource: str, number: int = 1) -> None:
         def take_handler(response: TakeObjectResponse) -> None:
             print(f"{repr(resource)}: {'taken' if response.ok else 'not taken'}")
+            self.__action.taking_resource -= 1
             self.__taking_resource[resource] = self.taking_object(resource) - 1
             if self.__taking_resource[resource] < 1:
                 self.__taking_resource.pop(resource)
 
         for _ in range(number):
             print(f"Taking {resource}...")
+            self.__action.taking_resource += 1
             self.__taking_resource[resource] = self.taking_object(resource) + 1
             self.__api.send(TakeObjectRequest(resource, callback=take_handler))
 
     def taking_object(self, resource: Optional[str] = None) -> int:
         if resource is None:
-            return sum(self.__taking_resource.values())
+            return self.__action.taking_resource
         return self.__taking_resource.get(resource, 0)
 
     def set_object_down(self, resource: str, number: int = 1) -> None:
         def take_handler(response: SetObjectDownResponse) -> None:
             print(f"{repr(resource)}: {'set down' if response.ok else 'not set down'}")
+            self.__action.setting_resource -= 1
             self.__setting_resource[resource] = self.setting_object_down(resource) - 1
             if self.__setting_resource[resource] < 1:
                 self.__setting_resource.pop(resource)
 
         for _ in range(number):
             print(f"Setting {resource} down...")
+            self.__action.setting_resource += 1
             self.__setting_resource[resource] = self.setting_object_down(resource) + 1
             self.__api.send(SetObjectDownRequest(resource, callback=take_handler))
 
     def setting_object_down(self, resource: Optional[str] = None) -> int:
         if resource is None:
-            return sum(self.__setting_resource.values())
+            return self.__action.setting_resource
         return self.__setting_resource.get(resource, 0)
 
     def eject_from_this_tile(self) -> None:
         def eject_handler(response: EjectResponse) -> None:
             print(f"Ejected: {response.ok}. Waiting for vision update...")
+            self.__action.ejecting -= 1
 
-        def look_handler(response: LookResponse) -> None:
-            self.__vision.update(response)
-            print("Vision up-to-date")
-            self.__ejecting -= 1
-
-        self.__ejecting += 1
+        self.__action.ejecting += 1
         self.__api.send(EjectRequest(eject_handler))
-        self.__api.send(LookRequest(look_handler))
 
     @property
     def ejecting_player(self) -> int:
         return self.__ejecting
+
+    def doing_an_action(self) -> bool:
+        return self.__action.ongoing()
 
     @property
     def pos(self) -> Position:

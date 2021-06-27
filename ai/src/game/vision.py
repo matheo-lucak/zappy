@@ -15,13 +15,8 @@ class Tile:
         self.__divergence: int = divergence
         self.__index: int = index
         self.__players: int = 0
-        resources: List[BaseResource] = list()
-        for obj, amount in content.items():
-            if obj == "player":
-                self.__players += amount
-            else:
-                resources.append(MetaResource.create(obj, amount))
-        self.__resources: Tuple[BaseResource, ...] = tuple(resources)
+        self.__resources: Tuple[BaseResource, ...] = tuple()
+        self.update(content)
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}(resources={self.__resources}, nb_players={self.__players})"
@@ -43,6 +38,15 @@ class Tile:
         if resource == "player":
             return self.nb_players > 0
         return any(r.name == resource for r in self.__resources)
+
+    def update(self, content: Dict[str, int]) -> None:
+        resources: List[BaseResource] = list()
+        for obj, amount in content.items():
+            if obj == "player":
+                self.__players += amount
+            else:
+                resources.append(MetaResource.create(obj, amount))
+        self.__resources = tuple(resources)
 
     @property
     def unit(self) -> int:
@@ -82,9 +86,7 @@ class Vision:
         self.__vision_unit: int = 0
 
     def __str__(self) -> str:
-        return (
-            f"Vision: [{', '.join([' '.join(f'{resource.name} {resource.amount}' for resource in tile) for tile in self.tiles])}]"
-        )
+        return f"Vision: [{', '.join([' '.join(f'({r.name} {r.amount})' for r in tile) for tile in self.tiles])}]"
 
     def get(self, unit: int, divergence: int) -> Tile:
         return self.__grid[unit, divergence]
@@ -116,6 +118,10 @@ class Vision:
                 raise ResponseError(str(response), str(e))
         if new_grid[0, 0].nb_players < 1:
             raise ResponseError(str(response), "I'm a ghost, so what ?")
+        for coords, tile in self.__grid.items():
+            if coords in new_grid:
+                tile.update(response.tiles[tile.index])
+                new_grid[coords] = tile
 
         self.__vision_unit = vision_unit
         self.__grid = new_grid

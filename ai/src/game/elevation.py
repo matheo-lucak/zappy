@@ -9,6 +9,12 @@ class Requirements(NamedTuple):
     nb_players: int
     resources: Tuple[BaseResource, ...]
 
+    def get_number(self, resource: str) -> int:
+        for r in self.resources:
+            if r.name == resource:
+                return r.amount
+        return 0
+
 
 Secrets = Dict[int, Requirements]
 
@@ -17,13 +23,6 @@ class Elevation:
     @staticmethod
     def get_requirements(level: int) -> Requirements:
         return Elevation.__SECRETS[level]
-
-    @staticmethod
-    def get_required_number(level: int, resource: str) -> int:
-        for r in Elevation.get_requirements(level).resources:
-            if r.name == resource:
-                return r.amount
-        return 0
 
     @staticmethod
     def max_level() -> int:

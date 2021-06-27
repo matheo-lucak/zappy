@@ -71,18 +71,17 @@ class AI:
         tile: Tile
         last_action: Optional[Callable[..., None]] = None
 
-        def go_to_take_resource(resource: str, amount: int, position: Position) -> Implementation:
+        def go_to_take_resource(resource: str, tile: Tile, position: Position) -> Implementation:
+            amount: int = tile[resource]
             self.__player.go_to_position(position)
             print(f"Nb {resource} in tile: {amount}")
+            if (tile.index != 0 and "player" in tile) or (tile.index == 0 and tile["player"] > 1):
+                print("There is an another player !!")
+                self.__player.eject_from_this_tile()
             self.__player.take_object(resource, amount)
             self.__player.look()
             self.__player.check_inventory()
-            while (
-                self.__player.moving
-                or self.__player.taking_object(resource)
-                or self.__player.looking
-                or self.__player.checking_inventory
-            ):
+            while self.__player.doing_an_action():
                 yield
 
         if resource.amount > 0:
@@ -97,7 +96,7 @@ class AI:
                 print(f"Seeking {resource} again...")
                 continue
 
-            positions_to_go: List[Tuple[str, Position, int]] = list()
+            positions_to_go: List[Tuple[str, Position, Tile]] = list()
             for rare_resource in MetaResource.get_rare_resources():
                 if rare_resource == resource.name or any(r.name == rare_resource for r in resources_to_get_with):
                     continue
@@ -105,22 +104,20 @@ class AI:
                     continue
                 all_positions = self.__player.vision.find(rare_resource)
                 if all_positions:
-                    print(f"-- YES! I found a {rare_resource} in {len(all_positions)} tiles")
+                    print(f"-- YES! I found a {rare_resource} in {len(all_positions)} tile(s)")
                     for p in all_positions:
                         tile = self.__player.vision.get_coord(p)
-                        positions_to_go.append(
-                            (rare_resource, self.__player.project_position(p.unit, p.divergence), tile[rare_resource])
-                        )
+                        positions_to_go.append((rare_resource, self.__player.project_position(p.unit, p.divergence), tile))
 
             for search in resources_to_get_with:
                 if search.amount > 0 and self.__player.inventory.get(search) >= search.amount:
                     continue
                 for p in self.__player.vision.find(search):
                     tile = self.__player.vision.get_coord(p)
-                    positions_to_go.append((search.name, self.__player.project_position(p.unit, p.divergence), tile[search]))
+                    positions_to_go.append((search.name, self.__player.project_position(p.unit, p.divergence), tile))
 
-            for resource_name, resource_pos, amount in positions_to_go:
-                yield from go_to_take_resource(resource_name, amount, resource_pos)
+            for resource_name, resource_pos, tile in positions_to_go:
+                yield from go_to_take_resource(resource_name, tile, resource_pos)
             all_positions = self.__player.vision.find(resource)
             if not all_positions:
                 if last_action is self.__player.move_forward:
@@ -138,7 +135,7 @@ class AI:
                 position = all_positions[0]
                 tile = self.__player.vision.get_coord(position)
                 yield from go_to_take_resource(
-                    resource.name, tile[resource], self.__player.project_position(position.unit, position.divergence)
+                    resource.name, tile, self.__player.project_position(position.unit, position.divergence)
                 )
                 if actual_nb < self.__player.inventory.get(resource) and resource.amount > 0:
                     print(f"--> {resource}: {self.__player.inventory.get(resource)}/{resource.amount}")
@@ -147,31 +144,25 @@ class AI:
     def __start_incantation(self, requirements: Requirements) -> Implementation:
         self.__player.move_forward(5)
         self.__player.look()
-        while self.__player.moving or self.__player.looking:
+        while self.__player.moving_forward or self.__player.looking:
             yield
+        tile: Tile = self.__player.vision.get(0, 0)
         if requirements.nb_players == 1:
-            tile: Tile = self.__player.vision.get(0, 0)
-            print(repr(tile))
             while any(r not in requirements.resources and not isinstance(r, Food) for r in tile.resources):
-                for tile in self.__player.vision.tiles:
-                    for resource in tile.resources:
-                        if isinstance(resource, Food):
-                            continue
-                        self.__player.take_object(
-                            resource.name, resource.amount - Elevation.get_required_number(self.__player.level, resource.name)
-                        )
+                for resource in tile.resources:
+                    if isinstance(resource, Food):
+                        continue
+                    self.__player.take_object(resource.name, resource.amount - requirements.get_number(resource.name))
                 self.__player.look()
                 self.__player.check_inventory()
-                while self.__player.taking_object() or self.__player.looking or self.__player.checking_inventory:
+                while self.__player.doing_an_action():
                     yield
             for resource in requirements.resources:
                 self.__player.set_object_down(resource.name, resource.amount - tile[resource])
             self.__player.look()
             self.__player.check_inventory()
-            while self.__player.setting_object_down() or self.__player.looking or self.__player.checking_inventory:
+            while self.__player.doing_an_action():
                 yield
-            print(self.__player.inventory)
-            print(self.__player.vision)
         yield
 
     def __spy(self) -> Implementation:
