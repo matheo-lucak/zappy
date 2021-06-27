@@ -21,8 +21,8 @@ static void request_handler_default_gui(client_t *c)
 static void request_handler_default_drone_join_team(server_t *s, client_t *c,
                                                                 team_t *team)
 {
-    int x = rand() % s->s.map->width;
-    int y = rand() % s->s.map->height;
+    int x = rand() % s->sim.map->width;
+    int y = rand() % s->sim.map->height;
     drone_t *drone = team_new_active_drone(team, x, y);
 
     if (drone) {
@@ -30,8 +30,8 @@ static void request_handler_default_drone_join_team(server_t *s, client_t *c,
         client_add_response(c,
             response_create(RESPONSE_CLIENT_NUM, team->free_slots_nb));
         client_add_response(c,
-            response_create(RESPONSE_XY, s->s.map->width, s->s.map->height));
-        tile_add_drone(s->s.map->tiles[y][x], drone);
+            response_create(RESPONSE_XY, s->sim.map->width, s->sim.map->height));
+        tile_add_drone(s->sim.map->tiles[y][x], drone);
     } else {
         client_add_response(c, response_create(RESPONSE_KO));
     }
@@ -42,7 +42,7 @@ static void request_handler_default_drone(server_t *s, client_t *c, char *name)
     team_t *team = NULL;
     drone_t *drone = NULL;
 
-    list_foreach(it, s->s.teams) {
+    list_foreach(it, s->sim.teams) {
         team = NODE_PTR(it, team_t);
         if (!strcmp(team->name, name)) {
             request_handler_default_drone_join_team(s, c, team);

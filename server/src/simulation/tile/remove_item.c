@@ -11,20 +11,6 @@
 
 bool tile_remove_item(tile_t *tile, resource_type_t type)
 {
-    int index = 0;
-    bool found = false;
-
-    if (!tile->items)
-        return false;
-    list_foreach(node, tile->items) {
-        if (*NODE_PTR(node, resource_type_t) == type) {
-            found = true;
-            break;
-        }
-        index += 1;
-    }
-    if (!found)
-        return false;
-    list_pop(tile->items, index);
-    return true;
+    return generic_list_remove(tile->items, type, resource_type_t)
+        == LIST_SUCCESS;
 }

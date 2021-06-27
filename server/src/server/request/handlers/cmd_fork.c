@@ -12,7 +12,7 @@
 void request_handler_cmd_fork(server_t *s, client_t *c, request_t *r)
 {
     drone_t *drone = c->drone;
-    team_t *team = simulation_find_team_from_drone(&s->s, drone);
+    team_t *team = simulation_find_team_from_drone(&s->sim, drone);
     egg_t *egg = NULL;
 
     if (!drone || !team) {
@@ -21,5 +21,5 @@ void request_handler_cmd_fork(server_t *s, client_t *c, request_t *r)
     }
     egg = egg_create(drone->x, drone->y);
     team_add_egg(team, egg);
-    client_add_response(c, response_create(RESPONSE_KO));
+    client_add_response(c, response_create(RESPONSE_OK));
 }

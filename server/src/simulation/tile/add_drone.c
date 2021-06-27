@@ -11,7 +11,7 @@
 
 bool tile_add_drone(tile_t *tile, drone_t *drone)
 {
-    if (ptr_list_find(tile->drones, drone))
+    if (ptr_list_contains(tile->drones, drone))
         return false;
     return ptr_list_push_back(tile->drones, drone);
 }
