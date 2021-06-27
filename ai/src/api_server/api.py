@@ -67,8 +67,11 @@ class APIServer:
         self.__socket.close()
         print(f"Disconnected from {self.__machine}:{self.__port}")
 
-    def send(self, request: BaseRequest[R]) -> None:
-        self.__requests.append(cast(Request, request))
+    def send(self, request: BaseRequest[R], *, have_priority: bool = False) -> None:
+        if not have_priority:
+            self.__requests.append(cast(Request, request))
+        else:
+            self.__requests.insert(0, cast(Request, request))
         self.__send_all_requests()
 
     def recv(self, response_class: Type[R], *, wait: bool = True, handle_response_error: bool = False) -> Optional[R]:

@@ -11,6 +11,10 @@ class Level:
     def value(self) -> int:
         return self.__value
 
+    @value.setter
+    def value(self, v: int) -> None:
+        self.__value = max(int(v), 1)
+
     @staticmethod
     def max() -> int:
         return Elevation.max_level()

@@ -86,7 +86,7 @@ class Vision:
         self.__vision_unit: int = 0
 
     def __str__(self) -> str:
-        return f"Vision: [{', '.join([' '.join(f'({r.name} {r.amount})' for r in tile) for tile in self.tiles])}]"
+        return f"Vision: [{', '.join([' '.join([f'(player {tile.nb_players})', *(f'({r.name} {r.amount})' for r in tile)]) for tile in self.tiles])}]"
 
     def get(self, unit: int, divergence: int) -> Tile:
         return self.__grid[unit, divergence]
