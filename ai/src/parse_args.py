@@ -27,6 +27,7 @@ def integer_between(argument: str, port_min: int, port_max: int) -> int:
         raise ArgumentTypeError(f"Port value must be in range [{port_min};{port_max}[")
     return value
 
+
 def team_name(team: str) -> str:
     if team == MAGIC_GUI_TEAM_NAME:
         raise ArgumentTypeError(f"{repr(team)} team name is forbidden")
