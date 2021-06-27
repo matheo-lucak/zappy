@@ -24,7 +24,9 @@ void network_handle_client_connection(server_t *s)
     }
     if (ptr_list_push_front(s->clients, c) == LIST_ERROR)
         client_destroy(c);
+    c->id = n->client_next_id;
+    n->client_next_id += 1;
     socket_selector_add_socket(n->selector, SOCKET(c->socket));
-    server_log(LOG_SERVER_NEW_CLIENT,
+    server_log(LOG_NETWORK_NEW_CLIENT, c->id,
         tcp_socket_get_local_address(c->socket).str_address);
 }

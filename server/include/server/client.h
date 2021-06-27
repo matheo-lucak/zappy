@@ -43,6 +43,7 @@ typedef enum client_type_e
 ////////////////////////////////////////////////////////////////////////////////
 typedef struct client_s
 {
+    unsigned        id;
     client_type_t   type;
     bool            alive;
     bool            blocked;

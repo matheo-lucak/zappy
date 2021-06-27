@@ -46,8 +46,11 @@ void network_handle_clients_in(server_t *s);
 void network_handle_clients_out(server_t *s);
 void network_handle_client_connection(server_t *s);
 
+void network_remove_connection(network_t *n, client_t *c);
+
 void server_handle_request(server_t *s);
 
+void server_clear_clients(server_t *s);
 void server_remove_client(server_t *s, client_t *client);
 
 client_t *server_find_client_from_drone(server_t *s, drone_t *drone);
