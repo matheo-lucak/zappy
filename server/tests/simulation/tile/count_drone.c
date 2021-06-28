@@ -21,9 +21,9 @@ Test(tile_count_drone, empty_tile)
 Test(tile_count_drone, few_drone_on_tile)
 {
     tile_t *tile = tile_create();
-    drone_t *d1 = drone_create(0, 0, true);
-    drone_t *d2 = drone_create(0, 0, true);
-    drone_t *d3 = drone_create(0, 0, true);
+    drone_t *d1 = drone_create(VEC2U(0, 0), true);
+    drone_t *d2 = drone_create(VEC2U(0, 0), true);
+    drone_t *d3 = drone_create(VEC2U(0, 0), true);
 
     cr_assert(tile_count_drone(tile) == 0);
     cr_assert(tile_add_drone(tile, d1));

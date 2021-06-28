@@ -12,7 +12,7 @@
 void request_handler_cmd_incantation(server_t *s, client_t *c, request_t *r)
 {
     client_t *client = NULL;
-    tile_t *tile = s->sim.map->tiles[c->drone->y][c->drone->x];
+    tile_t *tile = s->sim.map->tiles[c->drone->pos.y][c->drone->pos.x];
     incantation_t *inc = incantation_create(c->drone, tile);
 
     if (!inc || !incantation_check_requirements(inc)) {

@@ -16,21 +16,20 @@
 
 #include "simulation/direction.h"
 #include "simulation/inventory.h"
-
-typedef struct map_s map_t;
+#include "simulation/map.h"
+#include "simulation/vector.h"
 
 typedef struct drone_s
 {
     bool                   active;
-    unsigned int                x;
-    unsigned int                y;
+    vector2u_t                pos;
     int                   satiety;
     direction_t  facing_direction;
     inventory_t *       inventory;
     int             elevation_lvl;
 } drone_t;
 
-drone_t *drone_create(int x, int y, bool activated);
+drone_t *drone_create(vector2u_t position, bool activated);
 void drone_destroy(drone_t *d);
 
 
@@ -53,10 +52,13 @@ bool drone_move(drone_t *drone, const map_t *map);
 bool drone_rotate(drone_t *drone, direction_t direction);
 bool drone_eject(drone_t *drone, const map_t *map, direction_t direction);
 
-char *drone_get_look_format(const map_t *m, drone_t *d);
-char *drone_get_look_format_down(const map_t *m, drone_t *d);
-char *drone_get_look_format_left(const map_t *m, drone_t *d);
-char *drone_get_look_format_right(const map_t *m, drone_t *d);
-char *drone_get_look_format_up(const map_t *m, drone_t *d);
+vector2u_t drone_get_pos_on_map(const map_t *map, drone_t *drone);
+vector2u_t drone_get_pos_after_move_on_map(const map_t *map,
+                                            drone_t *drone,
+                                            vector2i_t move);
+
+char *drone_get_look_format(const map_t *map, drone_t *drone);
+
+map_quarter_t drone_get_map_quarter(const map_t *map, drone_t *drone);
 
 #endif /* !DRONE_H_ */

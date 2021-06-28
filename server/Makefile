@@ -89,11 +89,10 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/drone/destroy.c)						\
 					$(addprefix $(SRC_PATH), simulation/drone/eat.c)							\
 					$(addprefix $(SRC_PATH), simulation/drone/eject.c)							\
-					$(addprefix $(SRC_PATH), simulation/drone/get_look_format_down.c)			\
-					$(addprefix $(SRC_PATH), simulation/drone/get_look_format_left.c)			\
-					$(addprefix $(SRC_PATH), simulation/drone/get_look_format_right.c)			\
-					$(addprefix $(SRC_PATH), simulation/drone/get_look_format_up.c)				\
 					$(addprefix $(SRC_PATH), simulation/drone/get_look_format.c)				\
+					$(addprefix $(SRC_PATH), simulation/drone/get_map_quarter.c)				\
+					$(addprefix $(SRC_PATH), simulation/drone/get_pos_after_move_on_map.c)		\
+					$(addprefix $(SRC_PATH), simulation/drone/get_pos_on_map.c)					\
 					$(addprefix $(SRC_PATH), simulation/drone/move.c)							\
 					$(addprefix $(SRC_PATH), simulation/drone/rotate.c)							\
 					$(addprefix $(SRC_PATH), simulation/egg/create.c)							\
@@ -122,6 +121,7 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/inventory/remove_item.c)				\
 					$(addprefix $(SRC_PATH), simulation/map/create.c)							\
 					$(addprefix $(SRC_PATH), simulation/map/destroy.c)							\
+					$(addprefix $(SRC_PATH), simulation/map/get_tile_look_format.c)				\
 					$(addprefix $(SRC_PATH), simulation/resource/get_info.c)					\
 					$(addprefix $(SRC_PATH), simulation/resource/info.c)						\
 					$(addprefix $(SRC_PATH), simulation/team/add_drone.c)						\
@@ -235,6 +235,7 @@ TESTS_SRC		=	$(addprefix $(TESTS_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(TESTS_PATH), simulation/drone/eat.c)						\
 					$(addprefix $(TESTS_PATH), simulation/drone/eject.c)					\
 					$(addprefix $(TESTS_PATH), simulation/drone/get_look_format.c)			\
+					$(addprefix $(TESTS_PATH), simulation/drone/get_map_quarter.c)			\
 					$(addprefix $(TESTS_PATH), simulation/drone/move.c)						\
 					$(addprefix $(TESTS_PATH), simulation/drone/rotate.c)					\
 					$(addprefix $(TESTS_PATH), simulation/incantation/check.c)				\

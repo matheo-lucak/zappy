@@ -10,25 +10,25 @@
 #include "logger/logger.h"
 #include "simulation/drone.h"
 
-drone_t *drone_create(int x, int y, bool activated)
+drone_t *drone_create(vector2u_t position, bool activated)
 {
-    drone_t *new_drone = calloc(1, sizeof(drone_t));
+    drone_t *d = calloc(1, sizeof(drone_t));
 
-    if (!new_drone)
+    if (!d)
         return NULL;
-    new_drone->active = activated;
-    new_drone->x = x;
-    new_drone->y = y;
-    new_drone->elevation_lvl = 1;
-    new_drone->inventory = inventory_create();
-    if (!new_drone->inventory) {
-        drone_destroy(new_drone);
+    d->active = activated;
+    d->pos = position;
+    d->elevation_lvl = 1;
+    d->inventory = inventory_create();
+    if (!d->inventory) {
+        drone_destroy(d);
         return NULL;
     }
-    inventory_add_item(new_drone->inventory,
+    inventory_add_item(d->inventory,
         RESOURCE_FOOD, DRONE_DEFAULT_FOOD_QUANTITY);
-    new_drone->facing_direction = direction_get_random();
-    new_drone->elevation_lvl = DRONE_DEFAULT_ELEVATION_LVL;
-    server_log(LOG_SIMULATION_NEW_DRONE, x, y, new_drone->facing_direction);
-    return new_drone;
+    d->facing_direction = direction_get_random();
+    d->elevation_lvl = DRONE_DEFAULT_ELEVATION_LVL;
+    server_log(LOG_SIMULATION_NEW_DRONE,
+                d->pos.x, d->pos.y, d->facing_direction);
+    return d;
 }
