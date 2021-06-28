@@ -28,7 +28,7 @@ static client_t *get_client_from_drone(server_t *s, drone_t *drone)
 static void eject_drone_from_tile(server_t *s, client_t *ejector, drone_t *d)
 {
     client_t *eject_c = NULL;
-    local_direction_t eject_index = LCL_UNKNOWN;
+    local_direction_t eject_index = LCL_HERE;
 
     drone_eject(d, s->sim.map, ejector->drone->facing_direction);
     eject_c = get_client_from_drone(s, d);

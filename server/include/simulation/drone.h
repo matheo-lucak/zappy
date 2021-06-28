@@ -61,4 +61,14 @@ char *drone_get_look_format(const map_t *map, drone_t *drone);
 
 map_quarter_t drone_get_map_quarter(const map_t *map, drone_t *drone);
 
+local_direction_t drone_get_sound_direction(const map_t *map,
+                                            drone_t *d_from,
+                                            drone_t *d_to);
+
+void drone_get_sound_set_projections(const map_t *map, vector2i_t *proj,
+                                                        vector2i_t base,
+                                                        map_quarter_t quarter);
+
+vector2i_t drone_get_sound_entering_tile(drone_t *d, vector2i_t proj_tile);
+
 #endif /* !DRONE_H_ */
