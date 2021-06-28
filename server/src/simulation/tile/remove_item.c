@@ -1,13 +1,12 @@
 /*
 ** EPITECH PROJECT, 2021
-** Zappy [WSL: Ubuntu]
+** server
 ** File description:
-** add_player
+** remove_item
 */
 
 #include <stdbool.h>
 #include "simulation/tile.h"
-#include "simulation/drone.h"
 
 bool tile_remove_item(tile_t *tile, resource_type_t type)
 {
