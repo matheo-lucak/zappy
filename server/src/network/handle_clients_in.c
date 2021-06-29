@@ -19,6 +19,10 @@ static void network_handle_client_input_from_socket(server_t *s, client_t *c)
 
     if (socket_selector_is_socket_ready(s->n.selector, SOCKET(c->socket))) {
         c_input = request_get_input(c);
+        if (c_input == NULL) {
+            c->alive = false;
+            return;
+        }
         if (list_len(c->pending_requests) < CLIENT_MAX_PENDING_REQUEST) {
             c_request = request_parse_from_input(c_input, c->type);
             client_add_request(c, c_request);
