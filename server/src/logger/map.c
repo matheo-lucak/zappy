@@ -31,7 +31,7 @@ const log_info_t log_info_map[] =
     },
     {
         .type = LOG_SERVER_CLIENT_TO_SPECTATOR,
-        .message = "A client became a drone"
+        .message = "A client became a spectator"
     },
     {
         .type = LOG_SERVER_CLIENT_TO_ERROR,

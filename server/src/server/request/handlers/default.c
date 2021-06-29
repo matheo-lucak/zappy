@@ -15,8 +15,7 @@
 static void request_handler_default_gui(client_t *c)
 {
     client_to_spectator(c);
-    // TO IMPLEMENT: Send response
- }
+}
 
 static void request_handler_default_drone_join_team(server_t *s,
                                                     client_t *c,

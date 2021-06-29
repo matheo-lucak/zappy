@@ -8,7 +8,8 @@
 #include "simulation/map.h"
 #include "simulation/drone.h"
 
-static void set_projection_top_left(const map_t *map, vector2i_t *proj, vector2i_t base)
+static void set_projection_top_left(const map_t *map, vector2i_t *proj,
+                                    vector2i_t base)
 {
     proj[0] = VEC2I(base.x, base.y);
     proj[1] = VEC2I(base.x - map->width, base.y);
@@ -16,7 +17,8 @@ static void set_projection_top_left(const map_t *map, vector2i_t *proj, vector2i
     proj[3] = VEC2I(base.x - map->width, base.y - map->height);
 }
 
-static void set_projection_top_right(const map_t *map, vector2i_t *proj, vector2i_t base)
+static void set_projection_top_right(const map_t *map, vector2i_t *proj,
+                                    vector2i_t base)
 {
     proj[0] = VEC2I(base.x, base.y);
     proj[1] = VEC2I(base.x + map->width, base.y);
@@ -24,7 +26,8 @@ static void set_projection_top_right(const map_t *map, vector2i_t *proj, vector2
     proj[3] = VEC2I(base.x + map->width, base.y - map->height);
 }
 
-static void set_projection_bottom_left(const map_t *map, vector2i_t *proj, vector2i_t base)
+static void set_projection_bottom_left(const map_t *map, vector2i_t *proj,
+                                        vector2i_t base)
 {
     proj[0] = VEC2I(base.x, base.y);
     proj[1] = VEC2I(base.x - map->width, base.y);
@@ -32,7 +35,8 @@ static void set_projection_bottom_left(const map_t *map, vector2i_t *proj, vecto
     proj[3] = VEC2I(base.x - map->width, base.y + map->height);
 }
 
-static void set_projection_bottom_right(const map_t *map, vector2i_t *proj, vector2i_t base)
+static void set_projection_bottom_right(const map_t *map, vector2i_t *proj,
+                                        vector2i_t base)
 {
     proj[0] = VEC2I(base.x, base.y);
     proj[1] = VEC2I(base.x + map->width, base.y);
@@ -40,8 +44,8 @@ static void set_projection_bottom_right(const map_t *map, vector2i_t *proj, vect
     proj[3] = VEC2I(base.x + map->width, base.y + map->height);
 }
 
-void drone_get_sound_set_projections(const map_t *map, vector2i_t *proj,
-                                    vector2i_t base, map_quarter_t quarter)
+void drone_get_sound_set_projections(vector2i_t base, vector2i_t proj[4],
+                                    const map_t *map, map_quarter_t quarter)
 {
     switch (quarter) {
         case MAP_TOP_LEFT:

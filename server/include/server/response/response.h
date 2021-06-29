@@ -1,20 +1,17 @@
 /*
 ** EPITECH PROJECT, 2021
-** server
+** Zappy
 ** File description:
 ** response
 */
 
-#ifndef RESPONSE_H_
-#define RESPONSE_H_
+#ifndef ZAPPY_RESPONSE_H_
+#define ZAPPY_RESPONSE_H_
 
 typedef struct response_s
 {
     char *data;
 } response_t;
-
-response_t *response_create(const char *format, ...);
-void response_destroy(response_t *response);
 
 #define RESPONSE_WELCOME            "WELCOME\n"
 #define RESPONSE_CLIENT_NUM         "%d\n"
@@ -89,5 +86,20 @@ void response_destroy(response_t *response);
 // sbp\n
 #define RESPONSE_SBP                "sbp\n"
 
+/**
+* @brief Instantiates a response and its data.
+*
+* @param format The string format to use in the data.
+* @param ... The arguments to format into the format string.
+* @return response_t* A pointer to the newly allocated response.
+*/
+response_t *response_create(const char *format, ...);
 
-#endif /* !RESPONSE_H_ */
+/**
+* @brief Releases memory previously allocated to a response.
+*
+* @param response The response to release memory from.
+*/
+void response_destroy(response_t *response);
+
+#endif /* !ZAPPY_RESPONSE_H_ */

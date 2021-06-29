@@ -13,11 +13,12 @@
 
 Test(request_get_input, simple_input_from_file)
 {
+    const char *filepath = "tests/server/request/tests_files/simple_input";
     char *received_input = NULL;
     client_t client = {0};
 
     client.socket = malloc(sizeof(client.socket));
-    client.socket->socket = open("tests/server/request/tests_files/simple_input", O_RDONLY);
+    client.socket->socket = open(filepath, O_RDONLY);
     cr_assert(client.socket->socket >= 0);
     received_input = request_get_input(&client);
     cr_expect_str_eq(received_input, "TEST");
@@ -28,11 +29,12 @@ Test(request_get_input, simple_input_from_file)
 
 Test(request_get_input, input_from_file_no_return)
 {
+    const char *filepath = "tests/server/request/tests_files/input_no_ret";
     char *received_input = NULL;
     client_t client = {0};
 
     client.socket = malloc(sizeof(client.socket));
-    client.socket->socket = open("tests/server/request/tests_files/simple_input_no_return", O_RDONLY);
+    client.socket->socket = open(filepath, O_RDONLY);
     cr_assert(client.socket->socket >= 0);
     received_input = request_get_input(&client);
     cr_expect_str_eq(received_input, "TEST");
@@ -43,11 +45,12 @@ Test(request_get_input, input_from_file_no_return)
 
 Test(request_get_input, several_lines)
 {
+    const char *filepath = "tests/server/request/tests_files/several_lines";
     char *received_input = NULL;
     client_t client = {0};
 
     client.socket = malloc(sizeof(client.socket));
-    client.socket->socket = open("tests/server/request/tests_files/several_lines", O_RDONLY);
+    client.socket->socket = open(filepath, O_RDONLY);
     cr_assert(client.socket->socket >= 0);
     received_input = request_get_input(&client);
     cr_expect_str_eq(received_input, "TEST");

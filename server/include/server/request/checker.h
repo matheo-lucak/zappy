@@ -1,12 +1,12 @@
 /*
 ** EPITECH PROJECT, 2021
-** server
+** Zappy
 ** File description:
-** checker
+** request_checker
 */
 
-#ifndef CHECKER_H_
-#define CHECKER_H_
+#ifndef ZAPPY_REQUEST_CHECKER_H_
+#define ZAPPY_REQUEST_CHECKER_H_
 
 #include "server/client.h"
 
@@ -24,10 +24,41 @@ typedef struct request_requirements_s
     request_arg_checker_t * arg_checkers;
 } request_requirements_t;
 
+/**
+* @brief Security after a request has been initialized.
+*
+* @param client The client making the request.
+* @param request The request associated.
+* @return true If the requierements are met.
+* @return false If the requierements aren't met.
+*/
 bool request_checker(client_t *client, request_t *request);
 
-bool request_arg_no_check(char *);
-bool request_arg_check_is_resource(char *);
-bool request_arg_check_is_positive_int(char *);
+/**
+* @brief Default argument checking value for requests, returns true.
+*
+* @param arg The default argument to send, purely superficial here.
+* @return true Always.
+*/
+bool request_arg_no_check(char *arg);
 
-#endif /* !CHECKER_H_ */
+/**
+* @brief Checks if the given argument contains
+*        the value of an existing resource.
+*
+* @param arg The given argument to check onto.
+* @return true If it matches with an existing resource name.
+* @return false If it doesn't match with an existing resource name.
+*/
+bool request_arg_check_is_resource(char *arg);
+
+/**
+* @brief Checks if the given argument contains a positive integer.
+*
+* @param arg The given argument to check onto.
+* @return true If it contains a positive integer.
+* @return false If it doesn't contain a positive integer.
+*/
+bool request_arg_check_is_positive_int(char *arg);
+
+#endif /* !ZAPPY_REQUEST_CHECKER_H_ */

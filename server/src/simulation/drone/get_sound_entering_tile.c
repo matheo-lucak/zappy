@@ -10,7 +10,8 @@
 
 #include "simulation/drone.h"
 
-static bool is_pos_inside_listening_range(vector2i_t cur_pos, vector2i_t proj_tile)
+static bool is_pos_inside_listening_range(vector2i_t cur_pos,
+                                        vector2i_t proj_tile)
 {
     const double listening_range = sqrt(2);
     const double cur_range = vector2i_distance(cur_pos, proj_tile);

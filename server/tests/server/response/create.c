@@ -36,13 +36,13 @@ Test(response_create, basic_drone_response_A)
 Test(response_create, basic_drone_response_B)
 {
     response_t *res1 = response_create(RESPONSE_LOOK, "player food,,, food");
-    response_t *res2 = response_create(RESPONSE_INVENTORY, 12, 3, 2, 0, 1, 0, 1);
+    response_t *res2 = response_create(RESPONSE_INVENTORY, 9, 3, 2, 0, 1, 0, 1);
     response_t *res3 = response_create(RESPONSE_INCANTATION);
     response_t *res4 = response_create(RESPONSE_ELEVATION, 6);
 
     cr_assert(res1 && !strcmp(res1->data, "[ player food,,, food ]\n"));
     cr_assert(res2 && !strcmp(res2->data,
-        "[ food 12, linemate 3, deraumere 2,"\
+        "[ food 9, linemate 3, deraumere 2,"\
         " sibur 0, mendiane 1, phiras 0, thystame 1 ]\n"));
     cr_assert(res3 && !strcmp(res3->data, "Elevation underway\n"));
     cr_assert(res4 && !strcmp(res4->data, "Current level: 6\n"));

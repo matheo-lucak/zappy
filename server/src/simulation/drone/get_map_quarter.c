@@ -39,7 +39,7 @@ static bool is_drone_in_bottom_left(const map_t *map, drone_t *drone)
             && drone->pos.y >= tl_corner_y && drone->pos.y <= br_corner_y;
 }
 
-map_quarter_t drone_get_map_quarter(const map_t *map, drone_t *drone)
+map_quarter_t drone_get_map_quarter(drone_t *drone, const map_t *map)
 {
     if (is_drone_in_top_left(map, drone))
         return MAP_TOP_LEFT;

@@ -85,10 +85,9 @@ static bool go_to_next_tile_in_line_of_sight(drone_t *d,
     return false;
 }
 
-char *drone_get_look_format(const map_t *m, drone_t *d)
+char *drone_get_look_format(drone_t *d, const map_t *m)
 {
     char *fmt = NULL;
-    char *tile_fmt = NULL;
     vector2u_t pos = {0, 0};
     vector2i_t off = {0, 0};
     vector2i_t off_max = {0, 0};
@@ -96,9 +95,10 @@ char *drone_get_look_format(const map_t *m, drone_t *d)
     do {
         set_offset_by_direction(d, &off, off_max);
         do {
-            pos = drone_get_pos_after_move_on_map(m, d, off);
-            tile_fmt = map_get_tile_look_format(m, pos);
-            fmt = my_str_cat(fmt, tile_fmt, true, true);
+            pos = drone_get_pos_after_move_on_map(d, m, off);
+            if (fmt && !tile_is_empty(m->tiles[pos.y][pos.x]))
+                fmt = my_str_cat(fmt, " ", true, false);
+            fmt = my_str_cat(fmt, map_get_tile_look_format(m, pos), true, true);
             if (!is_last_tile_in_sight(d, off, off_max))
                 fmt = my_str_cat(fmt, ",", true, false);
         } while (go_to_next_tile_in_line_of_sight(d, &off, off_max));

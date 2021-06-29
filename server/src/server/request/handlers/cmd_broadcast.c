@@ -29,7 +29,7 @@ void request_handler_cmd_broadcast(server_t *s, client_t *c, request_t *r)
         other = NODE_PTR(node, client_t);
         if (!other->drone || !other->drone->active || other->drone == c->drone)
             continue;
-        k = drone_get_sound_direction(s->sim.map, c->drone, other->drone);
+        k = drone_get_sound_direction(c->drone, other->drone, s->sim.map);
         client_add_response(other, response_create(RESPONSE_BROADCAST, k, m));
     }
     free(m);
