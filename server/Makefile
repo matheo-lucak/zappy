@@ -124,8 +124,9 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/inventory/get_sibur_info.c)				\
 					$(addprefix $(SRC_PATH), simulation/inventory/get_thystame_info.c)			\
 					$(addprefix $(SRC_PATH), simulation/inventory/remove_item.c)				\
-					$(addprefix $(SRC_PATH), simulation/map/count_resources.c)					\
+					$(addprefix $(SRC_PATH), simulation/map/add_drone.c)						\
 					$(addprefix $(SRC_PATH), simulation/map/clear.c)							\
+					$(addprefix $(SRC_PATH), simulation/map/count_resources.c)					\
 					$(addprefix $(SRC_PATH), simulation/map/create.c)							\
 					$(addprefix $(SRC_PATH), simulation/map/destroy.c)							\
 					$(addprefix $(SRC_PATH), simulation/map/get_tile_look_format.c)				\

@@ -50,6 +50,8 @@ map_t *map_create(unsigned int width, unsigned int height);
 */
 void map_destroy(map_t *map);
 
+bool map_add_drone(map_t *map, drone_t *drone);
+
 /**
 * @brief At a given tile position, gets a look formatted string of
 *        the drones and items located on the tile.
