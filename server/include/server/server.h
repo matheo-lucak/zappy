@@ -27,12 +27,12 @@ typedef size_t frequency_t;
 
 typedef struct server_s
 {
-    bool                is_running;
-    int                 status;
-    network_t           n;
-    simulation_t        sim;
-    ptr_list_t *        clients;
-    frequency_t         freq;
+    bool         is_running;
+    int          status;
+    network_t    n;
+    simulation_t sim;
+    ptr_list_t * clients;
+    frequency_t  freq;
 } server_t;
 
 int server_launch(const arguments_t *args);
@@ -55,5 +55,8 @@ void server_clear_clients(server_t *s);
 void server_remove_client(server_t *s, client_t *client);
 
 client_t *server_find_client_from_drone(server_t *s, drone_t *drone);
+client_t *server_find_client_from_id(server_t *s, unsigned id);
+
+void server_add_notification(server_t *s, response_t *r);
 
 #endif /* !ZAPPY_SERVER_H_ */

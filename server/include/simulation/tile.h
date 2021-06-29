@@ -126,4 +126,60 @@ bool tile_has_items(tile_t *tile);
 */
 bool tile_is_empty(tile_t *tile);
 
+/**
+* @brief Gets the amount of RESOURCE_DERAUMERE on a tile.
+*
+* @param tile The considered tile.
+* @return unsigned int The amount of the resource on the tile.
+*/
+unsigned int tile_get_deraumere_amount(tile_t *tile);
+
+/**
+* @brief Gets the amount of RESOURCE_FOOD on a tile.
+*
+* @param tile The considered tile.
+* @return unsigned int The amount of the resource on the tile.
+*/
+unsigned int tile_get_food_amount(tile_t *tile);
+
+/**
+* @brief Gets the amount of RESOURCE_LINEMATE on a tile.
+*
+* @param tile The considered tile.
+* @return unsigned int The amount of the resource on the tile.
+*/
+unsigned int tile_get_linemate_amount(tile_t *tile);
+
+/**
+* @brief Gets the amount of RESOURCE_MENDIANE on a tile.
+*
+* @param tile The considered tile.
+* @return unsigned int The amount of the resource on the tile.
+*/
+unsigned int tile_get_mendiane_amount(tile_t *tile);
+
+/**
+* @brief Gets the amount of RESOURCE_PHIRAS on a tile.
+*
+* @param tile The considered tile.
+* @return unsigned int The amount of the resource on the tile.
+*/
+unsigned int tile_get_phiras_amount(tile_t *tile);
+
+/**
+* @brief Gets the amount of RESOURCE_SIBUR on a tile.
+*
+* @param tile The considered tile.
+* @return unsigned int The amount of the resource on the tile.
+*/
+unsigned int tile_get_sibur_amount(tile_t *tile);
+
+/**
+* @brief Gets the amount of RESOURCE_THYSTAME on a tile.
+*
+* @param tile The considered tile.
+* @return unsigned int The amount of the resource on the tile.
+*/
+unsigned int tile_get_thystame_amount(tile_t *tile);
+
 #endif /* !TILE_H_ */

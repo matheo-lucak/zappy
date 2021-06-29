@@ -31,7 +31,6 @@ void request_handler_cmd_broadcast(server_t *s, client_t *c, request_t *r)
     client_t *other = NULL;
     local_direction_t k = 0;
     char *m = NULL;
-    char *buffer = NULL;
 
     if (list_empty(r->arguments)) {
         client_add_response(other, response_create(RESPONSE_KO));
