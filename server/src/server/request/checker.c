@@ -16,10 +16,14 @@ static bool request_checker_arg_checker(request_t *request)
     list_foreach(node, request->arguments) {
         arg = NODE_STR(node);
         checker = request->requirements->arg_checkers[i];
-        if (!checker)
+        if (!checker) {
+            node_iter_end(&node);
             break;
-        if (!arg || !checker(arg))
+        }
+        if (!arg || !checker(arg)) {
+            node_iter_end(&node);
             return false;
+        }
     }
     return true;
 }

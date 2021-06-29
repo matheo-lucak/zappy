@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-410-BDX-4-1-zappy-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** handle_clients_in
 */
@@ -12,23 +12,15 @@
 #include "server/client.h"
 #include "server/request/request.h"
 
-static void network_handle_client_input_from_socket(server_t *s, client_t *c)
+static void network_handle_one_input_per_client(server_t *s, client_t *c)
 {
-    char *c_input = NULL;
-    request_t *c_request = NULL;
+    socket_status_t status = SOCKET_DONE;
 
-    if (socket_selector_is_socket_ready(s->n.selector, SOCKET(c->socket))) {
-        c_input = request_get_input(c);
-        if (!c_input) {
-            c->alive = false;
-            return;
-        }
-        if (list_len(c->pending_requests) < CLIENT_MAX_PENDING_REQUEST) {
-            c_request = request_parse_from_input(c_input, c->type);
-            client_add_request(c, c_request);
-        }
-        free(c_input);
-    }
+    if (!socket_selector_is_socket_ready(s->n.selector, SOCKET(c->socket)))
+        return;
+    status = network_get_input_stock(c);
+    if (status == SOCKET_ERROR || status == SOCKET_DISCONNECTED)
+        c->alive = false;
 }
 
 void network_handle_clients_in(server_t *s)
@@ -46,6 +38,6 @@ void network_handle_clients_in(server_t *s)
     network_handle_client_connection(s);
     list_foreach(node, s->clients) {
         c = NODE_PTR(node, client_t);
-        network_handle_client_input_from_socket(s, c);
+        network_handle_one_input_per_client(s, c);
     }
 }

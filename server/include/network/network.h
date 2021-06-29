@@ -11,6 +11,7 @@
 #include <epinet.h>
 
 #include "arguments.h"
+#include "server/client.h"
 
 #define NETWORK_EXIT    84
 #define NETWORK_ERROR   1
@@ -40,5 +41,13 @@ int network_start(const arguments_t *args, network_t *n);
 * @param n The network structure to release memory from.
 */
 void network_stop(network_t *n);
+
+/**
+* @brief Reads new bytes from the socket of a client
+*
+* @param c The client to read new bytes from.
+* @return socket_status_t The status of the socket.
+*/
+socket_status_t network_get_input_stock(client_t *c);
 
 #endif /* !ZAPPY_NETWORK_H_ */
