@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-410-BDX-4-1-zappy-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** info
 */
@@ -106,9 +106,8 @@ const request_info_t request_info_map[] =
         {
             {
                 .client_type    = CLIENT_DRONE,
-                .arg_number     = 1,
-                .arg_checkers   = (request_arg_checker_t [])
-                    {&request_arg_no_check}
+                .arg_number     = RQ_REQUIRE_NO_ARG,
+                .arg_checkers   = (request_arg_checker_t []) {NULL}
             }
         }
     },

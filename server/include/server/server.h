@@ -48,6 +48,7 @@ void network_handle_client_connection(server_t *s);
 
 void network_remove_connection(network_t *n, client_t *c);
 
+void server_handle_request_parsing(server_t *s);
 void server_handle_request(server_t *s);
 
 void server_clear_clients(server_t *s);

@@ -13,8 +13,10 @@ drone_t *team_find_unactive_drone(team_t *team)
 
     list_foreach(it, team->drones) {
         drone = NODE_PTR(it, drone_t);
-        if (drone->active == false)
+        if (drone->active == false) {
+            node_iter_end(&it);
             return drone;
+        }
     }
     return NULL;
 }

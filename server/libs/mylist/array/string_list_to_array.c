@@ -29,6 +29,7 @@ char **string_list_to_array(const string_list_t *list, size_t *length)
         array[start] = strdup(NODE_STR(node));
         if (!(array[start])) {
             free_2d_array(array);
+            node_iter_end(&node);
             return set_size_and_returns(NULL, 0, length);
         }
         ++start;

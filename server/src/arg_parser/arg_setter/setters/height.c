@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-410-BDX-4-1-zappy-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** arg_setter_height
 */

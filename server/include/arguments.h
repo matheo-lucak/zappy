@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-410-BDX-4-1-zappy-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** arguments
 */
@@ -21,6 +21,19 @@ typedef struct arguments
     string_list_t   *team_names;
 } arguments_t;
 
-arguments_t arguments_default_values(void);
+arguments_t *arguments_create(void);
+void arguments_destroy(arguments_t *args);
+
+/**
+* @brief Returns default argument values.
+*        port -> 0.
+*        clients_nb -> 3.
+*        width -> 10.
+*        height -> 10.
+*        freq -> 100.
+*
+* @return arguments_t The argument structure containing default values.
+*/
+void arguments_set_default_values(arguments_t *args);
 
 #endif /* !ARGUMENTS_H_ */
