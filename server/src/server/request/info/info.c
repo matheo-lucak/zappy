@@ -193,7 +193,7 @@ const request_info_t request_info_map[] =
         .name = "Incantation",
         .type = RQ_CMD_INCANTATION,
         .handler = &request_handler_cmd_incantation,
-        .time_limit = 300,
+        .time_limit = 0,
         .requirements = (request_requirements_t [])
         {
             {

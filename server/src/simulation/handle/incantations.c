@@ -29,7 +29,7 @@ static void simulation_handle_single_incantation(server_t *s,
         client = server_find_client_from_drone(s, NODE_PTR(it, drone_t));
         if (client) {
             client_add_response(client,
-                response_create(RESPONSE_ELEVATION, inc->elevation_lvl));
+                response_create(RESPONSE_ELEVATION, inc->elevation_lvl + 1));
         }
     }
 }
