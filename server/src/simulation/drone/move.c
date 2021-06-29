@@ -38,7 +38,7 @@ bool drone_move(drone_t *drone, const map_t *map)
 
     if (!drone_get_move(drone, &move))
         return false;
-    drone->pos = drone_get_pos_after_move_on_map(map, drone, move);
+    drone->pos = drone_get_pos_after_move_on_map(drone, map, move);
     new_tile = map->tiles[drone->pos.y][drone->pos.x];
     tile_remove_drone(old_tile, drone);
     tile_add_drone(new_tile, drone);

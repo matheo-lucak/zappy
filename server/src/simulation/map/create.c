@@ -29,7 +29,8 @@ static void map_destroy_until(map_t *map,
     map_destroy(map);
 }
 
-static bool map_fill_with_tiles(map_t *map, unsigned int width, unsigned int height)
+static bool map_fill_with_tiles(map_t *map, unsigned int width,
+                                unsigned int height)
 {
     for (unsigned int y = 0; y < height; y++) {
         map->tiles[y] = malloc(sizeof(tile_t) * width);

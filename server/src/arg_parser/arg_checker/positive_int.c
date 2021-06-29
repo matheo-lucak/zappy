@@ -11,10 +11,10 @@ int arg_checker_positive_int(char *arg)
 {
     if (!arg)
         return -1;
-    while (*arg) {
+    do {
         if (!isdigit(*arg))
             return 1;
-        arg++;
-    }
+        arg += 1;
+    } while (*arg);
     return 0;
 }

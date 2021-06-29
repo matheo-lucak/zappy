@@ -18,7 +18,7 @@ Test(drone_get_look_format, simple_get_look_left_lvl_1)
     map_clear_resources(map);
     cr_assert(tile_add_drone(map->tiles[d->pos.y][d->pos.x], d));
     d->facing_direction = LEFT;
-    result = drone_get_look_format(map, d);
+    result = drone_get_look_format(d, map);
     cr_expect_str_eq(result, "player,,,");
     free(result);
 }
@@ -33,7 +33,7 @@ Test(drone_get_look_format, simple_get_look_left_lvl_3)
     cr_assert(tile_add_drone(map->tiles[d->pos.y][d->pos.x], d));
     d->facing_direction = LEFT;
     d->elevation_lvl = 3;
-    result = drone_get_look_format(map, d);
+    result = drone_get_look_format(d, map);
     cr_expect_str_eq(result, "player,,,,,,,,,,,,,,,");
     free(result);
 }
@@ -49,8 +49,8 @@ Test(drone_get_look_format, hard_1_get_look_left_lvl_3)
     cr_assert(tile_add_item(map->tiles[6][4], RESOURCE_FOOD));
     d->facing_direction = LEFT;
     d->elevation_lvl = 3;
-    result = drone_get_look_format(map, d);
-    cr_expect_str_eq(result, "player,food,,,,,,,,,,,,,,");
+    result = drone_get_look_format(d, map);
+    cr_expect_str_eq(result, "player, food,,,,,,,,,,,,,,");
     free(result);
 }
 
@@ -66,8 +66,8 @@ Test(drone_get_look_format, hard_2_get_look_left_lvl_3)
     cr_assert(tile_add_item(map->tiles[5][2], RESOURCE_THYSTAME));
     d->facing_direction = LEFT;
     d->elevation_lvl = 3;
-    result = drone_get_look_format(map, d);
-    cr_expect_str_eq(result, "player,food,,,,,,,,,,,thystame,,,");
+    result = drone_get_look_format(d, map);
+    cr_expect_str_eq(result, "player, food,,,,,,,,,,, thystame,,,");
     free(result);
 }
 
@@ -83,8 +83,8 @@ Test(drone_get_look_format, hard_3_get_look_left_lvl_2)
     cr_assert(tile_add_item(map->tiles[5][2], RESOURCE_THYSTAME));
     d->facing_direction = LEFT;
     d->elevation_lvl = 2;
-    result = drone_get_look_format(map, d);
-    cr_expect_str_eq(result, "player,food,,,,,,,");
+    result = drone_get_look_format(d, map);
+    cr_expect_str_eq(result, "player, food,,,,,,,");
     free(result);
 }
 
@@ -101,8 +101,8 @@ Test(drone_get_look_format, hard_4_get_look_left_lvl_2)
     cr_assert(tile_add_item(map->tiles[6][4], RESOURCE_THYSTAME));
     d->facing_direction = LEFT;
     d->elevation_lvl = 2;
-    result = drone_get_look_format(map, d);
-    cr_expect_str_eq(result, "player,food food thystame,,,,,,,");
+    result = drone_get_look_format(d, map);
+    cr_expect_str_eq(result, "player, food food thystame,,,,,,,");
     free(result);
 }
 
@@ -122,8 +122,8 @@ Test(drone_get_look_format, hard_5_get_look_left_lvl_3)
     cr_assert(tile_add_drone(map->tiles[d2->pos.y][d2->pos.x], d2));
     cr_assert(tile_add_drone(map->tiles[d3->pos.y][d3->pos.x], d3));
     cr_assert(tile_add_drone(map->tiles[d4->pos.y][d4->pos.x], d4));
-    result = drone_get_look_format(map, d1);
-    cr_expect_str_eq(result, "player,,,,,,,player,,,,,player player,,,");
+    result = drone_get_look_format(d1, map);
+    cr_expect_str_eq(result, "player,,,,,,, player,,,,, player player,,,");
     free(result);
 }
 
@@ -143,8 +143,8 @@ Test(drone_get_look_format, hard_6_get_look_left_lvl_3)
     cr_assert(tile_add_drone(map->tiles[d2->pos.y][d2->pos.x], d2));
     cr_assert(tile_add_drone(map->tiles[d3->pos.y][d3->pos.x], d3));
     cr_assert(tile_add_drone(map->tiles[d4->pos.y][d4->pos.x], d4));
-    result = drone_get_look_format(map, d1);
-    cr_expect_str_eq(result, "player,,,,,,,,,player,,,player,,,");
+    result = drone_get_look_format(d1, map);
+    cr_expect_str_eq(result, "player,,,,,,,,, player,,, player,,,");
     free(result);
 }
 
@@ -166,8 +166,9 @@ Test(drone_get_look_format, hard_7_get_look_left_lvl_3)
     cr_assert(tile_add_drone(map->tiles[d3->pos.y][d3->pos.x], d3));
     cr_assert(tile_add_drone(map->tiles[d4->pos.y][d4->pos.x], d4));
     cr_assert(tile_add_drone(map->tiles[d5->pos.y][d5->pos.x], d5));
-    result = drone_get_look_format(map, d1);
-    cr_expect_str_eq(result, "player,,,,,,,,,player,,player,,player,player,");
+    result = drone_get_look_format(d1, map);
+    cr_expect_str_eq(result,
+                    "player,,,,,,,,, player,, player,, player, player,");
     free(result);
 }
 
@@ -180,7 +181,7 @@ Test(drone_get_look_format, simple_get_look_right_lvl_1)
     map_clear_resources(map);
     cr_assert(tile_add_drone(map->tiles[d->pos.y][d->pos.x], d));
     d->facing_direction = RIGHT;
-    result = drone_get_look_format(map, d);
+    result = drone_get_look_format(d, map);
     cr_expect_str_eq(result, "player,,,");
     free(result);
 }
@@ -195,7 +196,7 @@ Test(drone_get_look_format, simple_get_look_right_lvl_3)
     cr_assert(tile_add_drone(map->tiles[d->pos.y][d->pos.x], d));
     d->facing_direction = RIGHT;
     d->elevation_lvl = 3;
-    result = drone_get_look_format(map, d);
+    result = drone_get_look_format(d, map);
     cr_expect_str_eq(result, "player,,,,,,,,,,,,,,,");
     free(result);
 }
@@ -211,8 +212,8 @@ Test(drone_get_look_format, hard_1_get_look_right_lvl_3)
     cr_assert(tile_add_item(map->tiles[4][6], RESOURCE_FOOD));
     d->facing_direction = RIGHT;
     d->elevation_lvl = 3;
-    result = drone_get_look_format(map, d);
-    cr_expect_str_eq(result, "player,food,,,,,,,,,,,,,,");
+    result = drone_get_look_format(d, map);
+    cr_expect_str_eq(result, "player, food,,,,,,,,,,,,,,");
     free(result);
 }
 
@@ -228,8 +229,8 @@ Test(drone_get_look_format, hard_2_get_look_right_lvl_3)
     cr_assert(tile_add_item(map->tiles[5][8], RESOURCE_THYSTAME));
     d->facing_direction = RIGHT;
     d->elevation_lvl = 3;
-    result = drone_get_look_format(map, d);
-    cr_expect_str_eq(result, "player,food,,,,,,,,,,,thystame,,,");
+    result = drone_get_look_format(d, map);
+    cr_expect_str_eq(result, "player, food,,,,,,,,,,, thystame,,,");
     free(result);
 }
 
@@ -245,8 +246,8 @@ Test(drone_get_look_format, hard_3_get_look_right_lvl_3)
     cr_assert(tile_add_item(map->tiles[3][2], RESOURCE_THYSTAME));
     d->facing_direction = RIGHT;
     d->elevation_lvl = 3;
-    result = drone_get_look_format(map, d);
-    cr_expect_str_eq(result, "player,,food,,,,,,,,thystame,,,,,");
+    result = drone_get_look_format(d, map);
+    cr_expect_str_eq(result, "player,, food,,,,,,,, thystame,,,,,");
     free(result);
 }
 
@@ -259,7 +260,7 @@ Test(drone_get_look_format, simple_get_look_up_lvl_1)
     map_clear_resources(map);
     cr_assert(tile_add_drone(map->tiles[d->pos.y][d->pos.x], d));
     d->facing_direction = UP;
-    result = drone_get_look_format(map, d);
+    result = drone_get_look_format(d, map);
     cr_expect_str_eq(result, "player,,,");
     free(result);
 }
@@ -276,8 +277,8 @@ Test(drone_get_look_format, simple_get_look_up_lvl_3)
     cr_assert(tile_add_item(map->tiles[2][5], RESOURCE_PHIRAS));
     d->facing_direction = UP;
     d->elevation_lvl = 3;
-    result = drone_get_look_format(map, d);
-    cr_expect_str_eq(result, "player,sibur,,,,,,,,,,,phiras,,,");
+    result = drone_get_look_format(d, map);
+    cr_expect_str_eq(result, "player, sibur,,,,,,,,,,, phiras,,,");
     free(result);
 }
 
@@ -290,7 +291,7 @@ Test(drone_get_look_format, simple_get_look_down_lvl_1)
     map_clear_resources(map);
     cr_assert(tile_add_drone(map->tiles[d->pos.y][d->pos.x], d));
     d->facing_direction = DOWN;
-    result = drone_get_look_format(map, d);
+    result = drone_get_look_format(d, map);
     cr_expect_str_eq(result, "player,,,");
     free(result);
 }
@@ -309,7 +310,8 @@ Test(drone_get_look_format, hard_get_look_down_lvl_3)
     cr_assert(tile_add_item(map->tiles[8][2], RESOURCE_FOOD));
     d->facing_direction = DOWN;
     d->elevation_lvl = 3;
-    result = drone_get_look_format(map, d);
-    cr_expect_str_eq(result, "player,,sibur,,,,phiras mendiane,,,,,,,,,food");
+    result = drone_get_look_format(d, map);
+    cr_expect_str_eq(result,
+                    "player,, sibur,,,, phiras mendiane,,,,,,,,, food");
     free(result);
 }
