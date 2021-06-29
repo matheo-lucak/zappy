@@ -10,9 +10,12 @@
 
 int main(int ac, char **av)
 {
-    arguments_t args = arguments_default_values();
+    arguments_t *args = arguments_create();
+    int status = 0;
 
-    if (parse_arguments(ac, av, &args))
+    if (parse_arguments(ac, av, args))
         return SERVER_EXIT;
-    return server_launch(&args);
+    status = server_launch(args);
+    arguments_destroy(args);
+    return status;
 }

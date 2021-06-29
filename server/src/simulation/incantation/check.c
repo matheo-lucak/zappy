@@ -14,8 +14,10 @@ static bool incantation_check_drone_lvl(incantation_t *inc, tile_t *tile)
 
     list_foreach(it, tile->drones) {
         drone = NODE_PTR(it, drone_t);
-        if (drone->elevation_lvl != inc->requirements->drone_lvl)
+        if (drone->elevation_lvl != inc->requirements->drone_lvl) {
+            node_iter_end(&it);
             return false;
+        }
     }
     return true;
 }

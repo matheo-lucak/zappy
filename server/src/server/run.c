@@ -1,14 +1,27 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-410-BDX-4-1-zappy-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** run
 */
 
 #include <unistd.h>
 #include <time.h>
+#include <signal.h>
 
 #include "server/server.h"
+
+static bool *global_run()
+{
+    static bool global = true;
+
+    return &global;
+}
+
+static void sigint_handler(int __attribute__((unused))signum)
+{
+    *global_run() = false;
+}
 
 static void get_next_server_tick(server_t *s)
 {
@@ -35,9 +48,12 @@ int server_run(server_t *s)
 {
     s->status = SERVER_SUCCESS;
     s->is_running = true;
-    while (s->is_running && s->status == SERVER_SUCCESS) {
+    *global_run() = true;
+    signal(SIGINT, &sigint_handler);
+    while (s->is_running && s->status == SERVER_SUCCESS && *global_run()) {
         get_next_server_tick(s);
         network_handle_clients_in(s);
+        server_handle_request_parsing(s);
         server_handle_request(s);
         simulation_handle(s);
         network_handle_clients_out(s);

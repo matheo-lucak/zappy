@@ -28,9 +28,13 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), arg_parser/arg_setter/get_from_option.c)			\
 					$(addprefix $(SRC_PATH), arg_parser/arg_setter/setters.c)					\
 					$(addprefix $(SRC_PATH), arg_parser/parse.c)								\
+					$(addprefix $(SRC_PATH), arguments/set_default_values.c)					\
+					$(addprefix $(SRC_PATH), arguments/create.c)								\
+					$(addprefix $(SRC_PATH), arguments/destroy.c)								\
 					$(addprefix $(SRC_PATH), logger/find_message.c)								\
 					$(addprefix $(SRC_PATH), logger/logger.c)									\
 					$(addprefix $(SRC_PATH), logger/map.c)										\
+					$(addprefix $(SRC_PATH), network/get_input_stock.c)							\
 					$(addprefix $(SRC_PATH), network/handle_client_connection.c)				\
 					$(addprefix $(SRC_PATH), network/handle_clients_in.c)						\
 					$(addprefix $(SRC_PATH), network/handle_clients_out.c)						\
@@ -73,7 +77,7 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), server/request/checker.c)							\
 					$(addprefix $(SRC_PATH), server/request/create.c)							\
 					$(addprefix $(SRC_PATH), server/request/destroy.c)							\
-					$(addprefix $(SRC_PATH), server/request/get_input.c)						\
+					$(addprefix $(SRC_PATH), server/request/handle_parsing.c)					\
 					$(addprefix $(SRC_PATH), server/request/handle.c)							\
 					$(addprefix $(SRC_PATH), server/request/parse.c)							\
 					$(addprefix $(SRC_PATH), server/response/create.c)							\
@@ -161,7 +165,6 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/remove_drone.c)							\
 					$(addprefix $(SRC_PATH), simulation/start.c)								\
 					$(addprefix $(SRC_PATH), simulation/stop.c)									\
-					$(addprefix $(SRC_PATH), arguments_default_values.c)						\
 					$(addprefix $(SRC_PATH), usage.c)											\
 
 SRC				=	$(SRC_PROJECT) $(MAIN)
@@ -255,7 +258,7 @@ TESTS_SRC		=	$(addprefix $(TESTS_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(TESTS_PATH), server/request/handler/cmd_right.c)			\
 					$(addprefix $(TESTS_PATH), server/request/handler/cmd_set.c)			\
 					$(addprefix $(TESTS_PATH), server/request/handler/cmd_take.c)			\
-					$(addprefix $(TESTS_PATH), server/request/get_input.c)					\
+					$(addprefix $(TESTS_PATH), server/request/handle_parsing.c)				\
 					$(addprefix $(TESTS_PATH), server/request/parse.c)						\
 					$(addprefix $(TESTS_PATH), server/response/create.c)					\
 					$(addprefix $(TESTS_PATH), server/remove_client.c)						\

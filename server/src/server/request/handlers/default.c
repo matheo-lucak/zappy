@@ -59,6 +59,7 @@ static void request_handler_default_drone(server_t *s, client_t *c, char *name)
         team = NODE_PTR(it, team_t);
         if (!strcmp(team->name, name)) {
             request_handler_default_drone_join_team(s, c, team);
+            node_iter_end(&it);
             return;
         }
     }
