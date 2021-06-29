@@ -11,12 +11,15 @@ drone_t *team_new_active_drone(team_t *team, vector2u_t pos)
 {
     drone_t *drone = team_find_unactive_drone(team);
 
-    if (drone) {
-        drone->active = true;
-        team->free_slots_nb -= 1;
-        return drone;
+    if (team->free_slots_nb <= 0)
+        return NULL;
+    if (!drone) {
+        drone = drone_create(pos, true);
+        if (!team_add_drone(team, drone)) {
+            drone_destroy(drone);
+            return NULL;
+        }
     }
-    drone = drone_create(pos, true);
-    team_add_drone(team, drone);
+    team->free_slots_nb -= 1;
     return drone;
 }

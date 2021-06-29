@@ -18,24 +18,35 @@ static void request_handler_default_gui(client_t *c)
     // TO IMPLEMENT: Send response
  }
 
+static drone_t *client_take_drone_control(map_t *map, team_t *team, client_t *c)
+{
+    vector2u_t pos = VEC2U(rand() % map->width, rand() % map->height);
+    drone_t *drone = team_new_active_drone(team, pos);
+
+    if (!drone)
+        return NULL;
+    client_to_drone(c, drone);
+    if (drone->active)
+        map_add_drone(map, drone);
+    else
+        drone-> active = true;
+    return drone;
+}
+
 static void request_handler_default_drone_join_team(server_t *s,
                                                     client_t *c,
                                                     team_t *team)
 {
     response_t *response = NULL;
-    vector2u_t pos = VEC2U(rand() % s->sim.map->width,
-                            rand() % s->sim.map->height);
-    drone_t *drone = team_new_active_drone(team, pos);
+    drone_t *drone = client_take_drone_control(s->sim.map, team, c);
 
     if (drone) {
-        client_to_drone(c, drone);
         response = response_create(RESPONSE_CLIENT_NUM, team->free_slots_nb);
         client_add_response(c, response);
         response = response_create(RESPONSE_XY,
                                     s->sim.map->width,
                                     s->sim.map->height);
         client_add_response(c, response);
-        tile_add_drone(s->sim.map->tiles[pos.y][pos.x], drone);
     } else {
         client_add_response(c, response_create(RESPONSE_KO));
     }
