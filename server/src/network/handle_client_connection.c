@@ -11,8 +11,10 @@
 
 static void network_handle_new_client(server_t *s, client_t *c)
 {
-    if (ptr_list_push_front(s->clients, c) == LIST_ERROR)
+    if (ptr_list_push_front(s->clients, c) == LIST_ERROR) {
         client_destroy(c);
+        return;
+    }
     c->id = s->n.client_next_id;
     s->n.client_next_id += 1;
     socket_selector_add_socket(s->n.selector, SOCKET(c->socket));

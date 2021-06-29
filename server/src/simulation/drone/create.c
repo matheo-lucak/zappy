@@ -18,7 +18,8 @@ drone_t *drone_create(vector2u_t position, bool activated)
         return NULL;
     d->active = activated;
     d->pos = position;
-    d->elevation_lvl = 1;
+    d->facing_direction = direction_get_random();
+    d->elevation_lvl = DRONE_DEFAULT_ELEVATION_LVL;
     d->inventory = inventory_create();
     if (!d->inventory) {
         drone_destroy(d);
@@ -26,9 +27,7 @@ drone_t *drone_create(vector2u_t position, bool activated)
     }
     inventory_add_item(d->inventory,
         RESOURCE_FOOD, DRONE_DEFAULT_FOOD_QUANTITY);
-    d->facing_direction = direction_get_random();
-    d->elevation_lvl = DRONE_DEFAULT_ELEVATION_LVL;
-    server_log(LOG_SIMULATION_NEW_DRONE,
-                d->pos.x, d->pos.y, d->facing_direction);
+    server_log(LOG_SIMULATION_NEW_DRONE, d->pos.x, d->pos.y,
+                                        d->facing_direction);
     return d;
 }
