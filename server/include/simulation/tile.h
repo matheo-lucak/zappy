@@ -92,4 +92,11 @@ bool tile_remove_item(tile_t *tile, resource_type_t type);
 size_t tile_count_item(tile_t *tile, resource_type_t type);
 
 
+/**
+ * @brief Removes all items from the tile.
+ *
+ * @param tile The tile to clear.
+ */
+void tile_clear_items(tile_t *tile);
+
 #endif /* !TILE_H_ */

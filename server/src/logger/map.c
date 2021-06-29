@@ -18,14 +18,6 @@ const log_info_t log_info_map[] =
         .message = "Stopped"
     },
     {
-        .type = LOG_SERVER_NEW_CLIENT,
-        .message = "New client from: %s"
-    },
-    {
-        .type = LOG_SERVER_CLIENT_LEFT,
-        .message = "A client has left"
-    },
-    {
         .type = LOG_SERVER_CLIENT_BLOCKED,
         .message = "A client is blocked"
     },
@@ -69,6 +61,15 @@ const log_info_t log_info_map[] =
         .type = LOG_NETWORK_LISTENING,
         .message = "Listening on port %d"
     },
+    {
+        .type = LOG_NETWORK_NEW_CLIENT,
+        .message = "New client %d from: %s"
+    },
+    {
+        .type = LOG_NETWORK_CLIENT_LEFT,
+        .message = "Client %d has left"
+    },
+
     {
         .type = LOG_SIMULATION_STARTED,
         .message = "Started"

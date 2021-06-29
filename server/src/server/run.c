@@ -7,6 +7,7 @@
 
 #include <unistd.h>
 #include <time.h>
+
 #include "server/server.h"
 
 static void get_next_server_tick(server_t *s)
@@ -40,6 +41,7 @@ int server_run(server_t *s)
         server_handle_request(s);
         simulation_handle(s);
         network_handle_clients_out(s);
+        server_clear_clients(s);
     }
     return s->status;
 }

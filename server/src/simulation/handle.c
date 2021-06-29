@@ -10,6 +10,7 @@
 
 void simulation_handle(server_t *s)
 {
+    map_refill(s->sim.map);
     simulation_handle_eggs(&s->sim);
     simulation_handle_incantation(s);
     simulation_handle_food(s);

@@ -34,6 +34,7 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), network/handle_client_connection.c)				\
 					$(addprefix $(SRC_PATH), network/handle_clients_in.c)						\
 					$(addprefix $(SRC_PATH), network/handle_clients_out.c)						\
+					$(addprefix $(SRC_PATH), network/remove_connection.c)						\
 					$(addprefix $(SRC_PATH), network/start.c)									\
 					$(addprefix $(SRC_PATH), network/stop.c)									\
 					$(addprefix $(SRC_PATH), server/client/add_request.c)						\
@@ -77,6 +78,7 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), server/request/parse.c)							\
 					$(addprefix $(SRC_PATH), server/response/create.c)							\
 					$(addprefix $(SRC_PATH), server/response/destroy.c)							\
+					$(addprefix $(SRC_PATH), server/clear_client.c)								\
 					$(addprefix $(SRC_PATH), server/find_client_from_drone.c)					\
 					$(addprefix $(SRC_PATH), server/launch.c)									\
 					$(addprefix $(SRC_PATH), server/remove_client.c)							\
@@ -122,9 +124,12 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/inventory/get_sibur_info.c)				\
 					$(addprefix $(SRC_PATH), simulation/inventory/get_thystame_info.c)			\
 					$(addprefix $(SRC_PATH), simulation/inventory/remove_item.c)				\
+					$(addprefix $(SRC_PATH), simulation/map/count_resources.c)					\
+					$(addprefix $(SRC_PATH), simulation/map/clear.c)							\
 					$(addprefix $(SRC_PATH), simulation/map/create.c)							\
 					$(addprefix $(SRC_PATH), simulation/map/destroy.c)							\
 					$(addprefix $(SRC_PATH), simulation/map/get_tile_look_format.c)				\
+					$(addprefix $(SRC_PATH), simulation/map/refill.c)							\
 					$(addprefix $(SRC_PATH), simulation/resource/get_info.c)					\
 					$(addprefix $(SRC_PATH), simulation/resource/info.c)						\
 					$(addprefix $(SRC_PATH), simulation/team/add_drone.c)						\
@@ -137,6 +142,7 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/team/new_active_drone.c)				\
 					$(addprefix $(SRC_PATH), simulation/tile/add_drone.c)						\
 					$(addprefix $(SRC_PATH), simulation/tile/add_item.c)						\
+					$(addprefix $(SRC_PATH), simulation/tile/clear_items.c)						\
 					$(addprefix $(SRC_PATH), simulation/tile/count_drone.c)						\
 					$(addprefix $(SRC_PATH), simulation/tile/count_item.c)						\
 					$(addprefix $(SRC_PATH), simulation/tile/create.c)							\
@@ -261,6 +267,8 @@ TESTS_SRC		=	$(addprefix $(TESTS_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(TESTS_PATH), simulation/inventory/add_item.c)				\
 					$(addprefix $(TESTS_PATH), simulation/inventory/get_item_info.c)		\
 					$(addprefix $(TESTS_PATH), simulation/inventory/remove_item.c)			\
+					$(addprefix $(TESTS_PATH), simulation/map/create.c)						\
+					$(addprefix $(TESTS_PATH), simulation/map/clear.c)						\
 					$(addprefix $(TESTS_PATH), simulation/teams/has_drone.c)				\
 					$(addprefix $(TESTS_PATH), simulation/tile/add_drone.c)					\
 					$(addprefix $(TESTS_PATH), simulation/tile/add_item.c)					\
