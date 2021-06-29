@@ -40,7 +40,7 @@ static void map_refill_tiles_rec(map_t *map, resource_type_t t,
             map_refill_one_tile(tile, t, &q_to_spawn, spawn_on_different_spot);
         }
         y += 1;
-        if (y == map->height - 1)
+        if (y >= map->height)
             y = 0;
     }
     if (q_to_spawn > 0)

@@ -16,7 +16,7 @@ Test(drone_get_look_format, simple_get_look_left_lvl_1)
     char *result = NULL;
 
     map_clear_resources(map);
-    cr_assert(tile_add_drone(map->tiles[d->y][d->x], d));
+    cr_assert(tile_add_drone(map->tiles[d->pos.y][d->pos.x], d));
     d->facing_direction = LEFT;
     result = drone_get_look_format(map, d);
     cr_expect_str_eq(result, "player,,,");
@@ -30,7 +30,7 @@ Test(drone_get_look_format, simple_get_look_left_lvl_3)
     char *result = NULL;
 
     map_clear_resources(map);
-    cr_assert(tile_add_drone(map->tiles[d->y][d->x], d));
+    cr_assert(tile_add_drone(map->tiles[d->pos.y][d->pos.x], d));
     d->facing_direction = LEFT;
     d->elevation_lvl = 3;
     result = drone_get_look_format(map, d);
@@ -45,7 +45,7 @@ Test(drone_get_look_format, hard_1_get_look_left_lvl_3)
     char *result = NULL;
 
     map_clear_resources(map);
-    cr_assert(tile_add_drone(map->tiles[d->y][d->x], d));
+    cr_assert(tile_add_drone(map->tiles[d->pos.y][d->pos.x], d));
     cr_assert(tile_add_item(map->tiles[6][4], RESOURCE_FOOD));
     d->facing_direction = LEFT;
     d->elevation_lvl = 3;

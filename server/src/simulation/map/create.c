@@ -56,7 +56,7 @@ map_t *map_create(unsigned int width, unsigned int height)
         return NULL;
     map->width = width;
     map->height = height;
-    map->tiles = malloc(sizeof(tile_t *) * height);
+    map->tiles = malloc(sizeof(tile_t **) * height);
     map->time_until_refill = 0;
     if (!map->tiles) {
         map_destroy(map);
