@@ -18,7 +18,7 @@ typedef enum direction_e
 
 typedef enum local_direction_e
 {
-    LCL_UNKNOWN = 0,
+    LCL_HERE = 0,
     LCL_UP = 1,
     LCL_UP_LEFT = 2,
     LCL_LEFT = 3,

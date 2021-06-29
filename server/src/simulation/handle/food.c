@@ -17,7 +17,7 @@ static void simulation_handle_food_eat(server_t *s, drone_t *drone)
 
     if (drone_eat(drone))
         return;
-    server_log(LOG_SIMULATION_DRONE_DIED, drone->x, drone->y);
+    server_log(LOG_SIMULATION_DRONE_DIED, drone->pos.x, drone->pos.y);
     client = drone->active ? server_find_client_from_drone(s, drone) : NULL;
     if (client) {
         client->alive = false;

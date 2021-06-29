@@ -16,6 +16,7 @@ void request_handler_cmd_take(server_t *s, client_t *c, request_t *r)
     resource_type_t type = RESOURCE_FOOD;
     const node_t *node = list_get(r->arguments, 0);
     const resource_info_t *info = NULL;
+    tile_t *tile = NULL;
 
     info = resource_get_info_from_name(node ? NODE_STR(node) : NULL);
     if (!info) {
@@ -23,7 +24,8 @@ void request_handler_cmd_take(server_t *s, client_t *c, request_t *r)
         return;
     }
     type = info->type;
-    is_ok = tile_remove_item(s->sim.map->tiles[c->drone->y][c->drone->x], type);
+    tile = s->sim.map->tiles[c->drone->pos.y][c->drone->pos.x];
+    is_ok = tile_remove_item(tile, type);
     if (is_ok) {
         is_ok = inventory_add_item(c->drone->inventory, type, 1);
     }

@@ -12,7 +12,7 @@
 Test(tile_remove_drone, simple_remove_drone)
 {
     tile_t *tile = tile_create();
-    drone_t *drone = drone_create(0, 0, true);
+    drone_t *drone = drone_create(VEC2U(0, 0), true);
 
     cr_assert(!ptr_list_find(tile->drones, drone));
     cr_assert(tile_add_drone(tile, drone));
@@ -26,7 +26,7 @@ Test(tile_remove_drone, simple_remove_drone)
 Test(tile_remove_drone, several_remove_drone)
 {
     tile_t *tile = tile_create();
-    drone_t *drone = drone_create(0, 0, true);
+    drone_t *drone = drone_create(VEC2U(0, 0), true);
 
     cr_assert(!ptr_list_find(tile->drones, drone));
     cr_assert(tile_add_drone(tile, drone));
