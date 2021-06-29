@@ -8,7 +8,19 @@
 #include "logger/logger.h"
 #include "simulation/simulation.h"
 
-static void simulation_handle_team_eggs(team_t *team)
+static void simulation_handle_egg_hatching(map_t *map, team_t *team, egg_t *egg)
+{
+    drone_t *drone = drone_create(egg->pos, false);
+
+    if (!drone)
+        return;
+    team_add_drone(team, drone);
+    map_add_drone(map, drone);
+    server_log(LOG_SIMULATION_EGG_HATCHED, egg->pos.x, egg->pos.y);
+    team->free_slots_nb += 1;
+}
+
+static void simulation_handle_team_eggs(map_t *map, team_t *team)
 {
     egg_t *egg = NULL;
     node_iterator_t *it = NULL;
@@ -19,9 +31,7 @@ static void simulation_handle_team_eggs(team_t *team)
         if (egg->time_until_hatch <= 0) {
             idx_to_del = it->index;
             node_iter_next(&it);
-            team_add_drone(team, drone_create(egg->pos, false));
-            server_log(LOG_SIMULATION_EGG_HATCHED, egg->pos.x, egg->pos.y);
-            team->free_slots_nb += 1;
+            simulation_handle_egg_hatching(map, team, egg);
             list_pop(team->eggs, idx_to_del);
             continue;
         }
@@ -36,6 +46,6 @@ void simulation_handle_eggs(simulation_t *sim)
 
     list_foreach(node, sim->teams) {
         team = NODE_PTR(node, team_t);
-        simulation_handle_team_eggs(team);
+        simulation_handle_team_eggs(sim->map, team);
     }
 }

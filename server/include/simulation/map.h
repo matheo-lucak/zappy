@@ -50,6 +50,9 @@ map_t *map_create(unsigned int width, unsigned int height);
  */
 void map_destroy(map_t *map);
 
+
+bool map_add_drone(map_t *map, drone_t *drone);
+
 char *map_get_tile_look_format(const map_t *map, vector2u_t pos);
 
 /**
