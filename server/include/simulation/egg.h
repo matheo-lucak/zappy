@@ -10,14 +10,15 @@
 
 #define EGG_TIME_TO_HATCH 600
 
+#include "simulation/vector.h"
+
 typedef struct egg_s
 {
-    int x;
-    int y;
+    vector2u_t pos;
     int time_until_hatch;
 } egg_t;
 
-egg_t *egg_create(int x, int y);
+egg_t *egg_create(vector2u_t pos);
 void egg_destroy(egg_t *egg);
 
 #endif /* !EGG_H_ */

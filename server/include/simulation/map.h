@@ -9,6 +9,7 @@
 #define MAP_H_
 
 #include "simulation/tile.h"
+#include "simulation/vector.h"
 
 #define MAP_TIME_TO_REFILL 20
 
@@ -25,6 +26,14 @@ typedef struct map_s
     int                     time_until_refill;
 } map_t;
 
+typedef enum map_quarter_e
+{
+    MAP_TOP_LEFT,
+    MAP_TOP_RIGHT,
+    MAP_BOTTOM_LEFT,
+    MAP_BOTTOM_RIGHT
+} map_quarter_t;
+
 /**
  * @brief Allocates memory for a new map.
  *
@@ -40,6 +49,8 @@ map_t *map_create(unsigned int width, unsigned int height);
  * @param map The map on which memory needs to be released.
  */
 void map_destroy(map_t *map);
+
+char *map_get_tile_look_format(const map_t *map, vector2u_t pos);
 
 /**
  * @brief Refill the map of resources each MAP_TIME_TO_REFILL call

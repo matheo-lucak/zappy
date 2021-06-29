@@ -13,7 +13,7 @@ static void setup_dummy_tile_drone(tile_t *tile, drone_t **drone_tab, size_t dro
                                                                     size_t drone_lvl)
 {
     for (size_t i = 0; i < drone_nb; i++) {
-        drone_tab[i] = drone_create(0, 0, true);
+        drone_tab[i] = drone_create(VEC2U(0, 0), true);
         drone_tab[i]->elevation_lvl = drone_lvl;
         tile_add_drone(tile, drone_tab[i]);
     }

@@ -11,7 +11,7 @@
 
 Test(drone_rotate, simple_circular_left_rotation)
 {
-    drone_t *drone = drone_create(0, 0, true);
+    drone_t *drone = drone_create(VEC2U(0, 0), true);
 
     drone->facing_direction = LEFT;
     drone_rotate(drone, LEFT);
