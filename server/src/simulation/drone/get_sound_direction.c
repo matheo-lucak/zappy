@@ -75,9 +75,9 @@ static local_direction_t get_sound_direction(vector2i_t listener_pos,
     return 0;
 }
 
-local_direction_t drone_get_sound_direction(const map_t *map,
-                                            drone_t *d_from,
-                                            drone_t *d_to)
+local_direction_t drone_get_sound_direction(drone_t *d_from,
+                                            drone_t *d_to,
+                                            const map_t *map)
 {
     map_quarter_t d_quarter;
     vector2i_t projections[4];
@@ -87,9 +87,9 @@ local_direction_t drone_get_sound_direction(const map_t *map,
     if (d_from->pos.x == d_to->pos.x
         && d_from->pos.y == d_to->pos.y)
         return 0;
-    d_quarter = drone_get_map_quarter(map, d_from);
-    drone_get_sound_set_projections(map, projections,
-        VEC2I((int)d_to->pos.x, (int)d_to->pos.y), d_quarter);
+    d_quarter = drone_get_map_quarter(d_from, map);
+    drone_get_sound_set_projections(VEC2I((int)d_to->pos.x, (int)d_to->pos.y),
+        projections, map, d_quarter);
     best_proj = find_best_projection(
         VEC2I((int)d_from->pos.x, (int)d_from->pos.y), projections);
     sound_pos = drone_get_sound_entering_tile(d_from, best_proj);

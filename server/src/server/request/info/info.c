@@ -25,8 +25,6 @@ const request_info_t default_request_info =
 
 const request_info_t request_info_map[] =
 {
-    /* Drone COMMANDS*/
-
     {
         .name = "Forward",
         .type = RQ_CMD_FORWARD,
@@ -204,9 +202,6 @@ const request_info_t request_info_map[] =
             }
         }
     },
-
-    /* GUI COMMANDS*/
-
     {
         .name = "msz",
         .type = RQ_MAP_SIZE,

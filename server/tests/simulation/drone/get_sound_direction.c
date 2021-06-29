@@ -15,7 +15,7 @@ Test(drone_get_sound_direction, simple_straight_line_direction_1)
     drone_t *d2 = drone_create(VEC2U(7, 4), true);
 
     d2->facing_direction = LEFT;
-    cr_expect(drone_get_sound_direction(map, d1, d2) == LCL_UP);
+    cr_expect(drone_get_sound_direction(d1, d2, map) == LCL_UP);
     map_destroy(map);
     drone_destroy(d1);
     drone_destroy(d2);
@@ -28,7 +28,7 @@ Test(drone_get_sound_direction, simple_straight_line_direction_2)
     drone_t *d2 = drone_create(VEC2U(7, 4), true);
 
     d2->facing_direction = UP;
-    cr_expect(drone_get_sound_direction(map, d1, d2) == LCL_LEFT);
+    cr_expect(drone_get_sound_direction(d1, d2, map) == LCL_LEFT);
     map_destroy(map);
     drone_destroy(d1);
     drone_destroy(d2);
@@ -41,7 +41,7 @@ Test(drone_get_sound_direction, simple_straight_line_direction_3)
     drone_t *d2 = drone_create(VEC2U(7, 4), true);
 
     d2->facing_direction = RIGHT;
-    cr_expect(drone_get_sound_direction(map, d1, d2) == LCL_DOWN);
+    cr_expect(drone_get_sound_direction(d1, d2, map) == LCL_DOWN);
     map_destroy(map);
     drone_destroy(d1);
     drone_destroy(d2);
@@ -54,7 +54,7 @@ Test(drone_get_sound_direction, simple_straight_line_direction_4)
     drone_t *d2 = drone_create(VEC2U(7, 4), true);
 
     d2->facing_direction = DOWN;
-    cr_expect(drone_get_sound_direction(map, d1, d2) == LCL_RIGHT);
+    cr_expect(drone_get_sound_direction(d1, d2, map) == LCL_RIGHT);
     map_destroy(map);
     drone_destroy(d1);
     drone_destroy(d2);
@@ -67,7 +67,7 @@ Test(drone_get_sound_direction, simple_same_location)
     drone_t *d2 = drone_create(VEC2U(4, 4), true);
 
     d2->facing_direction = LEFT;
-    cr_expect(drone_get_sound_direction(map, d1, d2) == LCL_HERE);
+    cr_expect(drone_get_sound_direction(d1, d2, map) == LCL_HERE);
     map_destroy(map);
     drone_destroy(d1);
     drone_destroy(d2);
@@ -80,7 +80,7 @@ Test(drone_get_sound_direction, hard_subject_test)
     drone_t *d2 = drone_create(VEC2U(5, 2), true);
 
     d2->facing_direction = RIGHT;
-    cr_expect(drone_get_sound_direction(map, d1, d2) == LCL_DOWN_LEFT);
+    cr_expect(drone_get_sound_direction(d1, d2, map) == LCL_DOWN_LEFT);
     map_destroy(map);
     drone_destroy(d1);
     drone_destroy(d2);
@@ -93,7 +93,7 @@ Test(drone_get_sound_direction, hard_bottom_left_diagonal)
     drone_t *d2 = drone_create(VEC2U(8, 2), true);
 
     d2->facing_direction = DOWN;
-    cr_expect(drone_get_sound_direction(map, d1, d2) == LCL_DOWN_LEFT);
+    cr_expect(drone_get_sound_direction(d1, d2, map) == LCL_DOWN_LEFT);
     map_destroy(map);
     drone_destroy(d1);
     drone_destroy(d2);

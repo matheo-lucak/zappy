@@ -1,28 +1,28 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-410-BDX-4-1-zappy-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** logger
 */
 
-#ifndef LOGGER_H_
-#define LOGGER_H_
+#ifndef ZAPPY_LOGGER_H_
+#define ZAPPY_LOGGER_H_
 
 #include <stddef.h>
 
-#define LOG_SERVER_RANGE_L        0
-#define LOG_SERVER_RANGE_H        1023
-#define LOG_NETWORK_RANGE_L       1024
-#define LOG_NETWORK_RANGE_H       2047
-#define LOG_SIMULATION_RANGE_L    2048
-#define LOG_SIMULATION_RANGE_H    3071
+#define LOG_SERVER_RANGE_L     0
+#define LOG_SERVER_RANGE_H     1023
+#define LOG_NETWORK_RANGE_L    1024
+#define LOG_NETWORK_RANGE_H    2047
+#define LOG_SIMULATION_RANGE_L 2048
+#define LOG_SIMULATION_RANGE_H 3071
 
-#define LOG_SERVER_HEADER       "[SERVER]"
-#define LOG_NETWORK_HEADER      "[NETWORK]"
-#define LOG_SIMULATION_HEADER   "[SIMULATION]"
-#define LOG_DEFAULT_HEADER      "[LOG]"
+#define LOG_SERVER_HEADER      "[SERVER]"
+#define LOG_NETWORK_HEADER     "[NETWORK]"
+#define LOG_SIMULATION_HEADER  "[SIMULATION]"
+#define LOG_DEFAULT_HEADER     "[LOG]"
 
-#define LOG_DEFAULT_MESSAGE     "Unkown message"
+#define LOG_DEFAULT_MESSAGE    "Unkown message"
 
 typedef enum
 {
@@ -76,6 +76,13 @@ typedef struct log_message_s
 extern const log_info_t log_info_map[];
 extern const size_t log_info_map_size;
 
+/**
+* @brief Gets the log message matching the log_type given.
+*
+* @param type The log type.
+* @return log_message_t The log message matching the given type.
+*                       If not found, fills it with default values.
+*/
 log_message_t logger_find_message_from_type(log_type_t type);
 
-#endif /* !LOGGER_H_ */
+#endif /* !ZAPPY_LOGGER_H_ */

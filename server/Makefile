@@ -73,7 +73,7 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), server/request/checker.c)							\
 					$(addprefix $(SRC_PATH), server/request/create.c)							\
 					$(addprefix $(SRC_PATH), server/request/destroy.c)							\
-         			$(addprefix $(SRC_PATH), server/request/get_input.c)						\
+					$(addprefix $(SRC_PATH), server/request/get_input.c)						\
 					$(addprefix $(SRC_PATH), server/request/handle.c)							\
 					$(addprefix $(SRC_PATH), server/request/parse.c)							\
 					$(addprefix $(SRC_PATH), server/response/create.c)							\
@@ -148,6 +148,9 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/tile/count_item.c)						\
 					$(addprefix $(SRC_PATH), simulation/tile/create.c)							\
 					$(addprefix $(SRC_PATH), simulation/tile/destroy.c)							\
+					$(addprefix $(SRC_PATH), simulation/tile/has_drones.c)						\
+					$(addprefix $(SRC_PATH), simulation/tile/has_items.c)						\
+					$(addprefix $(SRC_PATH), simulation/tile/is_empty.c)						\
 					$(addprefix $(SRC_PATH), simulation/tile/remove_drone.c)					\
 					$(addprefix $(SRC_PATH), simulation/tile/remove_item.c)						\
 					$(addprefix $(SRC_PATH), simulation/vector/add.c)							\

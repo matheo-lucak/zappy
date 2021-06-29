@@ -9,8 +9,8 @@
 
 #include "simulation/incantation.h"
 
-static void setup_dummy_tile_drone(tile_t *tile, drone_t **drone_tab, size_t drone_nb,
-                                                                    size_t drone_lvl)
+static void setup_dummy_tile_drone(tile_t *tile, drone_t **drone_tab,
+                                    size_t drone_nb, size_t drone_lvl)
 {
     for (size_t i = 0; i < drone_nb; i++) {
         drone_tab[i] = drone_create(VEC2U(0, 0), true);
@@ -19,7 +19,8 @@ static void setup_dummy_tile_drone(tile_t *tile, drone_t **drone_tab, size_t dro
     }
 }
 
-static void clear_dummy_tile_drone(tile_t *tile, drone_t **drone_tab, size_t drone_nb)
+static void clear_dummy_tile_drone(tile_t *tile, drone_t **drone_tab,
+                                    size_t drone_nb)
 {
     for (size_t i = 0; i < drone_nb; i++) {
         drone_destroy(drone_tab[i]);
@@ -28,7 +29,7 @@ static void clear_dummy_tile_drone(tile_t *tile, drone_t **drone_tab, size_t dro
 
 
 static void setup_dummy_tile_resource(tile_t *tile, resource_type_t type,
-                                                        size_t resource_nb)
+                                        size_t resource_nb)
 {
     for (size_t i = 0; i < resource_nb; i++) {
         tile_add_item(tile, type);

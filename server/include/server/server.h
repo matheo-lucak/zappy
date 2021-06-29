@@ -1,12 +1,12 @@
 /*
 ** EPITECH PROJECT, 2021
-** Zappy [WSL: Ubuntu]
+** Zappy
 ** File description:
 ** server
 */
 
-#ifndef SERVER_H_
-#define SERVER_H_
+#ifndef ZAPPY_SERVER_H_
+#define ZAPPY_SERVER_H_
 
 #include <stdbool.h>
 
@@ -19,9 +19,9 @@
 
 #include "logger/logger.h"
 
-#define SERVER_EXIT     84
-#define SERVER_ERROR    1
-#define SERVER_SUCCESS  0
+#define SERVER_EXIT    84
+#define SERVER_ERROR   1
+#define SERVER_SUCCESS 0
 
 typedef size_t frequency_t;
 
@@ -55,4 +55,4 @@ void server_remove_client(server_t *s, client_t *client);
 
 client_t *server_find_client_from_drone(server_t *s, drone_t *drone);
 
-#endif /* !SERVER_H_ */
+#endif /* !ZAPPY_SERVER_H_ */

@@ -13,7 +13,7 @@ void request_handler_cmd_look(server_t *s, client_t *c, request_t *r)
 {
     char *look_format = NULL;
 
-    look_format = drone_get_look_format(s->sim.map, c->drone);
+    look_format = drone_get_look_format(c->drone, s->sim.map);
     client_add_response(c, response_create(RESPONSE_LOOK, look_format));
     free(look_format);
 }

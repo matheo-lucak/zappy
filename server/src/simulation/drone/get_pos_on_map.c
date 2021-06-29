@@ -7,7 +7,7 @@
 
 #include "simulation/drone.h"
 
-vector2u_t drone_get_pos_on_map(const map_t *map, drone_t *drone)
+vector2u_t drone_get_pos_on_map(drone_t *drone, const map_t *map)
 {
     vector2i_t future_pos = {drone->pos.x, drone->pos.y};
 

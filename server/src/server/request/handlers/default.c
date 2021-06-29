@@ -15,8 +15,7 @@
 static void request_handler_default_gui(client_t *c)
 {
     client_to_spectator(c);
-    // TO IMPLEMENT: Send response
- }
+}
 
 static drone_t *client_take_drone_control(map_t *map, team_t *team, client_t *c)
 {

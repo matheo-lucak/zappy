@@ -84,7 +84,7 @@ request_t *request_parse_from_input(char *input, client_type_t type)
     if (!request)
         return NULL;
     request->name = r_name;
-     if (info) {
+    if (info) {
         request->type = info->type;
         request->time_limit = info->time_limit;
         request->handler = info->handler;
