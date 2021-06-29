@@ -10,3 +10,7 @@ class ResponseError(ZappyError):
 
 class ResponseParsingError(ResponseError):
     pass
+
+
+class SpontaneousResponseMatchError(ResponseError):
+    pass

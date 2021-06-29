@@ -1,5 +1,6 @@
 # -*- coding: Utf-8 -*
 
+from sys import stderr
 from typing import Any
 
 
@@ -18,4 +19,6 @@ class Logger:
     @classmethod
     def print(cls, required_level: int, *args: Any, **kwargs: Any) -> None:
         if cls.__verbose >= required_level:
+            if "file" not in kwargs:
+                kwargs["file"] = stderr
             print(*args, **kwargs)

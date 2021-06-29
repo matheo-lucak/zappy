@@ -31,9 +31,9 @@ $(SERVER_NAME):
 $(CLIENT_NAME):
 	$(MAKE) -C $(ZAPPY_CLIENT_PATH) -e "PATH_TO_INSTANTIATE=.."
 
-clean fclean:
+clean fclean tests_run:
 	for part in $(ZAPPY_PATHS); do $(MAKE) $@ -C $$part -e "PATH_TO_INSTANTIATE=.."; done;
-.PHONY:	clean fclean
+.PHONY:	clean fclean tests_run
 
 re::	fclean
 re::	all

@@ -15,6 +15,9 @@ class ArgumentParsingError(Error):
     pass
 
 
+MAGIC_GUI_TEAM_NAME: str = "0xea83f3_gui_application"
+
+
 def integer_between(argument: str, port_min: int, port_max: int) -> int:
     try:
         value: int = int(argument)
@@ -23,6 +26,12 @@ def integer_between(argument: str, port_min: int, port_max: int) -> int:
     if not (port_min <= value < port_max):
         raise ArgumentTypeError(f"Port value must be in range [{port_min};{port_max}[")
     return value
+
+
+def team_name(team: str) -> str:
+    if team == MAGIC_GUI_TEAM_NAME:
+        raise ArgumentTypeError(f"{repr(team)} team name is forbidden")
+    return team
 
 
 def parse_args(arguments: List[str] = argv[1:]) -> Result[ZappyAIArgs]:
@@ -34,7 +43,7 @@ def parse_args(arguments: List[str] = argv[1:]) -> Result[ZappyAIArgs]:
         required=True,
         help="is the port number",
     )
-    parser.add_argument("-n", metavar="name", required=True, help="is the name of the team")
+    parser.add_argument("-n", metavar="name", type=team_name, required=True, help="is the name of the team")
     parser.add_argument("-h", metavar="machine", default="localhost", help="is the name of the machine; localhost by default")
     parser.add_argument("-v", action="count", default=0, help="Sets the verbose")
     try:

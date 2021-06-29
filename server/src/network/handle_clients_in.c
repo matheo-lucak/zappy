@@ -19,7 +19,7 @@ static void network_handle_client_input_from_socket(server_t *s, client_t *c)
 
     if (socket_selector_is_socket_ready(s->n.selector, SOCKET(c->socket))) {
         c_input = request_get_input(c);
-        if (c_input == NULL) {
+        if (!c_input) {
             c->alive = false;
             return;
         }

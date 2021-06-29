@@ -42,13 +42,13 @@ coverage:
 
 clean:
 	@find -name "$(PYCACHE)" | xargs -I {} sh -c 'echo "$(RM) -r {}" && $(RM) -r {}'
-	$(RM) -r $(PYTEST_CACHE)
-	$(RM) -r $(MYPY_CACHE)
-	$(RM) $(COVERAGE_CACHE)
 .PHONY:	clean
 
 fclean:	clean
 	$(RM) $(NAME)
+	$(RM) -r $(PYTEST_CACHE)
+	$(RM) -r $(MYPY_CACHE)
+	$(RM) $(COVERAGE_CACHE)
 .PHONY:	fclean
 
 re::	fclean

@@ -41,6 +41,6 @@ class LookResponse(Response):
         return self.__tiles
 
 
-class LookRequest(BaseRequest[LookResponse]):
+class LookRequest(BaseRequest[LookResponse], process_time=7):
     def __init__(self, callback: Optional[ResponseCallback[LookResponse]] = None) -> None:
         super().__init__("Look", callback=callback)

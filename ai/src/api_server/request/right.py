@@ -10,6 +10,6 @@ class RightResponse(OKResponse):
     pass
 
 
-class RightRequest(BaseRequest[RightResponse]):
+class RightRequest(BaseRequest[RightResponse], process_time=7):
     def __init__(self, callback: Optional[ResponseCallback[RightResponse]] = None) -> None:
         super().__init__("Right", callback=callback)
