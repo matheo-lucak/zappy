@@ -25,4 +25,5 @@ void request_handler_cmd_incantation(server_t *s, client_t *c, request_t *r)
         if (client)
             client_add_response(client, response_create(RESPONSE_INCANTATION));
     }
+    ptr_list_push_back(s->sim.incantations, inc);
 }
