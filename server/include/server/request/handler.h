@@ -162,11 +162,11 @@ void request_handler_gui_team_names(server_t *, client_t *, request_t *);
 void request_handler_gui_player_position(server_t *, client_t *, request_t *);
 
 /**
-* @brief Handles a player_level request bound to a client.
+* @brief Handles a player_stats request bound to a client.
 *        Instantiates a response and stores it in the client's
 *        pending responses queue.
 */
-void request_handler_gui_player_level(server_t *, client_t *, request_t *);
+void request_handler_gui_player_stats(server_t *, client_t *, request_t *);
 
 /**
 * @brief Handles a player_inventory request bound to a client.

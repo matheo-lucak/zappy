@@ -225,7 +225,7 @@ const request_info_t request_info_map[] =
         {
             {
                 .client_type    = CLIENT_SPECTATOR,
-                .arg_number     = 0,
+                .arg_number     = 2,
                 .arg_checkers   = (request_arg_checker_t []){
                     &request_arg_check_is_positive_int,
                     &request_arg_check_is_positive_int
@@ -279,24 +279,9 @@ const request_info_t request_info_map[] =
         }
     },
     {
-        .name = "plv",
-        .type = RQ_PLAYER_LEVEL,
-        .handler = &request_handler_gui_player_level,
-        .time_limit = 0,
-        .requirements = (request_requirements_t [])
-        {
-            {
-                .client_type    = CLIENT_SPECTATOR,
-                .arg_number     = 1,
-                .arg_checkers   = (request_arg_checker_t [])
-                    {&request_arg_check_is_positive_int}
-            }
-        }
-    },
-    {
-        .name = "pin",
-        .type = RQ_PLAYER_INVENTORY,
-        .handler = &request_handler_gui_player_inventory,
+        .name = "pst",
+        .type = RQ_PLAYER_STATS,
+        .handler = &request_handler_gui_player_stats,
         .time_limit = 0,
         .requirements = (request_requirements_t [])
         {
@@ -319,22 +304,6 @@ const request_info_t request_info_map[] =
                 .client_type    = CLIENT_SPECTATOR,
                 .arg_number     = 0,
                 .arg_checkers   = (request_arg_checker_t []) {NULL}
-
-            }
-        }
-    },
-    {
-        .name = "sst",
-        .type = RQ_TIME_UNIT_MODIF,
-        .handler = &request_handler_gui_time_unit_modif,
-        .time_limit = 0,
-        .requirements = (request_requirements_t [])
-        {
-            {
-                .client_type    = CLIENT_SPECTATOR,
-                .arg_number     = 1,
-                .arg_checkers   = (request_arg_checker_t [])
-                    {&request_arg_check_is_positive_int}
             }
         }
     },

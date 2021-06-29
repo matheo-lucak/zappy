@@ -25,6 +25,7 @@ static void clear_dummy_tile_drone(tile_t *tile, drone_t **drone_tab,
     for (size_t i = 0; i < drone_nb; i++) {
         drone_destroy(drone_tab[i]);
     }
+    tile_destroy(tile);
 }
 
 
@@ -48,7 +49,6 @@ Test(incantation_check_requirements, basic_lvl_1)
     setup_dummy_tile_resource(tile, RESOURCE_LINEMATE, 1);
     cr_assert(incantation_check_requirements(inc) == true);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
-    tile_destroy(tile);
 }
 
 Test(incantation_check_requirements, basic_lvl_2)
@@ -65,7 +65,6 @@ Test(incantation_check_requirements, basic_lvl_2)
     setup_dummy_tile_resource(tile, RESOURCE_SIBUR, 1);
     cr_assert(incantation_check_requirements(inc) == true);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
-    tile_destroy(tile);
 }
 
 Test(incantation_check_requirements, basic_lvl_3)
@@ -82,7 +81,6 @@ Test(incantation_check_requirements, basic_lvl_3)
     setup_dummy_tile_resource(tile, RESOURCE_PHIRAS, 2);
     cr_assert(incantation_check_requirements(inc) == true);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
-    tile_destroy(tile);
 }
 
 Test(incantation_check_requirements, basic_lvl_4)
@@ -100,7 +98,6 @@ Test(incantation_check_requirements, basic_lvl_4)
     setup_dummy_tile_resource(tile, RESOURCE_PHIRAS, 1);
     cr_assert(incantation_check_requirements(inc) == true);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
-    tile_destroy(tile);
 }
 
 Test(incantation_check_requirements, basic_lvl_5)
@@ -118,7 +115,6 @@ Test(incantation_check_requirements, basic_lvl_5)
     setup_dummy_tile_resource(tile, RESOURCE_MENDIANE, 3);
     cr_assert(incantation_check_requirements(inc) == true);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
-    tile_destroy(tile);
 }
 
 Test(incantation_check_requirements, basic_lvl_6)
@@ -136,7 +132,6 @@ Test(incantation_check_requirements, basic_lvl_6)
     setup_dummy_tile_resource(tile, RESOURCE_PHIRAS, 1);
     cr_assert(incantation_check_requirements(inc) == true);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
-    tile_destroy(tile);
 }
 
 Test(incantation_check_requirements, basic_lvl_7)
@@ -156,7 +151,6 @@ Test(incantation_check_requirements, basic_lvl_7)
     setup_dummy_tile_resource(tile, RESOURCE_THYSTAME, 1);
     cr_assert(incantation_check_requirements(inc) == true);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
-    tile_destroy(tile);
 }
 
 Test(incantation_check_requirements, too_many_player_1)
@@ -171,7 +165,6 @@ Test(incantation_check_requirements, too_many_player_1)
     setup_dummy_tile_resource(tile, RESOURCE_LINEMATE, 1);
     cr_assert(incantation_check_requirements(inc) == false);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
-    tile_destroy(tile);
 }
 
 
@@ -190,7 +183,6 @@ Test(incantation_check_requirements, too_many_player_2)
     setup_dummy_tile_resource(tile, RESOURCE_PHIRAS, 1);
     cr_assert(incantation_check_requirements(inc) == false);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
-    tile_destroy(tile);
 }
 
 Test(incantation_check_requirements, not_enough_player_1)
@@ -208,7 +200,6 @@ Test(incantation_check_requirements, not_enough_player_1)
     setup_dummy_tile_resource(tile, RESOURCE_PHIRAS, 1);
     cr_assert(incantation_check_requirements(inc) == false);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
-    tile_destroy(tile);
 }
 
 Test(incantation_check_requirements, bad_level)
@@ -226,7 +217,6 @@ Test(incantation_check_requirements, bad_level)
     setup_dummy_tile_resource(tile, RESOURCE_MENDIANE, 3);
     cr_assert(incantation_check_requirements(inc) == false);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
-    tile_destroy(tile);
 }
 
 Test(incantation_check_requirements, not_enough_resources)
@@ -242,7 +232,6 @@ Test(incantation_check_requirements, not_enough_resources)
     setup_dummy_tile_resource(tile, RESOURCE_MENDIANE, 3);
     cr_assert(incantation_check_requirements(inc) == false);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
-    tile_destroy(tile);
 }
 
 Test(incantation_check_requirements, too_much_resources)
@@ -262,5 +251,4 @@ Test(incantation_check_requirements, too_much_resources)
     setup_dummy_tile_resource(tile, RESOURCE_THYSTAME, 1);
     cr_assert(incantation_check_requirements(inc) == false);
     clear_dummy_tile_drone(tile, drone_tab, drone_nb);
-    tile_destroy(tile);
 }

@@ -9,7 +9,7 @@
 #include <string.h>
 
 #include "server/request/request.h"
-#include "server/server.h"del + 1
+#include "server/server.h"
 
 static void setup_dummy_server(server_t *s, client_type_t c_type, char *buffer)
 {
