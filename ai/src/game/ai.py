@@ -185,7 +185,7 @@ class AI:
 
         return all_resources
 
-    def __find_all_rare_resource_in_vision(self, sought_stone: Optional[BaseResource] = None) -> None:
+    def __find_all_rare_resource_in_vision(self, sought_stone: Optional[BaseResource] = None) -> List[SoughtResource]:
         all_resources: List[SoughtResource] = list()
         all_positions: List[SoughtResource]
         for rare_resource in MetaResource.get_rare_resources():

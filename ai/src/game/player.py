@@ -243,7 +243,7 @@ class Player:
             if self.__taking_resource[resource] < 1:
                 self.__taking_resource.pop(resource)
             if response.ok and callable(success_callback):
-                success_callback(response)
+                success_callback(resource)
 
         for _ in range(number):
             print(f"Taking {resource}...")
