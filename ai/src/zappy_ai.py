@@ -1,8 +1,8 @@
 # -*- coding: Utf-8 -*
 
-from sys import stderr
+from sys import stderr, argv as ARGV, executable
 from typing import List, NamedTuple, Optional
-from multiprocessing import Process
+from subprocess import Popen
 
 from .api_server import APIServer
 from .api_server.request import TeamRequest, ConnectNbrRequest
@@ -23,7 +23,7 @@ class ZappyAIArgs(NamedTuple):
 
 class ZappyAI:
     def __init__(self, machine: str, port: int, team_name: str, child: bool) -> None:
-        self.__child_processes: List[Process] = list()
+        self.__child_processes: List[Popen] = list()
 
         self.__machine: str = machine
         self.__port: int = port
@@ -51,15 +51,15 @@ class ZappyAI:
 
     def __del__(self) -> None:
         for process in self.__child_processes:
-            if process.is_alive():
+            if process.poll():
                 process.terminate()
         self.__child_processes.clear()
 
     def run(self) -> None:
         self.__ai.start()
         for process in self.__child_processes:
-            if process.is_alive():
-                process.join()
+            while process.poll() is not None:
+                continue
         self.__child_processes.clear()
 
     @staticmethod
@@ -90,8 +90,9 @@ class ZappyAI:
             yield
         if unused_slots > 0:
             print("<---- An egg hatched ---->")
+            p: Popen = Popen(ARGV, executable=executable)
+            self.__child_processes.append(p)
             # p: Process = Process(target=ZappyAI.start, args=(self.__machine, self.__port, self.__team, True))
-            # self.__child_processes.append(p)
             # p.start()
 
 
