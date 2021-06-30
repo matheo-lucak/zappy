@@ -1,0 +1,273 @@
+{
+    "asset": {
+        "version": "2.0",
+        "generator": "Open Asset Import Library (assimp v5.0.639693989)"
+    },
+    "accessors": [
+        {
+            "bufferView": 0,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 2999,
+            "type": "VEC3",
+            "max": [
+                0.9860619902610779,
+                1.9860620498657227,
+                0.9860619902610779
+            ],
+            "min": [
+                -0.9860619902610779,
+                0.013938000425696373,
+                -0.9860619902610779
+            ]
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 2999,
+            "type": "VEC3",
+            "max": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "min": [
+                -1.0,
+                -1.0,
+                -1.0
+            ]
+        },
+        {
+            "bufferView": 2,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 2999,
+            "type": "VEC2",
+            "max": [
+                0.9957579970359802,
+                0.9939990043640137
+            ],
+            "min": [
+                0.8087940216064453,
+                0.8070340156555176
+            ]
+        },
+        {
+            "bufferView": 3,
+            "byteOffset": 0,
+            "componentType": 5125,
+            "count": 11280,
+            "type": "SCALAR",
+            "max": [
+                2998
+            ],
+            "min": [
+                0
+            ]
+        },
+        {
+            "bufferView": 4,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 400,
+            "type": "VEC3",
+            "max": [
+                0.8999999761581421,
+                1.899999976158142,
+                0.8999999761581421
+            ],
+            "min": [
+                -0.8999999761581421,
+                0.10000000149011612,
+                -0.8999999761581421
+            ]
+        },
+        {
+            "bufferView": 5,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 400,
+            "type": "VEC3",
+            "max": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "min": [
+                -1.0,
+                -1.0,
+                -1.0
+            ]
+        },
+        {
+            "bufferView": 6,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 400,
+            "type": "VEC2",
+            "max": [
+                0.9957519769668579,
+                0.9939919710159302
+            ],
+            "min": [
+                0.8087999820709229,
+                0.8070409893989563
+            ]
+        },
+        {
+            "bufferView": 7,
+            "byteOffset": 0,
+            "componentType": 5125,
+            "count": 1188,
+            "type": "SCALAR",
+            "max": [
+                399
+            ],
+            "min": [
+                0
+            ]
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 158640,
+            "uri": "yp916retfjjw.bin"
+        }
+    ],
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteOffset": 0,
+            "byteLength": 35988,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 35988,
+            "byteLength": 35988,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 71976,
+            "byteLength": 23992,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 95968,
+            "byteLength": 45120,
+            "target": 34963
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 141088,
+            "byteLength": 4800,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 145888,
+            "byteLength": 4800,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 150688,
+            "byteLength": 3200,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 153888,
+            "byteLength": 4752,
+            "target": 34963
+        }
+    ],
+    "materials": [
+        {
+            "name": "DefaultMaterial",
+            "pbrMetallicRoughness": {
+                "baseColorFactor": [
+                    0.6000000238418579,
+                    0.6000000238418579,
+                    0.6000000238418579,
+                    1.0
+                ],
+                "metallicFactor": 0.0
+            }
+        },
+        {
+            "name": "Ext.001",
+            "pbrMetallicRoughness": {
+                "baseColorFactor": [
+                    0.6000000238418579,
+                    0.6000000238418579,
+                    0.6000000238418579,
+                    1.0
+                ],
+                "metallicFactor": 0.0
+            }
+        },
+        {
+            "name": "Int.001",
+            "pbrMetallicRoughness": {
+                "baseColorFactor": [
+                    0.6000000238418579,
+                    0.6000000238418579,
+                    0.6000000238418579,
+                    1.0
+                ],
+                "metallicFactor": 0.0
+            }
+        }
+    ],
+    "meshes": [
+        {
+            "name": "brick_Cube.004",
+            "primitives": [
+                {
+                    "mode": 4,
+                    "material": 1,
+                    "indices": 3,
+                    "attributes": {
+                        "POSITION": 0,
+                        "NORMAL": 1,
+                        "TEXCOORD_0": 2
+                    }
+                },
+                {
+                    "mode": 4,
+                    "material": 2,
+                    "indices": 7,
+                    "attributes": {
+                        "POSITION": 4,
+                        "NORMAL": 5,
+                        "TEXCOORD_0": 6
+                    }
+                }
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "name": "yp916retfjjw.obj",
+            "children": [
+                1
+            ]
+        },
+        {
+            "name": "brick_Cube.004",
+            "mesh": 0
+        }
+    ],
+    "scenes": [
+        {
+            "nodes": [
+                0
+            ]
+        }
+    ],
+    "scene": 0
+}

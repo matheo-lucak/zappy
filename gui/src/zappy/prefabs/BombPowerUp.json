@@ -1,0 +1,28 @@
+{
+    "name": "BombPowerUp",
+    "tag": "BombPowerUp",
+    "components": [
+        {
+            "type": "Transform",
+            "position": { "x": 0, "y":0, "z":0 },
+            "rotation": 0,
+            "scale": 1
+        },
+        {
+            "type": "Model",
+            "path": "../src/assets/models/items/bombup.obj",
+            "scale": 1,
+            "rotationAxis": { "x": 1, "y": 0, "z": 0 },
+            "rotationAngle": 180
+        },
+        {
+            "type": "BoxCollider",
+            "size": 1,
+            "static": true,
+            "trigger": true
+        }
+    ],
+    "scripts": [
+        "BombPowerUp"
+    ]
+}

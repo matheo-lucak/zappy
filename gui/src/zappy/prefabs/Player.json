@@ -1,0 +1,18 @@
+{
+    "name": "Player",
+    "tag": "Player",
+    "scripts": [
+        "Player"
+    ],
+    "components": [
+        {
+            "type": "Transform",
+            "scale": 1
+        },
+        {
+            "type": "BoxCollider",
+            "position": { "x": 0, "y": 0, "z": 0 },
+            "size": 1
+        }
+    ]
+}
