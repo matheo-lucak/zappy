@@ -43,6 +43,7 @@ class BaseRequest(Generic[T], metaclass=MetaRequest):
         self.__args: Tuple[str, ...] = args
         self.__response: Optional[T] = None
         self.__callback: Optional[ResponseCallback[T]] = callback
+        self.__ticks_taken: int = 0
 
     def __repr__(self) -> str:
         return f"<{type(self).__name__}(command={self.__command}, args={self.__args})>"
@@ -67,8 +68,16 @@ class BaseRequest(Generic[T], metaclass=MetaRequest):
         if not isinstance(rp, Response):
             raise TypeError(f"Not a Response type")
         self.__response = rp
+        rp.ticks = self.ticks_taken
         if callable(self.__callback):
             self.__callback(rp)
+
+    @property
+    def ticks_taken(self) -> int:
+        return self.__ticks_taken + self.get_process_time()
+
+    def add_ticks(self, value: int) -> None:
+        self.__ticks_taken += max(int(value), 0)
 
     @classmethod
     def get_response_type(cls) -> Type[T]:

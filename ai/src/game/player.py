@@ -1,7 +1,7 @@
 # -*- coding: Utf-8 -*
 
 from sys import stdout
-from typing import Any, Callable, Dict, List, Optional, Type, NoReturn
+from typing import Any, Callable, Dict, Generator, List, Optional, Type, NoReturn
 from uuid import UUID, uuid4
 
 from .inventory import Inventory
@@ -14,6 +14,7 @@ from .action import BaseAction
 from ..api_server import APIServer
 from ..api_server.request.broadcast import BroadcastRequest
 from ..api_server.request.eject import EjectRequest, EjectResponse
+from ..api_server.request.fork import ForkRequest
 from ..api_server.request.forward import ForwardRequest
 from ..api_server.request.incantation import IncantationRequest, IncantationPlaceholder, IncantationResponse
 from ..api_server.request.inventory import InventoryRequest, InventoryResponse
@@ -34,6 +35,8 @@ class PlayerDeadError(ZappyError):
 
 
 MessageListener = Callable[[Message], None]
+EggLayingGenerator = Generator[None, None, None]
+EggLayingHandler = Callable[[], EggLayingGenerator]
 
 
 class Action(BaseAction):
@@ -47,10 +50,11 @@ class Action(BaseAction):
     taking_resource: int
     setting_resource: int
     elevating: int
+    forking: int
 
 
 class Player:
-    def __init__(self, team_name: str, api: APIServer) -> None:
+    def __init__(self, team_name: str, api: APIServer, egg_laying_handler: Optional[EggLayingHandler] = None) -> None:
         self.__team: str = team_name
         self.__inventory: Inventory = Inventory()
         self.__vision: Vision = Vision()
@@ -68,15 +72,20 @@ class Player:
         self.__taking_resource: Dict[str, int] = dict()
         self.__setting_resource: Dict[str, int] = dict()
 
+        self.__egg_laying_handler: Optional[EggLayingHandler] = egg_laying_handler
+        self.__egg_laying_generator: List[EggLayingGenerator] = list()
+
     def update(self) -> None:
         self.__api.set_spontaneous_response_handler(self.__handle_spontaneous_responses)
         if self.__auto_inventory_checking is True and not self.checking_inventory:
             self.check_inventory(print_result=False)
         self.__api.fetch()
+        self.__handle_eggs()
 
     def wait_for_all_requests_to_be_done(self) -> None:
         while self.__api.has_request_to_handle():
             self.__api.fetch()
+            self.__handle_eggs()
 
     def look(self) -> None:
         def look_handler(response: LookResponse) -> None:
@@ -233,8 +242,7 @@ class Player:
             return
 
         def broadcast_handler() -> None:
-            if self.__action.broadcasting > 0:
-                self.__action.broadcasting -= 1
+            self.__action.broadcasting -= 1
 
         self.__action.broadcasting += 1
         print(f"Broadcasting: {repr(message)}")
@@ -342,6 +350,25 @@ class Player:
     def elevating(self) -> bool:
         return self.__action.elevating > 0
 
+    def fork(self, nb_times: int = 1) -> None:
+        def fork_handler() -> None:
+            print("Fork completed")
+            self.__action.forking -= 1
+            if callable(self.__egg_laying_handler):
+                self.__egg_laying_generator.append(self.__egg_laying_handler())
+
+        for _ in range(nb_times):
+            self.__action.forking += 1
+            print("Player requested a fork")
+            self.__api.send(ForkRequest(lambda rp: fork_handler()))
+
+    def __handle_eggs(self) -> None:
+        for generator in self.__egg_laying_generator.copy():
+            try:
+                next(generator)
+            except StopIteration:
+                self.__egg_laying_generator.remove(generator)
+
     def doing_an_action(self) -> bool:
         return self.__action.ongoing("broadcasting")
 
@@ -370,6 +397,10 @@ class Player:
         if not isinstance(r, Role):
             raise TypeError("Must be a Role enum")
         self.__role = r
+
+    @property
+    def uuid(self) -> UUID:
+        return self.__uuid
 
     def project_position(self, unit: int, divergence: int) -> Position:
         projection: Dict[Orientation, Position] = {

@@ -8,7 +8,6 @@ from .request import BaseRequest, RequestPlaceholder, Request
 from .request.response import Response, SpontaneousResponse, MultiResponse
 from .request.response.exceptions import ResponseError
 from ..log import Logger
-from ..utils.clock import Clock
 
 R = TypeVar("R", bound=Response)
 
@@ -23,19 +22,6 @@ SpontaneousResponseHandler = Callable[[List[SpontaneousResponse]], None]
 FetchCallback = Callable[[], None]
 
 RequestPlaceholderVar = TypeVar("RequestPlaceholderVar")
-
-
-class FramerateAverage:
-    def __init__(self) -> None:
-        self.__value: float = 0
-        self.__nb_compute: int = 0
-
-    def update(self, framerate_estimation: float) -> None:
-        self.__nb_compute += 1
-        self.__value = ((self.__value * (self.__nb_compute - 1)) + framerate_estimation) / self.__nb_compute
-
-    def get(self) -> float:
-        return self.__value
 
 
 class APIServer:
@@ -62,9 +48,6 @@ class APIServer:
         self.__buffer: str = str()
 
         self.__fetch_callbacks: List[FetchCallback] = list()
-
-        self.__framerate: FramerateAverage = FramerateAverage()
-        self.__clock_dict: Dict[Request, Clock] = dict()
 
         self.__spontaneous_response_handler: Optional[SpontaneousResponseHandler] = None
 
@@ -150,9 +133,6 @@ class APIServer:
         if callable(self.__spontaneous_response_handler):
             self.__spontaneous_response_handler(self.flush_spontaneous_responses())
 
-    def get_framerate(self) -> int:
-        return round(self.__framerate.get())
-
     def __send_all_requests(self) -> None:
         def has_requests() -> bool:
             return bool(self.__requests) and (len(self.__pending_requests) < self.MAX_PENDING_REQUEST)
@@ -167,7 +147,6 @@ class APIServer:
             if not isinstance(request, RequestPlaceholder):
                 send_request_to_server(str(request))
             self.__pending_requests.append(request)
-            self.__clock_dict[request] = Clock()
 
     def __fetch_all_responses(self) -> None:
         def read_socket(chunck_size: int) -> Iterator[bytes]:
@@ -249,9 +228,6 @@ class APIServer:
 
     def __remove_first_request(self) -> None:
         request: Request = self.__pending_requests.pop(0)
-        elapsed_time: float = self.__clock_dict.pop(request).get_elapsed_time() / 1000
         nb_ticks: int = request.get_process_time()
-        if nb_ticks > 0:
-            self.__framerate.update(nb_ticks / elapsed_time)
-        if self.__pending_requests:
-            self.__clock_dict[self.__pending_requests[0]].restart()
+        for rq in self.__pending_requests:
+            rq.add_ticks(nb_ticks)

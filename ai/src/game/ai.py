@@ -1,11 +1,12 @@
 # -*- coding: Utf-8 -*
 
+from sys import stdout, stderr
+from os import dup2
 from random import choice as random_choice, randint
 from uuid import UUID
-from typing import Callable, List, NamedTuple, Optional, Union
+from typing import Callable, List, NamedTuple, Optional, TextIO, Union
 
 from .player import Player
-from .team import Team
 from .vision import Coords, Tile
 from .role import Role
 from .position import Position
@@ -13,9 +14,7 @@ from .message import Message
 from .resource import MetaResource, BaseResource, Food
 from .elevation import Elevation, Requirements
 from ..errors import ZappyError
-
-NEW_PLAYER = "I'm new"
-WELCOME = "Welcome"
+from ..utils import Clock
 
 INCANTATION_START = "I NEED SOME HELP!!!"
 INCANTATION_PLAYER_COMING = "I'm coming !"
@@ -57,24 +56,41 @@ class AI:
     __required_food: Food = Food(30)
     __min_food: Food = Food(10)
 
-    def __init__(self, player: Player, team: Team) -> None:
+    def __init__(self, player: Player, team: str, child: bool) -> None:
         self.__player: Player = player
-        self.__team: Team = team
+        self.__team: str = team
         self.__last_action: Optional[Callable[..., None]] = None
+        self.__child: bool = child
+        self.__level_log: TextIO = open("./level.log", "a")
+        self.__child_file: Optional[TextIO] = None
+        if child:
+            self.__child_file = open(f"fork-{self.__player.uuid}.log", "w")
+            dup2(self.__child_file.fileno(), stdout.fileno())
+            dup2(self.__child_file.fileno(), stderr.fileno())
+
+    def __del__(self) -> None:
+        self.__level_log.close()
+        if self.__child_file is not None:
+            self.__child_file.close()
 
     def start(self) -> None:
         self.__player.auto_inventory_checking(True)
         self.__player.look()
-        self.__player.broadcast(NEW_PLAYER)
         self.__player.set_message_listener(self.__default_message_listener)
         self.__player.role = Role.NewPlayer
-        self.__team.start_asking_unused_slots()
         self.__wait()
         print("AI setup finished.")
 
+        print(f"New player {self.__player.uuid}: Current level: {self.__player.level}", file=self.__level_log)
+        self.__level_log.flush()
         while self.__player.level < Elevation.max_level():
             self.__go_to_superior_level()
+            print(f"{self.__player.uuid}: Current level: {self.__player.level}", file=self.__level_log)
+            self.__level_log.flush()
+            self.__fork_me()
             self.__player.update()
+        while True:
+            self.__fetch_sought_resources(self.__find_resource_in_vision(Food.get_name()))
 
     def __wait(self) -> None:
         while self.__player.doing_an_action():
@@ -100,6 +116,10 @@ class AI:
         if self.__player.role == Role.NewPlayer:
             self.__player.role = Role.StoneSeeker
 
+    def __fork_me(self) -> None:
+        if not self.__child and self.__player.level < 7:
+            self.__player.fork(1 if self.__player.level < 5 else 4)
+
     def __go_to_superior_level_lonely(self, requirements: Requirements) -> None:
         for resource in requirements.resources:
             print(f"Seeking {resource}({resource.amount})")
@@ -110,13 +130,20 @@ class AI:
         self.__wait()
 
     def __go_to_superior_level_with_other_players(self, requirements: Requirements) -> None:
+        message_to_wait_before_start: int = 10
+        message_received: int = 0
+        clock: Clock = Clock()
+
         def custom_message_listener(message: Message) -> None:
+            nonlocal message_received
             self.__default_message_listener(message)
-            if message.team != self.__team.name or message.level != self.__player.level:
+            if message.team != self.__team or message.level != self.__player.level:
                 return
 
             if message.body == INCANTATION_START:
                 raise IncantationStart(message)
+
+            message_received += 1
 
         def have_required_number(stone: BaseResource) -> bool:
             return self.__player.inventory.get(type(stone)) >= stone.amount
@@ -129,6 +156,8 @@ class AI:
                 self.__player.broadcast(INCANTATION_FAILED)
 
         self.__player.set_message_listener(custom_message_listener)
+        # while message_received < message_to_wait_before_start and not clock.elapsed_time(1000):
+        #     self.__player.update()
 
         all_resources: List[SoughtResource] = list()
         while not all_required_stone_is_gotten():
@@ -149,19 +178,21 @@ class AI:
         in_place: bool = False
         seeking_food: bool = False
         incantation_started: bool = False
+        paused: bool = False
         player_uuid: UUID = first_message.uuid
 
         def incantation_listener(message: Message) -> None:
-            nonlocal in_place, incantation_started
+            nonlocal in_place, incantation_started, paused
 
             self.__default_message_listener(message)
-            if message.team != self.__team.name or message.level != self.__player.level:
+            if message.team != self.__team or message.level != self.__player.level:
                 return
 
             if message.uuid != player_uuid:
                 return
 
             if message.body == INCANTATION_START and not in_place and not seeking_food and not self.__player.moving:
+                paused = False
                 if message.tile == 0:
                     self.__player.broadcast(INCANTATION_PLAYER_HERE)
                     in_place = True
@@ -169,11 +200,14 @@ class AI:
                     self.__player.broadcast(INCANTATION_PLAYER_COMING)
                     self.__player.follow_sound(message)
                     self.__wait_move()
-            elif message.body == INCANTATION_PAUSED or (message.body == INCANTATION_STARTED and not in_place):
-                raise IncantationStopped(in_place)
+            elif message.body == INCANTATION_PAUSED:
+                paused = True
+                in_place = False
             elif message.body == INCANTATION_REPORTED:
                 in_place = False
-            elif message.body == INCANTATION_STARTED and in_place:
+            elif message.body == INCANTATION_STARTED:
+                if not in_place:
+                    raise IncantationStopped(False)
                 incantation_started = True
             elif message.body == INCANTATION_FAILED:
                 self.__player.stop_waiting_incantation()
@@ -196,7 +230,6 @@ class AI:
             self.__player.set_message_listener(incantation_listener)
             incantation_listener(first_message)
 
-            self.__team.stop_asking_unused_slots()
             self.__player.wait_for_all_requests_to_be_done()
             while not incantation_started:
                 go_to_incantation_place()
@@ -220,7 +253,6 @@ class AI:
         finally:
             self.__player.auto_inventory_checking(True)
             self.__player.look()
-            self.__team.start_asking_unused_slots()
             self.__wait()
 
     def __seek_resource(self, resource: BaseResource) -> None:
@@ -335,10 +367,19 @@ class AI:
         self.__last_action = action
 
     def __prepare_incantation(self, requirements: Requirements) -> None:
+        def custom_message_listener(message: Message) -> None:
+            self.__default_message_listener(message)
+            if message.team != self.__team or message.level != self.__player.level:
+                return
+
+            if message.body == INCANTATION_START:
+                raise IncantationStart(message)
+
+        self.__player.set_message_listener(custom_message_listener)
         turn: Optional[Callable[..., None]] = random_choice([self.__player.turn_left, self.__player.turn_right, None])
         if turn is not None:
             turn()
-        self.__player.move_forward(randint(5, 10))
+        self.__player.move_forward(randint(2, 5))
         self.__player.look()
         self.__wait()
         if self.__call_all_players(requirements) is False:
@@ -361,14 +402,14 @@ class AI:
 
     def __call_all_players(self, requirements: Requirements) -> bool:
         broadcast_counter: int = 0
-        max_broadcast: int = 10
+        max_broadcast: int = 30
         player_here: int = 1
 
         def message_listener(message: Message) -> None:
             nonlocal broadcast_counter, player_here
             self.__default_message_listener(message)
 
-            if message.team != self.__team.name or message.level != self.__player.level:
+            if message.team != self.__team or message.level != self.__player.level:
                 return
             if message.body == INCANTATION_PLAYER_COMING:
                 broadcast_counter = 0
@@ -376,11 +417,11 @@ class AI:
                 player_here += 1
                 broadcast_counter = 0
 
+        tile: Tile = self.__player.vision.get(0, 0)
         if requirements.nb_players == 1:
-            return True
+            return tile.nb_players == 1
 
         self.__player.set_message_listener(message_listener)
-        tile: Tile = self.__player.vision.get(0, 0)
         while tile.nb_players < requirements.nb_players or player_here < requirements.nb_players:
             if not self.__player.broadcasting:
                 if broadcast_counter == max_broadcast:
@@ -406,6 +447,4 @@ class AI:
         return True
 
     def __default_message_listener(self, message: Message) -> None:
-        if message.team == self.__team.name:
-            if message.body == NEW_PLAYER:
-                self.__player.broadcast(WELCOME)
+        pass
