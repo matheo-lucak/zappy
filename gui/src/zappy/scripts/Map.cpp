@@ -13,6 +13,7 @@
 #include "BoxCollider.hpp"
 #include "Map.hpp"
 #include "Tile.hpp"
+#include "Text.hpp"
 
 SCRIPT_INIT(Map)
 
@@ -122,6 +123,7 @@ void Map::handleCameraMovements(void)
 void Map::Update() noexcept
 {
     handle_find_render_tile();
+    update_render_tile_info();
     askForMapUpdate();
     handleCameraMovements();
     handleMapUpdate();
@@ -130,6 +132,32 @@ void Map::Update() noexcept
 utils::Grid3 &Map::getGrid()
 {
     return m_grid;
+}
+
+void Map::update_render_tile_info()
+{
+    auto cell = m_grid.at(utils::Vector3f{m_render_tile.x, 0.0f, m_render_tile.y}).getObject();
+
+    if (cell.has_value() == false)
+        return;
+
+    ecs::GameObject &obj = cell->get();
+    auto &tile_script = obj.getScript<Tile>();
+    auto &text_food_obj = gameObject.FindChildByName("TileFoodAmount")->getComponent<ecs::Text>();
+    auto &text_linemate_obj = gameObject.FindChildByName("TileLinemateAmount")->getComponent<ecs::Text>();
+    auto &text_deraumere_obj = gameObject.FindChildByName("TileDeraumereAmount")->getComponent<ecs::Text>();
+    auto &text_mendiane_obj = gameObject.FindChildByName("TileMendianeAmount")->getComponent<ecs::Text>();
+    auto &text_sibur_obj = gameObject.FindChildByName("TileSiburAmount")->getComponent<ecs::Text>();
+    auto &text_phiras_obj = gameObject.FindChildByName("TilePhirasAmount")->getComponent<ecs::Text>();
+    auto &text_thystame_obj = gameObject.FindChildByName("TileThystameAmount")->getComponent<ecs::Text>();
+
+    text_food_obj.text = std::string("F: ") + std::to_string(tile_script.m_inventory.get_item_quantity(Resource::FOOD));
+    text_linemate_obj.text = std::string("L: ") + std::to_string(tile_script.m_inventory.get_item_quantity(Resource::LINEMATE));
+    text_deraumere_obj.text = std::string("D: ") + std::to_string(tile_script.m_inventory.get_item_quantity(Resource::DERAUMERE));
+    text_mendiane_obj.text = std::string("M: ") + std::to_string(tile_script.m_inventory.get_item_quantity(Resource::MENDIANE));
+    text_sibur_obj.text = std::string("S: ") + std::to_string(tile_script.m_inventory.get_item_quantity(Resource::SIBUR));
+    text_phiras_obj.text = std::string("P: ") + std::to_string(tile_script.m_inventory.get_item_quantity(Resource::PHIRAS));
+    text_thystame_obj.text = std::string("T: ") + std::to_string(tile_script.m_inventory.get_item_quantity(Resource::THYSTAME));
 }
 
 void Map::handle_find_render_tile()
@@ -247,13 +275,35 @@ void Map::newEgg(size_t id, int x, int y)
     egg_script.y = y;
 }
 
-void Map::killEgg(size_t id)
-{
-    ecs::GameObject *egg = getEgg(id);
 
-    if (egg) {
-        ecs::GameObject::Destroy(*egg);
-    }
+void Map::collectResource(Resource rs_id, ecs::GameObject *drone)
+{
+    auto &drone_script = drone->getScript<Drone>();
+    auto cell = m_grid.at(utils::Vector3f{drone_script.x, 0.0f, drone_script.y}).getObject();
+
+    if (cell.has_value() == false)
+        return;
+    
+    ecs::GameObject &obj = cell->get();
+    auto &tile_script = obj.getScript<Tile>();
+    
+    tile_script.m_inventory.delete_item(rs_id, 1);
+    drone_script.m_inventory.add_item(rs_id, 1);
+}
+
+void Map::dropResource(Resource rs_id, ecs::GameObject *drone)
+{
+    auto &drone_script = drone->getScript<Drone>();
+    auto cell = m_grid.at(utils::Vector3f{drone_script.x, 0.0f, drone_script.y}).getObject();
+
+    if (cell.has_value() == false)
+        return;
+    
+    ecs::GameObject &obj = cell->get();
+    auto &tile_script = obj.getScript<Tile>();
+    
+    tile_script.m_inventory.add_item(rs_id, 1);
+    drone_script.m_inventory.delete_item(rs_id, 1);
 }
 
 ecs::GameObject *Map::getDrone(size_t id)

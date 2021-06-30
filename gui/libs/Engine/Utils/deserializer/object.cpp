@@ -29,7 +29,7 @@ namespace zappy::deserializer::object
                                         const std::vector<std::unique_ptr<ecs::GameObject>> &prefabList)
     {
         if (obj.size() != 1) {
-            throw std::runtime_error("Inalid object nomination '" + obj.dump() + "'");
+            throw std::runtime_error("Invalid object nomination '" + obj.dump() + "'");
         }
         auto &[type, objVal] = *obj.items().begin();
         if (type == "prefab") {

@@ -27,28 +27,6 @@
                 "childs": [
                     {
                         "object": {
-                            "name": "Music",
-                            "components": [
-                                {
-                                    "type": "Transform",
-                                    "position": {
-                                        "x": 1920,
-                                        "y": 1080,
-                                        "z": 0
-                                    }
-                                },
-                                {
-                                    "type": "Image",
-                                    "path": "../src/assets/images/icons/music.png"
-                                },
-                                {
-                                    "type": "Button"
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "object": {
                             "name": "TileFoodAmount",
                             "components": [
                                 {
@@ -57,14 +35,15 @@
                                         "x": 0,
                                         "y": 0,
                                         "z": 0
-                                    }
+                                    },
+                                    "scale": 1
                                 },
                                 {
                                     "type": "Text",
                                     "text": "food",
-                                    "color": "DarkBlue",
-                                    "size": 0.5,
-                                    "position": { "x": 0, "y": 0 }
+                                    "color": "LightBlue",
+                                    "size": 40,
+                                    "position": { "x": 10, "y": 0 }
                                 }
                             ]
                         }
@@ -79,14 +58,15 @@
                                         "x": 0,
                                         "y": 0,
                                         "z": 0
-                                    }
+                                    },
+                                    "scale": 1
                                 },
                                 {
                                     "type": "Text",
                                     "text": "linemate",
-                                    "color": "DarkBlue",
-                                    "size": 0.5,
-                                    "position": { "x": 0, "y": 0 }
+                                    "color": "Red",
+                                    "size": 40,
+                                    "position": { "x": 160, "y": 0 }
                                 }
                             ]
                         }
@@ -101,14 +81,15 @@
                                         "x": 0,
                                         "y": 0,
                                         "z": 0
-                                    }
+                                    },
+                                    "scale": 1
                                 },
                                 {
                                     "type": "Text",
                                     "text": "deraumere",
                                     "color": "DarkBlue",
-                                    "size": 0.5,
-                                    "position": { "x": 0, "y": 0 }
+                                    "size": 40,
+                                    "position": { "x": 310, "y": 0 }
                                 }
                             ]
                         }
@@ -123,14 +104,15 @@
                                         "x": 0,
                                         "y": 0,
                                         "z": 0
-                                    }
+                                    },
+                                    "scale": 1
                                 },
                                 {
                                     "type": "Text",
                                     "text": "mendiane",
-                                    "color": "DarkBlue",
-                                    "size": 0.5,
-                                    "position": { "x": 0, "y": 0 }
+                                    "color": "Cyan",
+                                    "size": 40,
+                                    "position": { "x": 460, "y": 0 }
                                 }
                             ]
                         }
@@ -145,14 +127,15 @@
                                         "x": 0,
                                         "y": 0,
                                         "z": 0
-                                    }
+                                    },
+                                    "scale": 1
                                 },
                                 {
                                     "type": "Text",
                                     "text": "sibur",
-                                    "color": "DarkBlue",
-                                    "size": 0.5,
-                                    "position": { "x": 0, "y": 0 }
+                                    "color": "Purple",
+                                    "size": 40,
+                                    "position": { "x": 610, "y": 0 }
                                 }
                             ]
                         }
@@ -167,14 +150,15 @@
                                         "x": 0,
                                         "y": 0,
                                         "z": 0
-                                    }
+                                    },
+                                    "scale": 1
                                 },
                                 {
                                     "type": "Text",
                                     "text": "phiras",
-                                    "color": "DarkBlue",
-                                    "size": 0.5,
-                                    "position": { "x": 0, "y": 0 }
+                                    "color": "Yellow",
+                                    "size": 40,
+                                    "position": { "x": 760, "y": 0 }
                                 }
                             ]
                         }
@@ -189,14 +173,15 @@
                                         "x": 0,
                                         "y": 0,
                                         "z": 0
-                                    }
+                                    },
+                                    "scale": 1
                                 },
                                 {
                                     "type": "Text",
                                     "text": "thystame",
-                                    "color": "DarkBlue",
-                                    "size": 0.5,
-                                    "position": { "x": 0, "y": 0 }
+                                    "color": "Orange",
+                                    "size": 40,
+                                    "position": { "x": 910, "y": 0 }
                                 }
                             ]
                         }
@@ -238,6 +223,28 @@
                     }
                 ],
                 "childs": [
+                    {
+                        "object": {
+                            "name": "Music",
+                            "components": [
+                                {
+                                    "type": "Transform",
+                                    "position": {
+                                        "x": 1920,
+                                        "y": 1080,
+                                        "z": 0
+                                    }
+                                },
+                                {
+                                    "type": "Image",
+                                    "path": "../src/assets/images/icons/music.png"
+                                },
+                                {
+                                    "type": "Button"
+                                }
+                            ]
+                        }
+                    },
                     {
                         "object": {
                             "name": "MusicMute",

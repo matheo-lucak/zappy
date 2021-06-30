@@ -14,6 +14,7 @@
 #include "Drone.hpp"
 #include "Egg.hpp"
 #include "Incantation.hpp"
+#include "resources/Inventory.hpp"
 
 class Map : public ecs::Script
 {
@@ -38,13 +39,16 @@ public:
     void newDroneFromEgg(size_t id);
     void killDrone(size_t id);
     void newEgg(size_t id, int x, int y);
-    void killEgg(size_t id);
+
+    void collectResource(Resource rs_id, ecs::GameObject *drone);
+    void dropResource(Resource rs_id, ecs::GameObject *drone);
 
     ecs::GameObject *getDrone(size_t id);
     ecs::GameObject *getEgg(size_t id);
 
 private:
     void handleCameraMovements(void);
+    void update_render_tile_info(void);
     void handle_find_render_tile(void);
     void Explode() noexcept;
 

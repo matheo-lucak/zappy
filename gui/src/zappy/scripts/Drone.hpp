@@ -8,6 +8,7 @@
 #pragma once
 
 #include "ECS/Script.hpp"
+#include "resources/Inventory.hpp"
 
 class Drone : public ecs::Script
 {
@@ -34,6 +35,7 @@ enum Direction
     Direction   dir     = UP;
     int         x       = 0;
     int         y       = 0;
+    Inventory   m_inventory;
 };
 
 DECLARE_AS_SCRIPT(Drone)

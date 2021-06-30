@@ -31,4 +31,5 @@ public:
 
     unsigned int get_item_quantity(Resource resource) const noexcept;
     void add_item(Resource resource, unsigned int quantity);
+    void delete_item(Resource resource, unsigned int quantity);
 };

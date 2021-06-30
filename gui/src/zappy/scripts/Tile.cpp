@@ -38,6 +38,7 @@ void Tile::Awake() noexcept
     auto &tileInventory_obj = gameObject.InstantiateChild(tileInventory_bp);
 
     m_tileInventory_obj = &tileInventory_obj;
+    m_mineral = gameObject.FindChildByName("Mineral");
 }
 
 void Tile::Start() noexcept

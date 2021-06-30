@@ -13,8 +13,10 @@
 
 class Tile : public ecs::Script
 {
-private:
+public:
     Inventory m_inventory;
+
+private:
     ecs::GameObject *m_tileInventory_obj;
 
 public:
@@ -28,6 +30,10 @@ public:
     void Awake() noexcept override;
     void Start() noexcept override;
     void Update() noexcept override;
+
+public:
+    ecs::GameObject *m_mineral = nullptr;
+    ecs::GameObject *m_food = nullptr;
 };
 
 DECLARE_AS_SCRIPT(Tile)

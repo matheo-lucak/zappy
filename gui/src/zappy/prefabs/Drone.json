@@ -17,7 +17,7 @@
         },
         {
             "type": "Model",
-            "path": "../src/assets/models/drone/drone.obj",
+            "path": "../src/assets/models/drone/striker.gl",
             "position": {
                 "x": -0.83,
                 "y": 0,

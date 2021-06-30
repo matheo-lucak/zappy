@@ -40,3 +40,17 @@ void Inventory::add_item(Resource resource, unsigned int quantity)
     }
     it->second += quantity;
 }
+
+void Inventory::delete_item(Resource resource, unsigned int quantity)
+{
+    if (quantity != 0)
+        return;
+
+    auto it = slots.find(resource);
+
+    if (it == slots.end()) {
+        slots.insert({resource, quantity});
+        return;
+    }
+    it->second -= quantity;
+}
