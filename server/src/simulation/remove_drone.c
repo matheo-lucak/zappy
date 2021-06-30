@@ -36,8 +36,10 @@ static void simulation_remove_client_from_team(simulation_t *sim,
 
     list_foreach(team_node, sim->teams) {
         team = NODE_PTR(team_node, team_t);
-        if (team_delete_drone(team, drone))
+        if (team_delete_drone(team, drone)) {
+            node_iter_end(&team_node);
             break;
+        }
     }
 }
 

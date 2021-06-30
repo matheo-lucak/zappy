@@ -17,35 +17,43 @@ static void request_handler_default_gui(client_t *c)
     client_to_spectator(c);
 }
 
-static drone_t *client_take_drone_control(map_t *map, team_t *team, client_t *c)
+static drone_t *client_take_drone_control(server_t *s,
+                                        map_t *map,
+                                        team_t *team,
+                                        client_t *c)
 {
     vector2u_t pos = VEC2U(rand() % map->width, rand() % map->height);
-    drone_t *drone = team_new_active_drone(team, pos);
+    drone_t *d = team_new_active_drone(team, pos);
 
-    if (!drone)
+    if (!d)
         return NULL;
-    client_to_drone(c, drone);
-    if (drone->active)
-        map_add_drone(map, drone);
-    else
-        drone-> active = true;
-    return drone;
+    client_to_drone(c, d);
+    if (d->active) {
+        server_add_notification(s, response_create(RESPONSE_PNW,
+            d->id, d->pos.x, d->pos.y, d->facing_direction, d->elevation_lvl,
+            team->name));
+        map_add_drone(map, d);
+    } else {
+        server_add_notification(s, response_create(RESPONSE_EBO, c->id,
+            d->id, d->pos.x, d->pos.y, d->facing_direction, d->elevation_lvl,
+            team->name));
+        d-> active = true;
+    }
+    return d;
 }
 
 static void request_handler_default_drone_join_team(server_t *s,
                                                     client_t *c,
                                                     team_t *team)
 {
-    response_t *response = NULL;
-    drone_t *drone = client_take_drone_control(s->sim.map, team, c);
+    drone_t *drone = client_take_drone_control(s, s->sim.map, team, c);
 
     if (drone) {
-        response = response_create(RESPONSE_CLIENT_NUM, team->free_slots_nb);
-        client_add_response(c, response);
-        response = response_create(RESPONSE_XY,
-                                    s->sim.map->width,
-                                    s->sim.map->height);
-        client_add_response(c, response);
+        client_add_response(c, response_create(RESPONSE_CLIENT_NUM,
+                                            team->free_slots_nb));
+        client_add_response(c, response_create(RESPONSE_XY,
+                                            s->sim.map->width,
+                                            s->sim.map->height));
     } else {
         client_add_response(c, response_create(RESPONSE_KO));
     }

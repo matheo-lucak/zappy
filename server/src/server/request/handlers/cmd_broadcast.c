@@ -44,6 +44,7 @@ void request_handler_cmd_broadcast(server_t *s, client_t *c, request_t *r)
         k = drone_get_sound_direction(c->drone, other->drone, s->sim.map);
         client_add_response(other, response_create(RESPONSE_BROADCAST, k, m));
     }
-    free(m);
     client_add_response(c, response_create(RESPONSE_OK));
+    server_add_notification(s, response_create(RESPONSE_PBC, c->drone->id, m));
+    free(m);
 }

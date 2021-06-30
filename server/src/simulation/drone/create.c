@@ -21,6 +21,7 @@ drone_t *drone_create(vector2u_t position, bool activated)
     d->facing_direction = direction_get_random();
     d->elevation_lvl = DRONE_DEFAULT_ELEVATION_LVL;
     d->inventory = inventory_create();
+    d->id = 0;
     if (!d->inventory) {
         drone_destroy(d);
         return NULL;

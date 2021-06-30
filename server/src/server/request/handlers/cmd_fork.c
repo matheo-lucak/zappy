@@ -9,6 +9,18 @@
 #include "server/request/handler.h"
 #include "server/response/response.h"
 
+static void server_notification_egg_laid(server_t *s,
+                                        client_t *c,
+                                        egg_t *e)
+{
+    server_add_notification(s, response_create(RESPONSE_ENW,
+        e->id,
+        c->drone->id,
+        e->pos.x,
+        e->pos.y
+    ));
+}
+
 void request_handler_cmd_fork(server_t *s,
                             client_t *c,
                             __attribute__((unused))request_t *r)
@@ -22,6 +34,11 @@ void request_handler_cmd_fork(server_t *s,
         return;
     }
     egg = egg_create(d->pos);
-    team_add_egg(team, egg);
-    client_add_response(c, response_create(RESPONSE_OK));
+    if (!egg) {
+        client_add_response(c, response_create(RESPONSE_KO));
+    } else {
+        team_add_egg(team, egg);
+        client_add_response(c, response_create(RESPONSE_OK));
+        server_notification_egg_laid(s, c, egg);
+    }
 }
