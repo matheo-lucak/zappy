@@ -5,8 +5,6 @@
 ## Makefile
 ##
 
-current_dir			:=	$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-
 PYCACHE				=	__pycache__
 
 PYTEST_CACHE		=	.pytest_cache
@@ -24,11 +22,7 @@ all:	$(NAME)
 
 $(NAME):
 	@echo "Creating $@ script..."
-	@echo "#! /bin/sh" > $@
-	@echo >> $@
-	@echo -n "/usr/bin/env python3 $(current_dir) $$" >> $@
-	@echo "@" >> $@
-	@chmod +x $@
+	@./make.py $@
 	@echo "Done"
 
 tests_run:
