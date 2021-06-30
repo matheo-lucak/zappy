@@ -107,6 +107,7 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/drone/rotate.c)							\
 					$(addprefix $(SRC_PATH), simulation/egg/create.c)							\
 					$(addprefix $(SRC_PATH), simulation/egg/destroy.c)							\
+					$(addprefix $(SRC_PATH), simulation/handle/check_end_of_game.c)				\
 					$(addprefix $(SRC_PATH), simulation/handle/eggs.c)							\
 					$(addprefix $(SRC_PATH), simulation/handle/food.c)							\
 					$(addprefix $(SRC_PATH), simulation/handle/incantations.c)					\

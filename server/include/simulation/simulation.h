@@ -17,6 +17,8 @@
 #define SIMULATION_ERROR    1
 #define SIMULATION_SUCCESS  0
 
+#define MAXED_DRONE_TO_WIN  6
+
 typedef struct server_s server_t;
 
 typedef struct simulation_s
@@ -34,6 +36,7 @@ void simulation_handle(server_t *s);
 void simulation_handle_eggs(server_t *s);
 void simulation_handle_incantation(server_t *s);
 void simulation_handle_food(server_t *s);
+void simulation_check_end_of_game(server_t *s);
 
 void simulation_remove_drone(simulation_t *sim, drone_t *drone);
 
