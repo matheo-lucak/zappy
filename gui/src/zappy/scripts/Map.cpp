@@ -8,6 +8,8 @@
 #include <iostream>
 #include <optional>
 #include <time.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "Graphics/Camera.hpp"
 #include "BoxCollider.hpp"
@@ -23,6 +25,11 @@ Map::Map(ecs::GameObject &gameObject) noexcept : ecs::Script{gameObject},
                                                      gameObject.getComponent<ecs::Transform>().getPosition())
 {
     m_grid.setCellSize({2});
+}
+
+Map::~Map() noexcept
+{
+    free(winning_team);
 }
 
 void Map::create(utils::Vector3u size)
@@ -77,12 +84,19 @@ void Map::Awake() noexcept
         std::cerr << "There is no Network Manager" << std::endl;
         return;
     }
+
     m_net_manager = &obj->getScript<NetworkManager>();
     m_net_manager->addRequest(std::move(Request::RQ_CONNECT));
     m_net_manager->addRequest(std::move(Request::RQ_MAP_SIZE));
     m_net_manager->addRequest(std::move(Request::RQ_MAP_CONTENT));
     m_net_manager->addRequest(std::move(Request::RQ_TEAM_NAMES));
     m_net_manager->addRequest(std::move(Request::RQ_TIME_UNIT_REQUEST));
+
+    auto &button_pb = ecs::GameObject::FindPrefabByName("Button");
+
+    m_end_game_button = &gameObject.InstantiateChild(button_pb);
+    m_end_game_button->setActive(false);
+    m_end_game_button->transform().setPosition(utils::Vector3f{-1000, -1000, 0});
 }
 
 void Map::Start() noexcept
@@ -125,11 +139,22 @@ void Map::handleCameraMovements(void)
 
 void Map::Update() noexcept
 {
-    handle_find_render_tile();
-    update_render_tile_info();
-    askForMapUpdate();
-    handleCameraMovements();
-    handleMapUpdate();
+    if (!winning_team) {
+        handle_find_render_tile();
+        update_render_tile_info();
+        askForMapUpdate();
+        handleCameraMovements();
+        handleMapUpdate();
+    } else {
+        if (!ended) {
+            m_end_game_button->setActive(true);
+            m_end_game_button->transform().setPosition(utils::Vector3f{1920 / 2 - 40, 1080 / 2 - 40, 0});
+            auto &text_button = m_end_game_button->getComponent<ecs::Text>();
+            text_button.text = "'" + std::string(winning_team) + "'";
+            text_button.position = utils::Vector2f{40, 15};
+            ended = true;
+        }
+    }
 }
 
 utils::Grid3 &Map::getGrid()

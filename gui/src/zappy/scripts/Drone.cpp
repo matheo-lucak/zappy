@@ -25,3 +25,8 @@ void Drone::Start() noexcept
 void Drone::Update() noexcept
 {
 }
+
+void Drone::updateInventory(Resource rs_id, unsigned int quantity)
+{
+    m_inventory.set_item(rs_id, quantity);
+}

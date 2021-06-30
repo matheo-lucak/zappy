@@ -18,6 +18,20 @@ Inventory::Inventory() :
 {
 }
 
+void Inventory::set_item(Resource resource, unsigned int quantity)
+{
+    if (quantity == 0)
+        return;
+
+    auto it = slots.find(resource);
+
+    if (it == slots.end()) {
+        slots.insert({resource, quantity});
+        return;
+    }
+    it->second = quantity;
+}
+
 unsigned int Inventory::get_item_quantity(Resource resource) const noexcept
 {
     auto it = slots.find(resource);
@@ -43,14 +57,15 @@ void Inventory::add_item(Resource resource, unsigned int quantity)
 
 void Inventory::delete_item(Resource resource, unsigned int quantity)
 {
-    if (quantity != 0)
+    if (quantity == 0)
         return;
 
     auto it = slots.find(resource);
 
-    if (it == slots.end()) {
-        slots.insert({resource, quantity});
-        return;
+    if (it != slots.end()) {
+        if (quantity > it->second)
+            it->second = 0;
+        else
+            it->second -= quantity;
     }
-    it->second -= quantity;
 }

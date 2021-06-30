@@ -7,10 +7,12 @@
 
 #include <iostream>
 #include <map>
+#include <string.h>
 
 #include "net/Response.hpp"
 #include "Map.hpp"
 #include "resources/Inventory.hpp"
+#include "Tile.hpp"
 
 // map size
 void r_msz_handler(Map &map, Response &response)
@@ -34,14 +36,27 @@ void r_bct_handler(Map &map, Response &response)
     std::list<std::string>::iterator it = response.m_args.begin();
     size_t pos_x = std::stoi(*it);
     size_t pos_y = std::stoi(*(++it));
-    size_t linemate1_qt = std::stoi(*(++it));
-    size_t deraumere2_qt = std::stoi(*(++it));
-    size_t sibur3_qt = std::stoi(*(++it));
-    size_t mendiane4_qt = std::stoi(*(++it));
-    size_t phiras5_qt = std::stoi(*(++it));
-    size_t trystame6_qt = std::stoi(*(++it));
-}
+    int linemate1_qt = std::stoi(*(++it));
+    int deraumere2_qt = std::stoi(*(++it));
+    int mendiane3_qt = std::stoi(*(++it));
+    int sibur4_qt = std::stoi(*(++it));
+    int phiras5_qt = std::stoi(*(++it));
+    int thystame6_qt = std::stoi(*(++it));
 
+    auto cell = map.m_grid.at(utils::Vector3f{pos_x, 0.0f, pos_y}).getObject();
+    if (cell.has_value() == false)
+        return;
+    
+    ecs::GameObject &obj = cell->get();
+    auto &tile_script = obj.getScript<Tile>();
+
+    tile_script.m_inventory.set_item(Resource::LINEMATE, linemate1_qt);
+    tile_script.m_inventory.set_item(Resource::DERAUMERE, deraumere2_qt);
+    tile_script.m_inventory.set_item(Resource::MENDIANE, mendiane3_qt);
+    tile_script.m_inventory.set_item(Resource::SIBUR, sibur4_qt);
+    tile_script.m_inventory.set_item(Resource::PHIRAS, phiras5_qt);
+    tile_script.m_inventory.set_item(Resource::THYSTAME, thystame6_qt);
+}
 // name of all the teams
 void r_tna_handler(Map &map, Response &response)
 {
@@ -50,6 +65,8 @@ void r_tna_handler(Map &map, Response &response)
         return;
     }
     std::string team_name = *(response.m_args.begin());
+
+    map.m_all_team.push_back(team_name);
 }
 
 // player’s position
@@ -83,17 +100,24 @@ void r_pst_handler(Map &map, Response &response)
     std::list<std::string>::iterator it = response.m_args.begin();
     size_t player_id = std::stoi(*it);
     size_t incantation_lvl = std::stoi(*(++it));
-    size_t linemate1_qt = std::stoi(*(++it));
-    size_t deraumere2_qt = std::stoi(*(++it));
-    size_t sibur3_qt = std::stoi(*(++it));
-    size_t mendiane4_qt = std::stoi(*(++it));
-    size_t phiras5_qt = std::stoi(*(++it));
-    size_t trystame6_qt = std::stoi(*(++it));
+    int linemate1_qt = std::stoi(*(++it));
+    int deraumere2_qt = std::stoi(*(++it));
+    int mendiane3_qt = std::stoi(*(++it));
+    int sibur4_qt = std::stoi(*(++it));
+    int phiras5_qt = std::stoi(*(++it));
+    int thystame6_qt = std::stoi(*(++it));
 
     ecs::GameObject *drone = map.getDrone(player_id);
     auto &drone_script = drone->getScript<Drone>();
 
-    //for () {}
+    drone_script.lvl = incantation_lvl;
+
+    drone_script.m_inventory.set_item(Resource::LINEMATE, linemate1_qt);
+    drone_script.m_inventory.set_item(Resource::DERAUMERE, deraumere2_qt);
+    drone_script.m_inventory.set_item(Resource::MENDIANE, mendiane3_qt);
+    drone_script.m_inventory.set_item(Resource::SIBUR, sibur4_qt);
+    drone_script.m_inventory.set_item(Resource::PHIRAS, phiras5_qt);
+    drone_script.m_inventory.set_item(Resource::THYSTAME, thystame6_qt);
 }
 
 // connection of a new player
@@ -105,11 +129,23 @@ void r_pnw_handler(Map &map, Response &response)
     }
     std::list<std::string>::iterator it = response.m_args.begin();
     size_t player_id = std::stoi(*it);
-    size_t pos_x = std::stoi(*(++it));
-    size_t pos_y = std::stoi(*(++it));
+    int pos_x = std::stoi(*(++it));
+    int pos_y = std::stoi(*(++it));
     Drone::Direction drct = static_cast<Drone::Direction>(std::stoi(*(++it)));
     size_t incantation_lvl = std::stoi(*(++it));
     std::string team_name = *(++it);
+
+    map.newDrone(player_id, pos_x, pos_y);
+
+    ecs::GameObject *drone = map.getDrone(player_id);
+    auto &drone_script = drone->getScript<Drone>();
+
+    drone_script.lvl = incantation_lvl;
+    drone_script.dir = drct;
+    drone_script.m_team_name = team_name;
+    drone_script.active - true;
+    drone_script.x = pos_x;
+    drone_script.y = pos_y;
 }
 
 // expulsion
@@ -148,10 +184,10 @@ void r_pic_handler(Map &map, Response &response)
     size_t player_id = std::stoi(*(++it));
     size_t linemate1_qt = std::stoi(*(++it));
     size_t deraumere2_qt = std::stoi(*(++it));
-    size_t sibur3_qt = std::stoi(*(++it));
-    size_t mendiane4_qt = std::stoi(*(++it));
+    size_t mendiane3_qt = std::stoi(*(++it));
+    size_t sibur4_qt = std::stoi(*(++it));
     size_t phiras5_qt = std::stoi(*(++it));
-    size_t trystame6_qt = std::stoi(*(++it));
+    size_t thystame6_qt = std::stoi(*(++it));
 }
 
 // end of an incantation
@@ -202,12 +238,23 @@ void r_ebo_handler(Map &map, Response &response)
         return;
     }
     std::list<std::string>::iterator it = response.m_args.begin();
-    size_t player_id = std::stoi(*it);
+    size_t egg_id = std::stoi(*it);
     int pos_x = std::stoi(*(++it));
     int pos_y = std::stoi(*(++it));
     Drone::Direction drct = static_cast<Drone::Direction>(std::stoi(*(++it)));
     int incantation_lvl = std::stoi(*(++it));
     std::string team_name = *(++it);
+
+    map.newDroneFromEgg(egg_id);
+    ecs::GameObject *drone = map.getDrone(egg_id);
+    auto &drone_script = drone->getScript<Drone>();
+
+    drone_script.dir = drct;
+    drone_script.lvl = incantation_lvl;
+    drone_script.m_team_name = team_name;
+    drone_script.x = pos_x;
+    drone_script.y = pos_y;
+    drone_script.active = true;
 }
 
 // death of an hatched egg
@@ -285,7 +332,7 @@ void r_seg_handler(Map &map, Response &response)
         std::cerr << "Response Handler: invalid request (wrong number of argument(s): expected 1)" << std::endl;
         return;
     }
-    std::string winning_team = *(response.m_args.begin());
+    map.winning_team = strdup((*response.m_args.begin()).c_str());
 }
 
 void response_handler(Map &map, Response &response)

@@ -15,6 +15,8 @@ Tile::Tile(ecs::GameObject &gameObject) noexcept :
     ecs::Script{gameObject},
     m_inventory{}
 {
+    //m_mineral->setActive(false);
+    //m_food->setActive(false);
 }
 
 std::unique_ptr<ecs::Script> Tile::copy(ecs::GameObject &copyOn) const noexcept
@@ -40,7 +42,7 @@ void Tile::Awake() noexcept
     m_tileInventory_obj = &tileInventory_obj;
     m_mineral = gameObject.FindChildByName("Mineral");
     m_food = gameObject.FindChildByName("Food");
-;}
+}
 
 void Tile::Start() noexcept
 {
@@ -50,13 +52,17 @@ void Tile::Start() noexcept
     tileIventory_transform.setPosition({position.x - 0.75f, position.y + 2.0f, position.z});
 }
 
-//check if exist
-// check print mineral
-// setenable
-
 void Tile::Update() noexcept
 {
     if (m_mineral || m_food)
         return;
-    m_food.se
+    if (m_inventory.get_item_quantity(FOOD) != 0)
+        m_food->setActive(true);
+    if (m_inventory.get_item_quantity(LINEMATE) != 0 ||
+        m_inventory.get_item_quantity(DERAUMERE) != 0 ||
+        m_inventory.get_item_quantity(MENDIANE) != 0 ||
+        m_inventory.get_item_quantity(SIBUR) != 0 ||
+        m_inventory.get_item_quantity(PHIRAS) != 0 ||
+        m_inventory.get_item_quantity(THYSTAME) != 0)
+        m_mineral->setActive(true);
 }

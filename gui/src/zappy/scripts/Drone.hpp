@@ -13,14 +13,15 @@
 class Drone : public ecs::Script
 {
 public:
-enum Direction
-{
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-};
+    enum Direction
+    {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    };
 
+public:
     Drone(ecs::GameObject &gameObject) noexcept;
     ~Drone() = default;
 
@@ -29,6 +30,8 @@ enum Direction
     void Start() noexcept override;
     void Update() noexcept override;
 
+    void updateInventory(Resource rs_id, unsigned int quantity);
+
     size_t      id      = 0;
     bool        active  = false;
     size_t      lvl     = 1;
@@ -36,6 +39,7 @@ enum Direction
     int         x       = 0;
     int         y       = 0;
     Inventory   m_inventory;
+    std::string m_team_name;
 };
 
 DECLARE_AS_SCRIPT(Drone)

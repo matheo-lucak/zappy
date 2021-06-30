@@ -20,7 +20,7 @@ class Map : public ecs::Script
 {
 public:
     Map(ecs::GameObject &gameObject) noexcept;
-    ~Map() = default;
+    ~Map() noexcept;
 
     std::unique_ptr<ecs::Script> copy(ecs::GameObject &copyOn) const noexcept override;
 
@@ -53,12 +53,16 @@ private:
     void Explode() noexcept;
 
 public:
-    NetworkManager *m_net_manager   = nullptr;
-    bool            m_game_ready    = false;
-    int             m_freq          = 10;
-    utils::Grid3    m_grid;
-    utils::Vector3u m_size;
-    utils::Vector2f m_render_tile;
+    NetworkManager *       m_net_manager       = nullptr;
+    bool                   m_game_ready        = false;
+    int                    m_freq              = 10;
+    utils::Grid3           m_grid;
+    utils::Vector3u        m_size;
+    utils::Vector2f        m_render_tile;
+    char *                 winning_team        = nullptr;
+    std::list<std::string> m_all_team;
+    ecs::GameObject *      m_end_game_button;
+    bool                   ended               = false;
 };
 
 void response_handler(Map &map, Response &response);
