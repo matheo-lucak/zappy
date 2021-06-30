@@ -28,13 +28,8 @@ static client_t *get_client_from_drone(server_t *s, drone_t *drone)
 
 static void notify_ejection(server_t *s, drone_t *d)
 {
-    client_t *client_of_drone = NULL;
-
-    client_of_drone = server_find_client_from_drone(s, d);
-    if (!client_of_drone)
-        return;
     server_add_notification(s,
-        response_create(RESPONSE_PEX, client_of_drone->id));
+        response_create(RESPONSE_PEX, d->id));
 }
 
 static void eject_drone_from_tile(server_t *s, client_t *e_c, drone_t *d)
