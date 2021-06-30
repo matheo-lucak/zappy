@@ -96,7 +96,7 @@ typedef struct response_s
 #define RESPONSE_PDR "pdr %d %d\n"
 
 // pgt n i\n                                            - resource collecting
-#define RESPONSE_PGT "pgt %d %i\n"
+#define RESPONSE_PGT "pgt %d %d\n"
 
 // pdi n\n                                              - death of a player
 #define RESPONSE_PDI "pdi %d\n"

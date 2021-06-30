@@ -34,7 +34,7 @@ static drone_t *client_take_drone_control(server_t *s,
             team->name));
         map_add_drone(map, d);
     } else {
-        server_add_notification(s, response_create(RESPONSE_PNW, c->id,
+        server_add_notification(s, response_create(RESPONSE_EBO, c->id,
             d->id, d->pos.x, d->pos.y, d->facing_direction, d->elevation_lvl,
             team->name));
         d-> active = true;
