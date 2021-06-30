@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-410-BDX-4-1-zappy-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** add_drone
 */
@@ -11,9 +11,5 @@ bool team_add_drone(team_t *team, drone_t *drone)
 {
     if (!drone)
         return false;
-    if (team->free_slots_nb == 0)
-        return false;
-    if (drone->active)
-        team->free_slots_nb -= 1;
     return ptr_list_push_back(team->drones, drone) == LIST_SUCCESS;
 }

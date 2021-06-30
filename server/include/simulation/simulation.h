@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-410-BDX-4-1-zappy-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** simulation
 */
@@ -31,12 +31,14 @@ int simulation_start(const arguments_t *args, simulation_t *sim);
 void simulation_stop(simulation_t *sim);
 
 void simulation_handle(server_t *s);
-void simulation_handle_eggs(simulation_t *sim);
+void simulation_handle_eggs(server_t *s);
 void simulation_handle_incantation(server_t *s);
 void simulation_handle_food(server_t *s);
 
 void simulation_remove_drone(simulation_t *sim, drone_t *drone);
 
 team_t *simulation_find_team_from_drone(simulation_t *sim, drone_t *drone);
+
+unsigned int get_next_entity_id(void);
 
 #endif /* !SIMULATION_H_ */

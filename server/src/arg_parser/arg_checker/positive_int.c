@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-410-BDX-4-1-zappy-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** arg_checker_positive_int
 */
@@ -11,10 +11,10 @@ int arg_checker_positive_int(char *arg)
 {
     if (!arg)
         return -1;
-    while (*arg) {
+    do {
         if (!isdigit(*arg))
             return 1;
-        arg++;
-    }
+        arg += 1;
+    } while (*arg);
     return 0;
 }

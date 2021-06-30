@@ -22,22 +22,24 @@ static void simulation_remove_client_from_incantation(simulation_t *sim,
 }
 
 static void simulation_remove_client_from_map(simulation_t *sim,
-                                                    drone_t *drone)
+                                                drone_t *drone)
 {
-    tile_t *tile = sim->map->tiles[drone->y][drone->x];
+    tile_t *tile = sim->map->tiles[drone->pos.y][drone->pos.x];
 
     tile_remove_drone(tile, drone);
 }
 
 static void simulation_remove_client_from_team(simulation_t *sim,
-                                                    drone_t *drone)
+                                                drone_t *drone)
 {
     team_t *team = NULL;
 
     list_foreach(team_node, sim->teams) {
         team = NODE_PTR(team_node, team_t);
-        if (team_delete_drone(team, drone))
+        if (team_delete_drone(team, drone)) {
+            node_iter_end(&team_node);
             break;
+        }
     }
 }
 

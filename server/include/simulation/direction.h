@@ -1,12 +1,12 @@
 /*
 ** EPITECH PROJECT, 2021
-** Visual Studio Live Share (Workspace) [WSL: Ubuntu]
+** Zappy
 ** File description:
-** direction
+** simulation_direction
 */
 
-#ifndef DIRECTION_H_
-#define DIRECTION_H_
+#ifndef ZAPPY_SIMULATION_DIRECTION_H_
+#define ZAPPY_SIMULATION_DIRECTION_H_
 
 typedef enum direction_e
 {
@@ -18,7 +18,7 @@ typedef enum direction_e
 
 typedef enum local_direction_e
 {
-    LCL_UNKNOWN = 0,
+    LCL_HERE = 0,
     LCL_UP = 1,
     LCL_UP_LEFT = 2,
     LCL_LEFT = 3,
@@ -29,8 +29,21 @@ typedef enum local_direction_e
     LCL_UP_RIGHT = 8,
 } local_direction_t;
 
-direction_t direction_get_random();
+/**
+* @brief Gets a random direction.
+*
+* @return direction_t The random direction obtained.
+*/
+direction_t direction_get_random(void);
+
+/**
+* @brief Gets the local_direction from which an ejection has occured.
+*
+* @param facing_direction The direction the ejected target was facing.
+* @param pushed_direction The direction the ejector was pushing.
+* @return local_direction_t The resultant.
+*/
 local_direction_t direction_get_eject_direction(direction_t facing_direction,
                                                 direction_t pushed_direction);
 
-#endif /* !DIRECTION_H_ */
+#endif /* !ZAPPY_SIMULATION_DIRECTION_H_ */

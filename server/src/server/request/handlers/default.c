@@ -15,23 +15,45 @@
 static void request_handler_default_gui(client_t *c)
 {
     client_to_spectator(c);
-    // TO IMPLEMENT: Send response
- }
+}
 
-static void request_handler_default_drone_join_team(server_t *s, client_t *c,
-                                                                team_t *team)
+static drone_t *client_take_drone_control(server_t *s,
+                                        map_t *map,
+                                        team_t *team,
+                                        client_t *c)
 {
-    int x = rand() % s->sim.map->width;
-    int y = rand() % s->sim.map->height;
-    drone_t *drone = team_new_active_drone(team, x, y);
+    vector2u_t pos = VEC2U(rand() % map->width, rand() % map->height);
+    drone_t *d = team_new_active_drone(team, pos);
+
+    if (!d)
+        return NULL;
+    client_to_drone(c, d);
+    if (d->active) {
+        server_add_notification(s, response_create(RESPONSE_PNW,
+            d->id, d->pos.x, d->pos.y, d->facing_direction, d->elevation_lvl,
+            team->name));
+        map_add_drone(map, d);
+    } else {
+        server_add_notification(s, response_create(RESPONSE_EBO, c->id,
+            d->id, d->pos.x, d->pos.y, d->facing_direction, d->elevation_lvl,
+            team->name));
+        d-> active = true;
+    }
+    return d;
+}
+
+static void request_handler_default_drone_join_team(server_t *s,
+                                                    client_t *c,
+                                                    team_t *team)
+{
+    drone_t *drone = client_take_drone_control(s, s->sim.map, team, c);
 
     if (drone) {
-        client_to_drone(c, drone);
-        client_add_response(c,
-            response_create(RESPONSE_CLIENT_NUM, team->free_slots_nb));
-        client_add_response(c,
-            response_create(RESPONSE_XY, s->sim.map->width, s->sim.map->height));
-        tile_add_drone(s->sim.map->tiles[y][x], drone);
+        client_add_response(c, response_create(RESPONSE_CLIENT_NUM,
+                                            team->free_slots_nb));
+        client_add_response(c, response_create(RESPONSE_XY,
+                                            s->sim.map->width,
+                                            s->sim.map->height));
     } else {
         client_add_response(c, response_create(RESPONSE_KO));
     }
@@ -40,12 +62,12 @@ static void request_handler_default_drone_join_team(server_t *s, client_t *c,
 static void request_handler_default_drone(server_t *s, client_t *c, char *name)
 {
     team_t *team = NULL;
-    drone_t *drone = NULL;
 
     list_foreach(it, s->sim.teams) {
         team = NODE_PTR(it, team_t);
         if (!strcmp(team->name, name)) {
             request_handler_default_drone_join_team(s, c, team);
+            node_iter_end(&it);
             return;
         }
     }

@@ -8,20 +8,20 @@
 #include "simulation/drone.h"
 #include "simulation/map.h"
 
-static bool drone_get_move(direction_t direction, int *x, int *y)
+static bool drone_get_move(direction_t direction, vector2i_t *move)
 {
     switch (direction) {
         case UP:
-            *y = -1;
+            move->y = -1;
             break;
         case DOWN:
-            *y = 1;
+            move->y = 1;
             break;
         case LEFT:
-            *x = -1;
+            move->x = -1;
             break;
         case RIGHT:
-            *x = 1;
+            move->x = 1;
             break;
         default:
             return false;
@@ -29,30 +29,17 @@ static bool drone_get_move(direction_t direction, int *x, int *y)
     return true;
 }
 
-static void drone_apply_move(drone_t *drone, int x_move, int y_move, const map_t *map)
-{
-    int future_x_pos = 0;
-    int future_y_pos = 0;
-
-    future_x_pos = drone->x + x_move;
-    future_x_pos = future_x_pos % (int)map->width;
-    while (future_x_pos < 0)
-        future_x_pos += map->width;
-    future_y_pos = drone->y + y_move;
-    future_y_pos = future_y_pos % (int)map->height;
-    while (future_y_pos < 0)
-        future_y_pos += map->height;
-    drone->x = future_x_pos;
-    drone->y = future_y_pos;
-}
-
 bool drone_eject(drone_t *drone, const map_t *map, direction_t direction)
 {
-    int x_move = 0;
-    int y_move = 0;
+    vector2i_t move = VEC2I(0, 0);
+    tile_t *old_tile = map->tiles[drone->pos.y][drone->pos.x];
+    tile_t *new_tile = NULL;
 
-    if (!drone_get_move(direction, &x_move, &y_move))
+    if (!drone_get_move(direction, &move))
         return false;
-    drone_apply_move(drone, x_move, y_move, map);
+    drone->pos = drone_get_pos_after_move_on_map(drone, map, move);
+    new_tile = map->tiles[drone->pos.y][drone->pos.x];
+    tile_remove_drone(old_tile, drone);
+    tile_add_drone(new_tile, drone);
     return true;
 }

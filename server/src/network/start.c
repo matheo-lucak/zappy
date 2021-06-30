@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-410-BDX-4-1-zappy-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** start
 */
@@ -28,5 +28,5 @@ int network_start(const arguments_t *args, network_t *n)
         return network_start_error(NULL);
     server_log(LOG_NETWORK_STARTED);
     server_log(LOG_NETWORK_LISTENING, tcp_socket_get_local_port(n->listener));
-    return SERVER_SUCCESS;
+    return NETWORK_SUCCESS;
 }

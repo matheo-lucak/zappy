@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-410-BDX-4-1-zappy-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** parse
 */
@@ -84,7 +84,7 @@ request_t *request_parse_from_input(char *input, client_type_t type)
     if (!request)
         return NULL;
     request->name = r_name;
-     if (info) {
+    if (info) {
         request->type = info->type;
         request->time_limit = info->time_limit;
         request->handler = info->handler;

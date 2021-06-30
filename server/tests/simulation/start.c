@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-410-BDX-4-1-zappy-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** start
 */
@@ -13,6 +13,8 @@ void set_dummy_args(arguments_t *args, size_t c)
 {
     args->clients_nb = c;
     args->team_names = string_list_create();
+    args->width = 10;
+    args->height = 10;
 }
 
 Test(simulation_start, basic)

@@ -1,12 +1,12 @@
 /*
 ** EPITECH PROJECT, 2021
-** Visual Studio Live Share (Workspace)
+** Zappy
 ** File description:
-** inventory
+** simulation_inventory
 */
 
-#ifndef INVENTORY_H_
-#define INVENTORY_H_
+#ifndef ZAPPY_SIMULATION_INVENTORY_H_
+#define ZAPPY_SIMULATION_INVENTORY_H_
 
 #include <stdbool.h>
 #include <mylist.h>
@@ -23,7 +23,18 @@ typedef struct inventory_s
     list_t *slots;
 } inventory_t;
 
+/**
+* @brief Instantes a newly allocated inventory.
+*
+* @return inventory_t* The newly allocated inventory.
+*/
 inventory_t *inventory_create(void);
+
+/**
+* @brief Releases memory from a previously allocated inventory.
+*
+* @param inventory The inventory to release memory from.
+*/
 void inventory_destroy(inventory_t *inventory);
 
 /**
@@ -38,39 +49,93 @@ void inventory_destroy(inventory_t *inventory);
 * @return true If the item was correctly added.
 * @return false If the item wasn't added.
 */
-bool inventory_add_item(inventory_t *inventory,
-                        resource_type_t type,
+bool inventory_add_item(inventory_t *inventory, resource_type_t type,
                         unsigned int quantity);
 
 /**
- * @brief Removes an item and a quantity associated with from an inventory.
- *
- * @param inventory The inventory concerned.
- * @param type The type of item to remove.
- * @param quantity The quantity to remove of the item type.
- * @return true If the remove occured.
- * @return false If it didn't.
- */
+* @brief Removes an item and a quantity associated with from an inventory.
+*
+* @param inventory The inventory concerned.
+* @param type The type of item to remove.
+* @param quantity The quantity to remove of the item type.
+* @return true If the remove occured.
+* @return false If it didn't.
+*/
 bool inventory_remove_item(inventory_t *inventory,
                             resource_type_t type,
                             unsigned int quantity);
 
 /**
- * @brief Gets an item slot information from an inventory.
- *
- * @param inventory The inventory concerned.
- * @param type The type of item to get information on.
- * @return const item_slot_t* The pointer of the node.
- */
+* @brief Gets an item slot information from an inventory.
+*
+* @param inventory The inventory concerned.
+* @param type The type of item to get information on.
+* @return const item_slot_t* The pointer of the node.
+*/
 const item_slot_t *inventory_get_item_info(inventory_t *inventory,
                                             resource_type_t type);
 
-unsigned int inventory_get_food_info(inventory_t *inventory);
-unsigned int inventory_get_linemate_info(inventory_t *inventory);
-unsigned int inventory_get_deraumere_info(inventory_t *inventory);
-unsigned int inventory_get_sibur_info(inventory_t *inventory);
-unsigned int inventory_get_mendiane_info(inventory_t *inventory);
-unsigned int inventory_get_phiras_info(inventory_t *inventory);
-unsigned int inventory_get_thystame_info(inventory_t *inventory);
+/**
+* @brief Gets the amount of RESOURCE_FOOD held in an inventory.
+*
+* @param inventory The inventory from which to retrieve
+*                  the amount of RESOURCE_FOOD held.
+* @return unsigned int The amount of RESOURCE_FOOD held in the inventory.
+*/
+unsigned int inventory_get_food_amount(inventory_t *inventory);
 
-#endif /* !INVENTORY_H_ */
+/**
+* @brief Gets the amount of RESOURCE_LINEMATE held in an inventory.
+*
+* @param inventory The inventory from which to retrieve
+*                  the amount of RESOURCE_LINEMATE held.
+* @return unsigned int The amount of RESOURCE_LINEMATE held in the inventory.
+*/
+unsigned int inventory_get_linemate_amount(inventory_t *inventory);
+
+/**
+* @brief Gets the amount of RESOURCE_DERAUMERE held in an inventory.
+*
+* @param inventory The inventory from which to retrieve
+*                  the amount of RESOURCE_DERAUMERE held.
+* @return unsigned int The amount of RESOURCE_DERAUMERE held in the inventory.
+*/
+unsigned int inventory_get_deraumere_amount(inventory_t *inventory);
+
+/**
+* @brief Gets the amount of RESOURCE_SIBUR held in an inventory.
+*
+* @param inventory The inventory from which to retrieve
+*                  the amount of RESOURCE_SIBUR held.
+* @return unsigned int The amount of RESOURCE_SIBUR held in the inventory.
+*/
+unsigned int inventory_get_sibur_amount(inventory_t *inventory);
+
+/**
+* @brief Gets the amount of RESOURCE_MENDIANE held in an inventory.
+*
+* @param inventory The inventory from which to retrieve
+*                  the amount of RESOURCE_MENDIANE held.
+* @return unsigned int The amount of RESOURCE_MENDIANE held in the inventory.
+*/
+unsigned int inventory_get_mendiane_amount(inventory_t *inventory);
+
+/**
+* @brief Gets the amount of RESOURCE_PHIRAS held in an inventory.
+*
+* @param inventory The inventory from which to retrieve
+*                  the amount of RESOURCE_PHIRAS held.
+* @return unsigned int The amount of RESOURCE_PHIRAS held in the inventory.
+*/
+unsigned int inventory_get_phiras_amount(inventory_t *inventory);
+
+/**
+* @brief Gets the amount of RESOURCE_THYSTAME held in an inventory.
+*
+* @param inventory The inventory from which to retrieve
+*                  the amount of RESOURCE_THYSTAME held.
+* @return unsigned int The amount of RESOURCE_THYSTAME held in the inventory.
+*/
+unsigned int inventory_get_thystame_amount(inventory_t *inventory);
+
+#endif /* !ZAPPY_SIMULATION_INVENTORY_H_ */

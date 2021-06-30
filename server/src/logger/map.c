@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-410-BDX-4-1-zappy-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** map
 */
@@ -31,11 +31,21 @@ const log_info_t log_info_map[] =
     },
     {
         .type = LOG_SERVER_CLIENT_TO_SPECTATOR,
-        .message = "A client became a drone"
+        .message = "A client became a spectator"
     },
     {
         .type = LOG_SERVER_CLIENT_TO_ERROR,
         .message = "A client can't change twice its type"
+    },
+    {
+        .type = LOG_SERVER_ACCEPTED_VALID_REQUEST,
+        .message = "Valid client request: \"%s\" (Accepted) from client (%d)"
+                    " with the following arguments: \"%s\""
+    },
+    {
+        .type = LOG_SERVER_IGNORED_VALID_REQUEST,
+        .message = "Valid client request: \"%s\" (Ignored) from client (%d)"
+                    " with the following arguments: \"%s\""
     },
     {
         .type = LOG_SERVER_INVALID_REQUEST,

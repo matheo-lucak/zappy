@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-410-BDX-4-1-zappy-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** remove_client
 */
@@ -26,7 +26,7 @@ void set_dummy_server(server_t *s, size_t team_nb, size_t drone_p_team)
         ptr_list_push_back(s->sim.teams, team);
         for (i = drone_p_team; i; i--) {
             client = client_create();
-            drone = drone_create(0, 0, true);
+            drone = drone_create(VEC2U(0, 0), true);
             client_to_drone(client, drone);
             ptr_list_push_back(s->clients, client);
             ptr_list_push_back(team->drones, drone);

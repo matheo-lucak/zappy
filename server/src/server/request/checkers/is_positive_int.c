@@ -14,10 +14,10 @@ bool request_arg_check_is_positive_int(char *arg)
 {
     if (!arg)
         return false;
-    while (*arg) {
+    do {
         if (!isdigit(*arg))
             return false;
-        arg++;
-    }
+        arg += 1;
+    } while (*arg);
     return true;
 }

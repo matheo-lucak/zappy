@@ -15,8 +15,10 @@ team_t *simulation_find_team_from_drone(simulation_t *sim, drone_t *drone)
         return NULL;
     list_foreach(node, sim->teams) {
         team = NODE_PTR(node, team_t);
-        if (team_has_drone(team, drone) == true)
+        if (team_has_drone(team, drone) == true) {
+            node_iter_end(&node);
             return team;
+        }
     }
     return NULL;
 }
