@@ -4,11 +4,10 @@ from socket import socket, AF_INET, SOCK_STREAM
 from select import select
 from typing import Callable, Dict, Iterator, List, Optional, Tuple, Type, TypeVar, cast
 
-from .request import BaseRequest, Request
+from .request import BaseRequest, RequestPlaceholder, Request
 from .request.response import Response, SpontaneousResponse, MultiResponse
 from .request.response.exceptions import ResponseError
 from ..log import Logger
-from ..utils.clock import Clock
 
 R = TypeVar("R", bound=Response)
 
@@ -22,18 +21,7 @@ class MultiResponseNotHandledError(ResponseError):
 SpontaneousResponseHandler = Callable[[List[SpontaneousResponse]], None]
 FetchCallback = Callable[[], None]
 
-
-class FramerateAverage:
-    def __init__(self) -> None:
-        self.__value: float = 0
-        self.__nb_compute: int = 0
-
-    def update(self, framerate_estimation: float) -> None:
-        self.__nb_compute += 1
-        self.__value = ((self.__value * (self.__nb_compute - 1)) + framerate_estimation) / self.__nb_compute
-
-    def get(self) -> float:
-        return self.__value
+RequestPlaceholderVar = TypeVar("RequestPlaceholderVar")
 
 
 class APIServer:
@@ -60,9 +48,6 @@ class APIServer:
         self.__buffer: str = str()
 
         self.__fetch_callbacks: List[FetchCallback] = list()
-
-        self.__framerate: FramerateAverage = FramerateAverage()
-        self.__clock_dict: Dict[Request, Clock] = dict()
 
         self.__spontaneous_response_handler: Optional[SpontaneousResponseHandler] = None
 
@@ -98,12 +83,23 @@ class APIServer:
             self.__handle_pending_requests()
         return create_response() if self.__pending_responses else None
 
-    def has_request_to_handle(self, request_type: Type[BaseRequest[R]]) -> bool:
+    def has_request_to_handle(self, request_type: Optional[Type[BaseRequest[R]]] = None) -> bool:
+        if request_type is None:
+            return len(self.__pending_requests) > 0 or len(self.__requests) > 0
         if any(type(request) is request_type for request in self.__pending_requests):
             return True
         if any(type(request) is request_type for request in self.__requests):
             return True
         return False
+
+    def remove_request_placeholder(self, request_type: Type[RequestPlaceholderVar]) -> Optional[RequestPlaceholderVar]:
+        if not issubclass(request_type, RequestPlaceholder):
+            return None
+        for request_list in [self.__pending_requests, self.__requests]:
+            for i, request in enumerate(request_list):
+                if isinstance(request, RequestPlaceholder) and type(request) == request_type:
+                    return cast(RequestPlaceholderVar, self.__pending_requests.pop(i))
+        return None
 
     def flush_spontaneous_responses(self) -> List[SpontaneousResponse]:
         responses: List[SpontaneousResponse] = self.__spontaneous_responses
@@ -137,9 +133,6 @@ class APIServer:
         if callable(self.__spontaneous_response_handler):
             self.__spontaneous_response_handler(self.flush_spontaneous_responses())
 
-    def get_framerate(self) -> int:
-        return round(self.__framerate.get())
-
     def __send_all_requests(self) -> None:
         def has_requests() -> bool:
             return bool(self.__requests) and (len(self.__pending_requests) < self.MAX_PENDING_REQUEST)
@@ -151,9 +144,9 @@ class APIServer:
 
         while has_requests() and self.__socket in select([], [self.__socket], [], 0)[1]:
             request: Request = self.__requests.pop(0)
-            send_request_to_server(str(request))
+            if not isinstance(request, RequestPlaceholder):
+                send_request_to_server(str(request))
             self.__pending_requests.append(request)
-            self.__clock_dict[request] = Clock()
 
     def __fetch_all_responses(self) -> None:
         def read_socket(chunck_size: int) -> Iterator[bytes]:
@@ -230,16 +223,11 @@ class APIServer:
                     request.response = response_class(self.__pending_responses.pop(0))
                     self.__remove_first_request()
             except ResponseError as e:
-                print(f"{type(e).__name__}: {e}")
-                print(f"-> The request {repr(request)} will be sent again to the server.")
+                print(f"{type(e).__name__} for {repr(str(request))}: {e}")
                 self.__remove_first_request()
-                self.send(request)
 
     def __remove_first_request(self) -> None:
         request: Request = self.__pending_requests.pop(0)
-        elapsed_time: float = self.__clock_dict.pop(request).get_elapsed_time() / 1000
         nb_ticks: int = request.get_process_time()
-        if nb_ticks > 0:
-            self.__framerate.update(nb_ticks / elapsed_time)
-        if self.__pending_requests:
-            self.__clock_dict[self.__pending_requests[0]].restart()
+        for rq in self.__pending_requests:
+            rq.add_ticks(nb_ticks)

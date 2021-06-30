@@ -10,6 +10,6 @@ class ForkResponse(OKResponse):
     pass
 
 
-class ForkRequest(BaseRequest[ForkResponse], process_time=7):
+class ForkRequest(BaseRequest[ForkResponse], process_time=42):
     def __init__(self, callback: Optional[ResponseCallback[ForkResponse]] = None) -> None:
         super().__init__("Fork", callback=callback)

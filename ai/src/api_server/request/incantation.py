@@ -3,7 +3,7 @@
 from typing import List, Optional
 from re import match as regex_match, Match
 
-from .base import BaseRequest, ResponseCallback
+from .base import BaseRequest, RequestPlaceholder, ResponseCallback
 from .response.multiple import MultiResponse
 from .response.exceptions import ResponseParsingError
 
@@ -49,7 +49,15 @@ class IncantationResponse(MultiResponse, nb_responses=2, wait_for_all=False):
     def level(self) -> int:
         return self.__level
 
+    @property
+    def at_start(self) -> bool:
+        return self.__result is not None and not self.complete
+
 
 class IncantationRequest(BaseRequest[IncantationResponse], process_time=300):
     def __init__(self, callback: Optional[ResponseCallback[IncantationResponse]] = None) -> None:
         super().__init__("Incantation", callback=callback)
+
+
+class IncantationPlaceholder(RequestPlaceholder[IncantationResponse], process_time=300):
+    pass
