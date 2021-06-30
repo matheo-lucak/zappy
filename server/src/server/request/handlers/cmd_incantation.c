@@ -34,19 +34,18 @@ void request_handler_cmd_incantation(server_t *s,
     client_t *client = NULL;
     tile_t *tile = s->sim.map->tiles[c->drone->pos.y][c->drone->pos.x];
     incantation_t *inc = incantation_create(c->drone, tile);
-    bool success = inc && incantation_check_requirements(inc);
 
-    if (success)
+    if (!incantation_check_requirements(inc)) {
+        client_add_response(c, response_create(RESPONSE_KO));
+    } else {
         client_block(c);
-    list_foreach(it, tile->drones) {
-        client = server_find_client_from_drone(s, NODE_PTR(it, drone_t));
-        if (!client)
-            continue;
-        if (success)
-            client_add_response(client, response_create(RESPONSE_INCANTATION));
-        else
-            client_add_response(client, response_create(RESPONSE_KO));
+        list_foreach(it, tile->drones) {
+            client = server_find_client_from_drone(s, NODE_PTR(it, drone_t));
+            if (!client)
+                continue;
+            client_add_response(c, response_create(RESPONSE_INCANTATION));
+        }
+        server_notification_start_incantation(s, c, inc);
+        ptr_list_push_back(s->sim.incantations, inc);
     }
-    server_notification_start_incantation(s, c, inc);
-    ptr_list_push_back(s->sim.incantations, inc);
 }
