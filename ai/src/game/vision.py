@@ -44,6 +44,13 @@ class Tile:
             return self.nb_players > 0
         return any(r == resource for r in self.__resources)
 
+    def copy(self) -> "Tile":
+        content: Dict[str, int] = dict()
+        content["player"] = self.nb_players
+        for resource in self.resources:
+            content[resource.name] = resource.amount
+        return Tile(self.unit, self.divergence, self.index, content)
+
     @property
     def unit(self) -> int:
         return self.__unit

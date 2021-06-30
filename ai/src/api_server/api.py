@@ -230,10 +230,8 @@ class APIServer:
                     request.response = response_class(self.__pending_responses.pop(0))
                     self.__remove_first_request()
             except ResponseError as e:
-                print(f"{type(e).__name__}: {e}")
-                print(f"-> The request {repr(request)} will be sent again to the server.")
+                print(f"{type(e).__name__} for {repr(str(request))}: {e}")
                 self.__remove_first_request()
-                self.send(request)
 
     def __remove_first_request(self) -> None:
         request: Request = self.__pending_requests.pop(0)

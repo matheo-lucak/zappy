@@ -8,6 +8,15 @@ from ..errors import ZappyError
 
 
 class MessageError(ZappyError):
+    pass
+
+
+class MessageTileError(MessageError):
+    def __init__(self, tile: int) -> None:
+        super().__init__(f"{tile}: Must be in range [0;8]")
+
+
+class MessageBodyError(MessageError):
     def __init__(self, message: str) -> None:
         super().__init__(f"{repr(message)}: Invalid format")
 
@@ -19,9 +28,12 @@ class Message:
     def __init__(self, tile: int, text: str) -> None:
         self.__tile: int = tile
 
+        if self.__tile not in range(9):
+            raise MessageTileError(self.__tile)
+
         match: Optional[Match[str]] = self.PATTERN.match(text)
         if match is None:
-            raise MessageError(text)
+            raise MessageBodyError(text)
 
         self.__team: str = match.group(1)
         self.__level: int = int(match.group(2))

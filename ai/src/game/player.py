@@ -58,6 +58,7 @@ class Player:
         self.__orientation: Orientation = Orientation.North
 
         self.__action: Action = Action()
+        self.__broadcasting: int = 0
 
         self.__taking_resource: Dict[str, int] = dict()
         self.__setting_resource: Dict[str, int] = dict()
@@ -198,27 +199,51 @@ class Player:
                     turn()
                     self.move_forward(abs(y_diff))
 
+    def follow_sound(self, message: Message) -> None:
+        position_to_go: Dict[int, Position] = {
+            0: self.pos,
+            1: self.project_position(1, 0),
+            2: self.project_position(1, -1),
+            3: self.project_position(0, -1),
+            4: self.project_position(-1, -1),
+            5: self.project_position(-1, 0),
+            6: self.project_position(-1, 1),
+            7: self.project_position(0, 1),
+            8: self.project_position(1, 1),
+        }
+        self.go_to_position(position_to_go[message.tile])
+
     def broadcast(self, message: str) -> None:
         message = message.strip()
         if len(message) == 0:
             return
 
-        message = f"{self.__team}: lvl {self.level}({self.role.value}): {message}"
+        def broadcast_handler() -> None:
+            self.__broadcasting -= 1
+
+        self.__broadcasting += 1
+        message = f"{self.__team}: lvl {self.level} ({self.role.value}): {message}"
         print(f"Broadcasting: {repr(message)}")
-        self.__api.send(BroadcastRequest(message), have_priority=True)
+        self.__api.send(BroadcastRequest(message, callback=lambda rp: broadcast_handler()), have_priority=True)
+
+    @property
+    def broadcasting(self) -> int:
+        return self.__broadcasting
 
     def set_message_listener(self, callback: Optional[MessageListener]) -> Optional[MessageListener]:
         former_listener: Optional[MessageListener] = self.__message_listener
         self.__message_listener = callback
         return former_listener
 
-    def take_object(self, resource: str, number: int = 1) -> None:
+    def take_object(self, resource: str, number: int = 1, *, success_callback: Optional[Callable[[str], None]] = None) -> None:
         def take_handler(response: TakeObjectResponse) -> None:
             print(f"{repr(resource)}: {'taken' if response.ok else 'not taken'}")
             self.__action.taking_resource -= 1
             self.__taking_resource[resource] = self.taking_object(resource) - 1
             if self.__taking_resource[resource] < 1:
                 self.__taking_resource.pop(resource)
+            if response.ok and callable(success_callback):
+                success_callback(response)
 
         for _ in range(number):
             print(f"Taking {resource}...")

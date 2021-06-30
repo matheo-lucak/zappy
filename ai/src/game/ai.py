@@ -1,10 +1,9 @@
 # -*- coding: Utf-8 -*
 
 from random import choice as random_choice
-from re import compile as regex_compile, Match
-from typing import Callable, Dict, List, NamedTuple, Optional, Pattern, Tuple, Union
+from typing import Callable, List, NamedTuple, Optional, Union
 
-from .player import MessageListener, Player
+from .player import Player
 from .team import Team
 from .vision import Coords, Tile
 from .role import Role
@@ -18,36 +17,19 @@ from ..errors import ZappyError
 NEW_PLAYER = "I'm new"
 WELCOME = "Welcome"
 
-NEW_LEVEL_SEND = "I'm level {}"
-NEW_LEVEL_RECV = regex_compile(r"I'm level +[0-9]+")
-NEW_LEVEL_REPLY = "Level OK"
-
-STONE_FOUND_SEND = "{} found"
-STONE_FOUND_RECV = regex_compile(r"(\w+) found")
-STONE_SOUGHT_SEND = "{} sought"
-STONE_SOUGHT_RECV = regex_compile(r"(\w+) sought")
-STONE_ALREADY_TAKEN_SEND = "{} already taken"
-STONE_ALREADY_TAKEN_RECV = regex_compile(r"(\w+) already taken")
-
-
-def match_message(message: str, prefixes: Optional[Union[str, Tuple[str, ...]]] = None) -> Optional[Match[str]]:
-    match: Optional[Match[str]] = None
-
-    for name, var in globals().items():
-        if prefixes is not None and not name.startswith(prefixes):
-            continue
-        if isinstance(var, Pattern):
-            match = var.match(message)
-            if match is not None:
-                break
-
-    return match
+INCANTATION_START = "I NEED SOME HELP!!!"
+INCANTATION_STARTED = "I don't need help anymore"
+INCANTATION_PAUSED = "Wait I need to do something"
 
 
 class SoughtResource(NamedTuple):
     resource: str
     tile: Tile
     pos: Position
+
+
+class IncantationStart(ZappyError):
+    pass
 
 
 class AI:
@@ -85,63 +67,69 @@ class AI:
             if requirements.nb_players == 1:
                 self.__go_to_superior_level_lonely(requirements)
             else:
-                self.__go_to_superior_level_with_other_players(requirements)
+                try:
+                    self.__go_to_superior_level_with_other_players(requirements)
+                except IncantationStart:
+                    self.__go_to_an_incantation_place()
+            self.__player.set_message_listener(self.__message_listener)
         if self.__player.role == Role.NewPlayer:
             self.__player.role = Role.StoneSeeker
-        self.__player.broadcast(NEW_LEVEL_SEND.format(self.__player.level))
 
     def __go_to_superior_level_lonely(self, requirements: Requirements) -> None:
         for resource in requirements.resources:
             print(f"Seeking {resource}({resource.amount})")
             self.__seek_resource(resource)
         self.__prepare_incantation(requirements)
-        tile: Tile = self.__player.vision.get(0, 0)
-        for resource in requirements.resources:
-            self.__player.set_object_down(resource.name, resource.amount - tile[resource])
         self.__player.start_incantation()
-        self.__wait()
         self.__player.look()
         self.__player.check_inventory()
         self.__wait()
 
     def __go_to_superior_level_with_other_players(self, requirements: Requirements) -> None:
-        # nb_players: int = requirements.nb_players - 1
-
-        gotten_stones: Dict[str, BaseResource] = {r.name: MetaResource.create(r.name) for r in requirements.resources}
-
         def custom_message_listener(message: Message) -> None:
             self.__default_message_handler(message)
-            if message.team != self.__team.name:
-                return
-            stone: str = str()
-            match: Optional[Match[str]] = match_message(message.body, prefixes="STONE")
-            if match is None:
+            if message.team != self.__team.name or message.level != self.__player.level:
                 return
 
-            # Count stones from messages
+            if message.body == INCANTATION_START:
+                self.__wait()
+                self.__player.follow_sound(message)
+                raise IncantationStart
+
+        def have_required_number(stone: BaseResource) -> bool:
+            return self.__player.inventory.get(stone) >= stone.amount
 
         def all_required_stone_is_gotten() -> bool:
-            return all(self.__player.inventory.get(stone) >= stone.amount for stone in requirements.resources)
+            return all(have_required_number(stone) for stone in requirements.resources)
 
-        actual_message_listener: Optional[MessageListener] = self.__player.set_message_listener(custom_message_listener)
+        self.__player.set_message_listener(custom_message_listener)
 
+        all_resources: List[SoughtResource] = list()
         while not all_required_stone_is_gotten():
             if self.__check_for_food():
                 continue
-            all_resources: List[SoughtResource] = self.__find_all_rare_resource_in_vision()
+            all_resources.extend(self.__find_all_rare_resource_in_vision())
             for stone in requirements.resources:
-                all_resources.extend(self.__find_resource_in_vision(stone))
-            if not all_resources:
-                self.__change_position()
-            else:
-                for sought_resource in all_resources:
-                    self.__go_to_take_resource(sought_resource)
-            # Register gotten stones
+                if not have_required_number(stone):
+                    all_resources.extend(self.__find_resource_in_vision(stone, stone.amount))
+            self.__fetch_sought_resources(all_resources)
 
-        # Elevation setup
-        raise ZappyError("Force end")
+        self.__prepare_incantation(requirements)
+        self.__player.start_incantation()
+        self.__player.look()
+        self.__player.check_inventory()
+        self.__wait()
 
-        self.__player.set_message_listener(actual_message_listener)
+    def __go_to_an_incantation_place(self) -> None:
+        def incantation_listener(message: Message) -> None:
+            self.__default_message_handler(message)
+            if message.team != self.__team.name or message.level != self.__player.level:
+                return
+
+        self.__player.set_message_listener(incantation_listener)
+
+        self.__player.look()
+        self.__wait()
 
     def __seek_resource(self, resource: BaseResource) -> None:
         all_resources: List[SoughtResource] = list()
@@ -155,17 +143,15 @@ class AI:
             if self.__check_for_food(resource):
                 continue
 
-            all_resources = self.__find_all_rare_resource_in_vision(resource)
+            all_resources.extend(self.__find_all_rare_resource_in_vision(resource))
             all_resources.extend(self.__find_resource_in_vision(resource))
-            if not all_resources:
-                self.__change_position()
-            else:
-                for sought_resource in all_resources:
-                    self.__go_to_take_resource(sought_resource)
+            self.__fetch_sought_resources(all_resources)
 
-    def __check_for_food(self, sought_stone: Optional[BaseResource] = None) -> bool:
+    def __check_for_food(self, sought_stone: Optional[BaseResource] = None, *, during_incantation: bool = False) -> bool:
         if self.__player.inventory.get(Food.get_name()) < self.__min_food.amount:
             print(f"Missing food")
+            if during_incantation:
+                self.__player.broadcast(INCANTATION_PAUSED)
             self.__seek_food(sought_stone)
             print("I have sufficient food")
             print(f"Seeking {sought_stone} again...")
@@ -175,17 +161,15 @@ class AI:
     def __seek_food(self, sought_stone: Optional[BaseResource] = None) -> None:
         resources: List[SoughtResource] = list()
         while self.__player.inventory.get(Food.get_name()) < self.__required_food.amount:
-            resources = self.__find_all_rare_resource_in_vision(sought_stone)
+            resources.extend(self.__find_all_rare_resource_in_vision(sought_stone))
             resources.extend(self.__find_resource_in_vision(self.__required_food))
             if sought_stone is not None and self.__player.inventory.get(sought_stone) < sought_stone.amount:
                 resources.extend(self.__find_resource_in_vision(sought_stone))
-            if not resources:
-                self.__change_position()
-            else:
-                for sought_resource in resources:
-                    self.__go_to_take_resource(sought_resource)
+            self.__fetch_sought_resources(resources)
 
-    def __find_resource_in_vision(self, resource: Union[str, BaseResource]) -> List[SoughtResource]:
+    def __find_resource_in_vision(
+        self, resource: Union[str, BaseResource], max_catch: Optional[int] = None
+    ) -> List[SoughtResource]:
         if isinstance(resource, BaseResource):
             resource = resource.name
         all_resources: List[SoughtResource] = list()
@@ -194,8 +178,10 @@ class AI:
         if all_positions:
             print(f">> {resource} found")
             for p in all_positions:
+                if max_catch is not None and len(all_resources) >= max_catch:
+                    break
                 tile: Tile = self.__player.vision.get_coord(p)
-                all_resources.append(SoughtResource(resource, tile, self.__player.project_position(p.unit, p.divergence)))
+                all_resources.append(SoughtResource(resource, tile.copy(), self.__player.project_position(p.unit, p.divergence)))
 
         return all_resources
 
@@ -203,7 +189,7 @@ class AI:
         all_resources: List[SoughtResource] = list()
         all_positions: List[SoughtResource]
         for rare_resource in MetaResource.get_rare_resources():
-            if (sought_stone == rare_resource):
+            if sought_stone == rare_resource:
                 continue
             if self.__player.inventory.get(rare_resource) >= 3:
                 continue
@@ -213,7 +199,19 @@ class AI:
                 all_resources.extend(all_positions)
         return all_resources
 
-    def __go_to_take_resource(self, sought_resource: SoughtResource) -> None:
+    def __fetch_sought_resources(
+        self, sought_resources: List[SoughtResource], success_callback: Optional[Callable[[str], None]] = None
+    ) -> None:
+        if not sought_resources:
+            self.__change_position()
+        else:
+            for resource in sought_resources:
+                self.__go_to_take_resource(resource, success_callback)
+            sought_resources.clear()
+
+    def __go_to_take_resource(
+        self, sought_resource: SoughtResource, success_callback: Optional[Callable[[str], None]] = None
+    ) -> None:
         resource: str = sought_resource.resource
         tile: Tile = sought_resource.tile
         position: Position = sought_resource.pos
@@ -223,13 +221,12 @@ class AI:
         if (tile.index != 0 and "player" in tile) or (tile.index == 0 and tile["player"] > 1):
             print("There is an another player !!")
             self.__player.eject_from_this_tile()
-        self.__player.take_object(resource, amount)
+        self.__player.take_object(resource, amount, success_callback=success_callback)
         self.__player.look()
         self.__player.check_inventory()
         self.__wait()
         if resource == Food.get_name():
             return
-        self.__player.broadcast(STONE_FOUND_SEND.format(resource))
 
     def __change_position(self) -> None:
         action: Callable[..., None]
@@ -246,6 +243,7 @@ class AI:
         self.__player.move_forward(5)
         self.__player.look()
         self.__wait()
+        self.__call_all_players(requirements)
         tile: Tile = self.__player.vision.get(0, 0)
         while any(r not in requirements.resources and not isinstance(r, Food) for r in tile.resources):
             for resource in tile.resources:
@@ -258,6 +256,22 @@ class AI:
             self.__player.check_inventory()
             self.__wait()
             tile = self.__player.vision.get(0, 0)
+        for resource in requirements.resources:
+            self.__player.set_object_down(resource.name, resource.amount - tile[resource])
+
+    def __call_all_players(self, requirements: Requirements) -> None:
+        if requirements.nb_players == 1:
+            return
+        tile: Tile = self.__player.vision.get(0, 0)
+        while tile.nb_players < requirements.nb_players:
+            if not self.__player.broadcasting:
+                self.__player.broadcast(INCANTATION_START)
+            if self.__check_for_food(during_incantation=True):
+                continue
+            self.__player.look()
+            self.__wait()
+            tile = self.__player.vision.get(0, 0)
+        self.__player.broadcast(INCANTATION_STARTED)
 
     def __message_listener(self, message: Message) -> None:
         self.__default_message_handler(message)
@@ -266,5 +280,3 @@ class AI:
         if message.team == self.__team.name:
             if message.body == NEW_PLAYER:
                 self.__player.broadcast(WELCOME)
-            if NEW_LEVEL_RECV.match(message.body):
-                self.__player.broadcast(NEW_LEVEL_REPLY)
