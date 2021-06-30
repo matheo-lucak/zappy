@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-400-BDX-4-1-indiestudio-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** Script
 */
@@ -49,11 +49,11 @@ namespace ecs
     class __className;              \
     std::unique_ptr<__className> create##__className(ecs::GameObject &gameObject) { return std::make_unique<__className>(gameObject); }   \
 
-namespace indie::deserializer::script
+namespace zappy::deserializer::script
 {
     void addScriptFactory(std::string_view className, std::unique_ptr<ecs::Script> (*func)(ecs::GameObject &));
-} // namespace indie::deserializer::script
+} // namespace zappy::deserializer::script
 
 #define ReferenceScript(__className) \
-    indie::deserializer::script::addScriptFactory(#__className, \
+    zappy::deserializer::script::addScriptFactory(#__className, \
         reinterpret_cast<std::unique_ptr<ecs::Script> (*)(ecs::GameObject &)>(&create##__className))

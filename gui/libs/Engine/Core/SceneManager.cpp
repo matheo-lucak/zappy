@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-400-BDX-4-1-indiestudio-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** SceneManager
 */
@@ -8,27 +8,27 @@
 #include "SceneManager.hpp"
 #include "SceneManagerInternal.hpp"
 
-void indie::SceneManager::LoadBuildScenes(std::string_view path)
+void zappy::SceneManager::LoadBuildScenes(std::string_view path)
 {
-    indie::SceneManagerInternal::LoadBuildScenes(path);
+    zappy::SceneManagerInternal::LoadBuildScenes(path);
 }
 
-void indie::SceneManager::LoadScene(unsigned int buildIdx)
+void zappy::SceneManager::LoadScene(unsigned int buildIdx)
 {
-    indie::SceneManagerInternal::AskLoadScene(buildIdx);
+    zappy::SceneManagerInternal::AskLoadScene(buildIdx);
 }
 
-int indie::SceneManager::getActiveSceneBuildIdx() noexcept
+int zappy::SceneManager::getActiveSceneBuildIdx() noexcept
 {
-    return indie::SceneManagerInternal::getActiveSceneBuildIdx();
+    return zappy::SceneManagerInternal::getActiveSceneBuildIdx();
 }
 
-void indie::SceneManager::QuitApplication() noexcept
+void zappy::SceneManager::QuitApplication() noexcept
 {
-    indie::SceneManagerInternal::QuitApplication();
+    zappy::SceneManagerInternal::QuitApplication();
 }
 
-void indie::SceneManager::ToggleMusicMute(bool value) noexcept
+void zappy::SceneManager::ToggleMusicMute(bool value) noexcept
 {
-    indie::SceneManagerInternal::ToggleMusicMute(value);
+    zappy::SceneManagerInternal::ToggleMusicMute(value);
 }

@@ -1,0 +1,13 @@
+{
+    "name": "Incantation",
+    "tag": "Incantation",
+    "scripts": [
+        "Incantation"
+    ],
+    "components": [
+        {
+            "type": "Transform",
+            "scale": 1
+        }
+    ]
+}

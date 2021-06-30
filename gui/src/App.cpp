@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-400-BDX-4-1-indiestudio-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** App
 */
@@ -13,29 +13,22 @@
 #include "Entrypoint.hpp"
 #include "Engine.hpp"
 
-#include "CreatePlayers.hpp"
-#include "Player.hpp"
-#include "Bomb.hpp"
-#include "Explosion.hpp"
 #include "Map.hpp"
-#include "Initializer.hpp"
+#include "Drone.hpp"
+#include "Egg.hpp"
+#include "net/NetworkManager.hpp"
 #include "SoundHandler.hpp"
-#include "CameraCtrl.hpp"
-#include "ResultScreen.hpp"
+#include "Tile.hpp"
 
-App::App(indie::ApplicationCmdLineArgs args):
-    Application{args, "Zappy", App::BUILD_SCENES_PATH, 1920, 1080}
+App::App(zappy::ApplicationCmdLineArgs args) : Application{args, "Zappy", App::BUILD_SCENES_PATH, 1920, 1080}
 {
     std::cout << "My App prepared" << std::endl;
-    ReferenceScript(CreatePlayers);
-    ReferenceScript(Player);
-    ReferenceScript(Bomb);
+    ReferenceScript(Drone);
+    ReferenceScript(Egg);
     ReferenceScript(Map);
-    ReferenceScript(Explosion);
-    ReferenceScript(Initializer);
+    ReferenceScript(NetworkManager);
     ReferenceScript(SoundHandler);
-    ReferenceScript(CameraCtrl);
-    ReferenceScript(ResultScreen);
+    ReferenceScript(Tile);
 }
 
 App::~App() noexcept
@@ -43,7 +36,7 @@ App::~App() noexcept
     std::cout << "My App Ended" << std::endl;
 }
 
-std::unique_ptr<indie::Application> CreateApplication(indie::ApplicationCmdLineArgs args)
+std::unique_ptr<zappy::Application> CreateApplication(zappy::ApplicationCmdLineArgs args)
 {
     return std::make_unique<App>(args);
 }

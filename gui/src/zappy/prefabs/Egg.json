@@ -1,0 +1,34 @@
+{
+    "name": "Egg",
+    "tag": "Egg",
+    "scripts": [
+        "Egg"
+    ],
+    "components": [
+        {
+            "type": "Transform",
+            "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "rotation": 0,
+            "scale": 2
+        },
+        {
+            "type": "Model",
+            "path": "../src/assets/models/egg/egg.obj",
+            "position": {
+                "x": -0.83,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 0.5
+        },
+        {
+            "type": "BoxCollider",
+            "static": false,
+            "size": 1
+        }
+    ]
+}

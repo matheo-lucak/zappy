@@ -13,10 +13,10 @@
 #include <string_view>
 #include <optional>
 
-namespace indie
+namespace zappy
 {
     class Scene;
-} // namespace indie
+} // namespace zappy
 
 namespace ecs
 {
@@ -24,7 +24,7 @@ namespace ecs
     class Script;
 } // namespace ecs
 
-namespace indie::deserializer
+namespace zappy::deserializer
 {
     namespace sceneConf
     {
@@ -53,4 +53,4 @@ namespace indie::deserializer
         void deserialize(ecs::GameObject &object, std::string name, const std::vector<std::string> &args);
     } // namespace component
 
-} // namespace indie
+} // namespace zappy
