@@ -1,6 +1,6 @@
 # -*- coding: Utf-8 -*
 
-from typing import Dict, Iterator, List, NamedTuple, Tuple, Union
+from typing import Dict, Iterator, List, NamedTuple, Tuple, Type, Union
 from math import isqrt
 
 from ..api_server.request.look import LookResponse
@@ -26,23 +26,26 @@ class Tile:
     def __repr__(self) -> str:
         return f"{type(self).__name__}(resources={self.__resources}, nb_players={self.__players})"
 
-    def __getitem__(self, resource: Union[str, BaseResource]) -> int:
-        if isinstance(resource, BaseResource):
-            resource = resource.name
+    def get(self, resource: Union[str, Type[BaseResource]]) -> int:
+        if isinstance(resource, str) and resource == "player":
+            return self.nb_players
+        if isinstance(resource, type):
+            if not issubclass(resource, BaseResource):
+                raise TypeError(f"{resource.__name__}: Not a subclass of BaseResource")
+            resource = resource.get_name()
         for r in self.__resources:
             if r == resource:
                 return r.amount
         return 0
 
+    def __getitem__(self, resource: Union[str, Type[BaseResource]]) -> int:
+        return self.get(resource)
+
     def __iter__(self) -> Iterator[BaseResource]:
         return iter(self.__resources)
 
-    def __contains__(self, resource: Union[str, BaseResource]) -> bool:
-        if isinstance(resource, BaseResource):
-            resource = resource.name
-        if resource == "player":
-            return self.nb_players > 0
-        return any(r == resource for r in self.__resources)
+    def __contains__(self, resource: Union[str, Type[BaseResource]]) -> bool:
+        return self.get(resource) > 0
 
     def copy(self) -> "Tile":
         content: Dict[str, int] = dict()
@@ -97,7 +100,7 @@ class Vision:
     def get_coord(self, coords: Coords) -> Tile:
         return self.get(coords.unit, coords.divergence)
 
-    def __contains__(self, resource: Union[str, BaseResource]) -> bool:
+    def __contains__(self, resource: Union[str, Type[BaseResource]]) -> bool:
         return any(resource in tile for tile in self.__grid.values())
 
     @property
@@ -139,7 +142,7 @@ class Vision:
                 yield (unit, -divergence)
                 yield (unit, divergence)
 
-    def find(self, resource: Union[str, BaseResource]) -> List[Coords]:
+    def find(self, resource: Union[str, Type[BaseResource]]) -> List[Coords]:
         coords_list: List[Coords] = list()
         for unit, divergence in self.iter_units_nearest(self.max_unit):
             if resource in self.__grid[unit, divergence]:

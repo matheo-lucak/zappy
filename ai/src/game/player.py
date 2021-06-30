@@ -1,6 +1,8 @@
 # -*- coding: Utf-8 -*
 
+from sys import stdout
 from typing import Any, Callable, Dict, List, Optional, Type, NoReturn
+from uuid import UUID, uuid4
 
 from .inventory import Inventory
 from .vision import Vision
@@ -13,7 +15,7 @@ from ..api_server import APIServer
 from ..api_server.request.broadcast import BroadcastRequest
 from ..api_server.request.eject import EjectRequest, EjectResponse
 from ..api_server.request.forward import ForwardRequest
-from ..api_server.request.incantation import IncantationRequest, IncantationResponse
+from ..api_server.request.incantation import IncantationRequest, IncantationPlaceholder, IncantationResponse
 from ..api_server.request.inventory import InventoryRequest, InventoryResponse
 from ..api_server.request.look import LookRequest, LookResponse
 from ..api_server.request.left import LeftRequest
@@ -23,6 +25,7 @@ from ..api_server.request.take_object import TakeObjectRequest, TakeObjectRespon
 from ..api_server.request.response.spontaneous import SpontaneousResponse, DeadResponse, MessageResponse
 from ..api_server.request.response.exceptions import ResponseError
 from ..errors import ZappyError
+from ..log import Logger
 
 
 class PlayerDeadError(ZappyError):
@@ -34,6 +37,7 @@ MessageListener = Callable[[Message], None]
 
 
 class Action(BaseAction):
+    broadcasting: int
     checking_inventory: int
     forwarding: int
     looking: int
@@ -56,49 +60,59 @@ class Player:
         self.__message_listener: Optional[MessageListener] = None
         self.__pos: Position = Position(0, 0)
         self.__orientation: Orientation = Orientation.North
+        self.__uuid: UUID = uuid4()
 
         self.__action: Action = Action()
-        self.__broadcasting: int = 0
+        self.__auto_inventory_checking: bool = True
 
         self.__taking_resource: Dict[str, int] = dict()
         self.__setting_resource: Dict[str, int] = dict()
 
-        self.__api.set_spontaneous_response_handler(self.__handle_spontaneous_responses)
-
     def update(self) -> None:
+        self.__api.set_spontaneous_response_handler(self.__handle_spontaneous_responses)
+        if self.__auto_inventory_checking is True and not self.checking_inventory:
+            self.check_inventory(print_result=False)
         self.__api.fetch()
+
+    def wait_for_all_requests_to_be_done(self) -> None:
+        while self.__api.has_request_to_handle():
+            self.__api.fetch()
 
     def look(self) -> None:
         def look_handler(response: LookResponse) -> None:
             self.__vision.update(response)
             print("Vision up-to-date")
-            print("->", self.__vision)
+            Logger.print(1, "->", self.__vision, file=stdout)
             self.__action.looking -= 1
 
         self.__action.looking += 1
         self.__api.send(LookRequest(look_handler))
 
     @property
-    def looking(self) -> int:
-        return self.__action.looking
+    def looking(self) -> bool:
+        return self.__action.looking > 0
 
-    def check_inventory(self) -> None:
+    def auto_inventory_checking(self, status: bool) -> None:
+        self.__auto_inventory_checking = bool(status)
+
+    def check_inventory(self, print_result: bool = True) -> None:
         def inventory_handler(response: InventoryResponse) -> None:
             self.__inventory.update(response)
-            print("Inventory up-to-date")
-            print("->", self.__inventory)
+            if print_result:
+                print("Inventory up-to-date")
+                Logger.print(1, "->", self.__inventory, file=stdout)
             self.__action.checking_inventory -= 1
 
         self.__action.checking_inventory += 1
         self.__api.send(InventoryRequest(inventory_handler))
 
     @property
-    def checking_inventory(self) -> int:
-        return self.__action.checking_inventory
+    def checking_inventory(self) -> bool:
+        return self.__action.checking_inventory > 0
 
     @property
-    def moving(self) -> int:
-        return self.moving_forward + self.turning_left + self.turning_right
+    def moving(self) -> bool:
+        return self.moving_forward or self.turning_left or self.turning_right
 
     def move_forward(self, nb_times: int = 1) -> None:
         def forward_handler() -> None:
@@ -118,8 +132,8 @@ class Player:
             self.__api.send(ForwardRequest(lambda rp: forward_handler()))
 
     @property
-    def moving_forward(self) -> int:
-        return self.__action.forwarding
+    def moving_forward(self) -> bool:
+        return self.__action.forwarding > 0
 
     def turn_left(self, nb_times: int = 1) -> None:
         def turn_handler() -> None:
@@ -139,8 +153,8 @@ class Player:
             self.__api.send(LeftRequest(lambda rp: turn_handler()))
 
     @property
-    def turning_left(self) -> int:
-        return self.__action.turning_left
+    def turning_left(self) -> bool:
+        return self.__action.turning_left > 0
 
     def turn_right(self, nb_times: int = 1) -> None:
         def turn_handler() -> None:
@@ -160,8 +174,8 @@ class Player:
             self.__api.send(RightRequest(lambda rp: turn_handler()))
 
     @property
-    def turning_right(self) -> int:
-        return self.__action.turning_right
+    def turning_right(self) -> bool:
+        return self.__action.turning_right > 0
 
     def go_to_position(self, position: Position) -> None:
         if position == self.pos:
@@ -219,16 +233,17 @@ class Player:
             return
 
         def broadcast_handler() -> None:
-            self.__broadcasting -= 1
+            if self.__action.broadcasting > 0:
+                self.__action.broadcasting -= 1
 
-        self.__broadcasting += 1
-        message = f"{self.__team}: lvl {self.level} ({self.role.value}): {message}"
+        self.__action.broadcasting += 1
         print(f"Broadcasting: {repr(message)}")
+        message = f"{self.__uuid}: {self.__team}: lvl {self.level} ({self.role.value}): {message}"
         self.__api.send(BroadcastRequest(message, callback=lambda rp: broadcast_handler()), have_priority=True)
 
     @property
-    def broadcasting(self) -> int:
-        return self.__broadcasting
+    def broadcasting(self) -> bool:
+        return self.__action.broadcasting > 0
 
     def set_message_listener(self, callback: Optional[MessageListener]) -> Optional[MessageListener]:
         former_listener: Optional[MessageListener] = self.__message_listener
@@ -251,10 +266,10 @@ class Player:
             self.__taking_resource[resource] = self.taking_object(resource) + 1
             self.__api.send(TakeObjectRequest(resource, callback=take_handler))
 
-    def taking_object(self, resource: Optional[str] = None) -> int:
+    def taking_object(self, resource: Optional[str] = None) -> bool:
         if resource is None:
-            return self.__action.taking_resource
-        return self.__taking_resource.get(resource, 0)
+            return self.__action.taking_resource > 0
+        return self.__taking_resource.get(resource, 0) > 0
 
     def set_object_down(self, resource: str, number: int = 1) -> None:
         def set_handler(response: SetObjectDownResponse) -> None:
@@ -270,10 +285,10 @@ class Player:
             self.__setting_resource[resource] = self.setting_object_down(resource) + 1
             self.__api.send(SetObjectDownRequest(resource, callback=set_handler))
 
-    def setting_object_down(self, resource: Optional[str] = None) -> int:
+    def setting_object_down(self, resource: Optional[str] = None) -> bool:
         if resource is None:
-            return self.__action.setting_resource
-        return self.__setting_resource.get(resource, 0)
+            return self.__action.setting_resource > 0
+        return self.__setting_resource.get(resource, 0) > 0
 
     def eject_from_this_tile(self) -> None:
         def eject_handler(response: EjectResponse) -> None:
@@ -284,10 +299,22 @@ class Player:
         self.__api.send(EjectRequest(eject_handler))
 
     @property
-    def ejecting_player(self) -> int:
-        return self.__action.ejecting
+    def ejecting_player(self) -> bool:
+        return self.__action.ejecting > 0
 
-    def start_incantation(self) -> None:
+    def start_incantation(self, result_callback: Optional[Callable[[bool, bool], None]] = None) -> None:
+        self.__incantation_implementation(True, result_callback)
+
+    def assit_to_incantation(self, result_callback: Optional[Callable[[bool, bool], None]] = None) -> None:
+        self.__incantation_implementation(False, result_callback)
+
+    def stop_waiting_incantation(self) -> None:
+        request: Optional[IncantationPlaceholder] = self.__api.remove_request_placeholder(IncantationPlaceholder)
+        if request is None:
+            return
+        request.response = IncantationResponse("ko")
+
+    def __incantation_implementation(self, behind_incantation: bool, result_callback: Optional[Callable[[bool, bool], None]]) -> None:
         def incantation_handler(response: IncantationResponse) -> None:
             if response.result is None:
                 print("Elevation underway")
@@ -299,17 +326,22 @@ class Player:
                     raise ResponseError(str(response), "Cannot have a level lower than or equal to mine")
                 self.__level.value = response.level
                 print(f"Elevation success. Current level: {self.level}")
+            if callable(result_callback):
+                result_callback(response.result, response.at_start)
             self.__action.elevating -= 1
 
         self.__action.elevating += 1
-        self.__api.send(IncantationRequest(incantation_handler))
+        if behind_incantation:
+            self.__api.send(IncantationRequest(incantation_handler))
+        else:
+            self.__api.send(IncantationPlaceholder(incantation_handler))
 
     @property
-    def elevating(self) -> int:
-        return self.__action.elevating
+    def elevating(self) -> bool:
+        return self.__action.elevating > 0
 
     def doing_an_action(self) -> bool:
-        return self.__action.ongoing()
+        return self.__action.ongoing("broadcasting")
 
     @property
     def pos(self) -> Position:
@@ -360,10 +392,11 @@ class Player:
     def __kill(self) -> NoReturn:
         raise PlayerDeadError()
 
-    def __listen(self, message: MessageResponse) -> None:
-        print(f"From tile {message.tile}: {repr(message.text)}")
+    def __listen(self, response: MessageResponse) -> None:
+        message: Message = Message(response.tile, response.text)
+        print(f"From tile {message.tile}: {repr(message.body)}")
         try:
             if callable(self.__message_listener):
-                self.__message_listener(Message(message.tile, message.text))
+                self.__message_listener(message)
         except MessageError:
             pass

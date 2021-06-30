@@ -4,10 +4,10 @@ from sys import stderr
 from typing import NamedTuple, Optional
 
 from .api_server import APIServer
-from .api_server.request import TeamRequest, ConnectNbrRequest
+from .api_server.request import TeamRequest
 from .api_server.request.response import MapSizeAtBeginningResponse, WelcomeResponse
 from .errors import ZappyError
-from .game import Player, Team, AI, Framerate
+from .game import Player, Team, AI
 from .log import Logger
 
 
@@ -38,17 +38,11 @@ class ZappyAI:
             raise ZappyError("The server did not send the map size")
         print(f"Map size: {(map_size.width, map_size.height)}")
 
-        self.__team: Team = Team(team_name, team.response.client_num)
+        self.__team: Team = Team(team_name, team.response.client_num, self.__server)
         self.__player: Player = Player(team_name, self.__server)
-
-        self.__ai: AI = AI(self.__player, self.__team, Framerate(self.__server.get_framerate))
+        self.__ai: AI = AI(self.__player, self.__team)
 
     def run(self) -> None:
-        def team_update() -> None:
-            if not self.__server.has_request_to_handle(ConnectNbrRequest):
-                self.__server.send(ConnectNbrRequest(self.__team.update))
-
-        self.__server.add_fetch_callback(team_update)
         self.__ai.start()
 
     @staticmethod

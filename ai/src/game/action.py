@@ -33,5 +33,5 @@ class BaseAction(metaclass=MetaAction):
     def set(self, action: str, value: int) -> None:
         self.__doing_action[str(action)] = max(int(value), 0)
 
-    def ongoing(self) -> bool:
-        return sum(self.__doing_action.values()) > 0
+    def ongoing(self, *ignoring: str) -> bool:
+        return sum(number for action, number in self.__doing_action.items() if action not in ignoring) > 0

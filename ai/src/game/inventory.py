@@ -1,6 +1,6 @@
 # -*- coding: Utf-8 -*
 
-from typing import Dict, Iterator, Tuple, Union
+from typing import Dict, Iterator, Tuple, Type, Union
 
 from .resource import MetaResource, BaseResource
 from ..api_server.request.inventory import InventoryResponse
@@ -22,15 +22,17 @@ class Inventory:
     def __str__(self) -> str:
         return f"Inventory: [{', '.join(f'{resource.name}: {resource.amount}' for resource in self.__resources.values())}]"
 
-    def get(self, resource: Union[str, BaseResource]) -> int:
-        if isinstance(resource, BaseResource):
-            return self.__resources[resource.name].amount
+    def get(self, resource: Union[str, Type[BaseResource]]) -> int:
+        if isinstance(resource, type):
+            if not issubclass(resource, BaseResource):
+                raise TypeError(f"{resource.__name__}: Not a subclass of BaseResource")
+            return self.__resources[resource.get_name()].amount
         return self.__resources[resource].amount
 
-    def __getitem__(self, resource: Union[str, BaseResource]) -> int:
+    def __getitem__(self, resource: Union[str, Type[BaseResource]]) -> int:
         return self.get(resource)
 
-    def __contains__(self, resource: Union[str, BaseResource]) -> bool:
+    def __contains__(self, resource: Union[str, Type[BaseResource]]) -> bool:
         return self.get(resource) > 0
 
     def __iter__(self) -> InventoryView:

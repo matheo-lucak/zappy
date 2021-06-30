@@ -1,16 +1,27 @@
 # -*- coding: Utf-8 -*
 
-from ..api_server.request.connect_nbr import ConnectNbrResponse
+from ..api_server import APIServer
+from ..api_server.request.connect_nbr import ConnectNbrRequest, ConnectNbrResponse
 
 
 class Team:
-    def __init__(self, name: str, default_unused_slots: int) -> None:
+    def __init__(self, name: str, default_unused_slots: int, api: APIServer) -> None:
         self.__name: str = name
         self.__unused_slots: int = default_unused_slots
         self.__members: int = 1
+        self.__api: APIServer = api
+
+    def __ask_unused_slots(self) -> None:
+        self.__api.send(ConnectNbrRequest(self.update))
 
     def update(self, response: ConnectNbrResponse) -> None:
         self.__unused_slots = response.value
+
+    def start_asking_unused_slots(self) -> None:
+        self.__api.add_fetch_callback(self.__ask_unused_slots)
+
+    def stop_asking_unused_slots(self) -> None:
+        self.__api.remove_fetch_callback(self.__ask_unused_slots)
 
     @property
     def name(self) -> str:

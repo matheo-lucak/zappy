@@ -4,7 +4,7 @@ from socket import socket, AF_INET, SOCK_STREAM
 from select import select
 from typing import Callable, Dict, Iterator, List, Optional, Tuple, Type, TypeVar, cast
 
-from .request import BaseRequest, Request
+from .request import BaseRequest, RequestPlaceholder, Request
 from .request.response import Response, SpontaneousResponse, MultiResponse
 from .request.response.exceptions import ResponseError
 from ..log import Logger
@@ -98,12 +98,21 @@ class APIServer:
             self.__handle_pending_requests()
         return create_response() if self.__pending_responses else None
 
-    def has_request_to_handle(self, request_type: Type[BaseRequest[R]]) -> bool:
+    def has_request_to_handle(self, request_type: Optional[Type[BaseRequest[R]]] = None) -> bool:
+        if request_type is None:
+            return len(self.__pending_requests) > 0 or len(self.__requests) > 0
         if any(type(request) is request_type for request in self.__pending_requests):
             return True
         if any(type(request) is request_type for request in self.__requests):
             return True
         return False
+
+    def remove_request_placeholder(self, request_type: Type[RequestPlaceholder[R]]) -> Optional[RequestPlaceholder[R]]:
+        for request_list in [self.__pending_requests, self.__requests]:
+            for i, request in enumerate(request_list):
+                if type(request) is request_type:
+                    return cast(RequestPlaceholder[R], self.__pending_requests.pop(i))
+        return None
 
     def flush_spontaneous_responses(self) -> List[SpontaneousResponse]:
         responses: List[SpontaneousResponse] = self.__spontaneous_responses
@@ -151,7 +160,8 @@ class APIServer:
 
         while has_requests() and self.__socket in select([], [self.__socket], [], 0)[1]:
             request: Request = self.__requests.pop(0)
-            send_request_to_server(str(request))
+            if not isinstance(request, RequestPlaceholder):
+                send_request_to_server(str(request))
             self.__pending_requests.append(request)
             self.__clock_dict[request] = Clock()
 
