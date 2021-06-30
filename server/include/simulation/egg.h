@@ -16,6 +16,7 @@ typedef struct egg_s
 {
     vector2u_t pos;
     int time_until_hatch;
+    unsigned id;
 } egg_t;
 
 /**

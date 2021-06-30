@@ -31,6 +31,7 @@ typedef struct incantation_s
     int                             elevation_lvl;
     drone_t *                       owner;
     tile_t *                        tile;
+    vector2u_t                      pos;
 } incantation_t;
 
 /**

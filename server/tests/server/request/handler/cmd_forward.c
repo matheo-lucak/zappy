@@ -15,9 +15,9 @@ Test(request_handler_cmd_forward, simple_go_forward)
 {
     client_t *client = client_create();
     request_t *request = request_parse_from_input("Forward", CLIENT_DRONE);
-    arguments_t args = arguments_default_values();
+    arguments_t *args = arguments_create();
     server_t server;
-    int status = server_start(&args, &server);
+    int status = server_start(args, &server);
 
     client_to_drone(client, drone_create(VEC2U(0, 0), false));
     cr_assert(status == SERVER_SUCCESS);
@@ -28,15 +28,16 @@ Test(request_handler_cmd_forward, simple_go_forward)
     cr_assert(client->drone->pos.x == 1);
     cr_assert(client->drone->pos.y == 0);
     server_stop(&server);
+    arguments_destroy(args);
 }
 
 Test(request_handler_cmd_forward, simple_go_other_side_of_map)
 {
     client_t *client = client_create();
     request_t *request = request_parse_from_input("Forward", CLIENT_DRONE);
-    arguments_t args = arguments_default_values();
+    arguments_t *args = arguments_create();
     server_t server;
-    int status = server_start(&args, &server);
+    int status = server_start(args, &server);
 
     client_to_drone(client, drone_create(VEC2U(0, 0), false));
     cr_assert(status == SERVER_SUCCESS);
@@ -47,4 +48,5 @@ Test(request_handler_cmd_forward, simple_go_other_side_of_map)
     cr_assert(client->drone->pos.x == 9);
     cr_assert(client->drone->pos.y == 0);
     server_stop(&server);
+    arguments_destroy(args);
 }

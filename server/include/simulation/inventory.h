@@ -82,7 +82,7 @@ const item_slot_t *inventory_get_item_info(inventory_t *inventory,
 *                  the amount of RESOURCE_FOOD held.
 * @return unsigned int The amount of RESOURCE_FOOD held in the inventory.
 */
-unsigned int inventory_get_food_info(inventory_t *inventory);
+unsigned int inventory_get_food_amount(inventory_t *inventory);
 
 /**
 * @brief Gets the amount of RESOURCE_LINEMATE held in an inventory.
@@ -91,7 +91,7 @@ unsigned int inventory_get_food_info(inventory_t *inventory);
 *                  the amount of RESOURCE_LINEMATE held.
 * @return unsigned int The amount of RESOURCE_LINEMATE held in the inventory.
 */
-unsigned int inventory_get_linemate_info(inventory_t *inventory);
+unsigned int inventory_get_linemate_amount(inventory_t *inventory);
 
 /**
 * @brief Gets the amount of RESOURCE_DERAUMERE held in an inventory.
@@ -100,7 +100,7 @@ unsigned int inventory_get_linemate_info(inventory_t *inventory);
 *                  the amount of RESOURCE_DERAUMERE held.
 * @return unsigned int The amount of RESOURCE_DERAUMERE held in the inventory.
 */
-unsigned int inventory_get_deraumere_info(inventory_t *inventory);
+unsigned int inventory_get_deraumere_amount(inventory_t *inventory);
 
 /**
 * @brief Gets the amount of RESOURCE_SIBUR held in an inventory.
@@ -109,7 +109,7 @@ unsigned int inventory_get_deraumere_info(inventory_t *inventory);
 *                  the amount of RESOURCE_SIBUR held.
 * @return unsigned int The amount of RESOURCE_SIBUR held in the inventory.
 */
-unsigned int inventory_get_sibur_info(inventory_t *inventory);
+unsigned int inventory_get_sibur_amount(inventory_t *inventory);
 
 /**
 * @brief Gets the amount of RESOURCE_MENDIANE held in an inventory.
@@ -118,7 +118,7 @@ unsigned int inventory_get_sibur_info(inventory_t *inventory);
 *                  the amount of RESOURCE_MENDIANE held.
 * @return unsigned int The amount of RESOURCE_MENDIANE held in the inventory.
 */
-unsigned int inventory_get_mendiane_info(inventory_t *inventory);
+unsigned int inventory_get_mendiane_amount(inventory_t *inventory);
 
 /**
 * @brief Gets the amount of RESOURCE_PHIRAS held in an inventory.
@@ -127,7 +127,7 @@ unsigned int inventory_get_mendiane_info(inventory_t *inventory);
 *                  the amount of RESOURCE_PHIRAS held.
 * @return unsigned int The amount of RESOURCE_PHIRAS held in the inventory.
 */
-unsigned int inventory_get_phiras_info(inventory_t *inventory);
+unsigned int inventory_get_phiras_amount(inventory_t *inventory);
 
 /**
 * @brief Gets the amount of RESOURCE_THYSTAME held in an inventory.
@@ -136,6 +136,6 @@ unsigned int inventory_get_phiras_info(inventory_t *inventory);
 *                  the amount of RESOURCE_THYSTAME held.
 * @return unsigned int The amount of RESOURCE_THYSTAME held in the inventory.
 */
-unsigned int inventory_get_thystame_info(inventory_t *inventory);
+unsigned int inventory_get_thystame_amount(inventory_t *inventory);
 
 #endif /* !ZAPPY_SIMULATION_INVENTORY_H_ */

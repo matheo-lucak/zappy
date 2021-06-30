@@ -23,6 +23,7 @@ incantation_t *incantation_create(drone_t *owner, tile_t *tile)
     inc->elevation_lvl = owner->elevation_lvl;
     inc->owner = owner;
     inc->tile = tile;
+    inc->pos = owner->pos;
     if (!inc->requirements) {
         incantation_destroy(inc);
         return NULL;

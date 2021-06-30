@@ -11,12 +11,22 @@
 #include "server/response/response.h"
 #include "simulation/simulation.h"
 
+static void server_notification_death(server_t *s,
+                                    drone_t *d)
+{
+    if (d->active) {
+        server_add_notification(s, response_create(RESPONSE_PDI, d->id));
+    } else {
+        server_add_notification(s, response_create(RESPONSE_EDI, d->id));
+    }
+}
 static void simulation_handle_food_eat(server_t *s, drone_t *drone)
 {
     client_t *client = NULL;
 
     if (drone_eat(drone))
         return;
+    server_notification_death(s, drone);
     server_log(LOG_SIMULATION_DRONE_DIED, drone->pos.x, drone->pos.y);
     client = drone->active ? server_find_client_from_drone(s, drone) : NULL;
     if (client) {

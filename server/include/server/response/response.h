@@ -33,58 +33,82 @@ typedef struct response_s
 #define RESPONSE_INCANTATION        "Elevation underway\n"
 #define RESPONSE_ELEVATION          "Current level: %d\n"
 
-// msz X Y\n
-#define RESPONSE_MSZ                "msz %d %d\n"
-// bct X Y q0 q1 q2 q3 q4 q5 q6\n
-#define RESPONSE_BCT                "bct %d %d %d %d %d %d %d %d %d\n"
-// bct X Y q0 q1 q2 q3 q4 q5 q6\n * nbr_tiles
-#define RESPONSE_MCT                RESPONSE_BCT
-// tna N\n * nbr_teams
-#define RESPONSE_TNA                "tna %s\n"
-// pnw #n X Y O L N\n
-#define RESPONSE_PNW                "pnw %d %d %d %d %d %s\n"
-// ppo n X Y O\n
-#define RESPONSE_PPO                "ppo %d %d %d %d\n"
-// plv n L\n
-#define RESPONSE_PLV                "plv %d %d\n"
-// pin n X Y q0 q1 q2 q3 q4 q5 q6\n
-#define RESPONSE_PIN                "pin %d %d %d %d %d %d %d %d %d %d\n"
-// pex n\n
-#define RESPONSE_PEX                "pex %d\n"
-// pbc n M\n
-#define RESPONSE_PBC                "pbc %d %s\n"
-// pic X Y L n n ...\n
-#define RESPONSE_PIC                "pic %d %d %d ???\n"
-// pie X Y R\n
-#define RESPONSE_PIE                "pie %d %d %d\n"
-// pfk n\n
-#define RESPONSE_PFK                "pfk %d\n"
-// pdr n i\n
-#define RESPONSE_PDR                "pdr %d %d\n"
-// pgt n i\n
-#define RESPONSE_PGT                "pgt %n %i\n"
-// pdi n\n
-#define RESPONSE_PDI                "pdi %d\n"
-// enw e n X Y\n
-#define RESPONSE_ENW                "enw %d %d %d %d\n"
-// eht e\n
-#define RESPONSE_EHT                "eht %d\n"
-// ebo e\n
-#define RESPONSE_EBO                "ebo %e\n"
-// edi e\n
-#define RESPONSE_EDI                "edi %e\n"
-// sgt T\n
-#define RESPONSE_SGT                "sgt %d\n"
-// sst T\n
-#define RESPONSE_SST                "sst %d\n"
-// seg N\n
-#define RESPONSE_SEG                "seg %d\n"
-// smg M\n
-#define RESPONSE_SMG                "smg %d\n"
-// suc\n
-#define RESPONSE_SUC                "suc\n"
-// sbp\n
-#define RESPONSE_SBP                "sbp\n"
+///////////////////
+// GUI Responses //
+///////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+// RESPONSE FROM SERVER ///////////////////// REQUEST /// DESCRIPTION //////////
+////////////////////////////////////////////////////////////////////////////////
+
+// msz X Y\n                                - msz\n     - map size
+#define RESPONSE_MSZ "msz %d %d\n"
+
+// bct X Y q0 q1 q2 q3 q4 q5 q6\n           - bct X Y\n - content of a tile
+#define RESPONSE_BCT "bct %d %d %d %d %d %d %d %d %d\n"
+
+// bct X Y q0 q1 q2 q3 q4 q5 q6\n * nbr_tiles mct\n     - content of the map
+//                                                        (all the tiles)
+#define RESPONSE_MCT RESPONSE_BCT
+
+// tna N\n * nbr_teams                      - tna\n     - name of all the teams
+#define RESPONSE_TNA "tna %s\n"
+
+// ppo n X Y O\n                            - ppo #n\n  - player’s position
+#define RESPONSE_PPO "ppo %d %d %d %d\n"
+
+// pst n L q0 q1 q2 q3 q4 q5 q6\n           - pst #n\n  - player’s stats
+#define RESPONSE_PST "pst %d %d %d %d %d %d %d %d\n"
+
+// pnw #n X Y O L N\n                                   - connection of
+//                                                        a new player
+#define RESPONSE_PNW "pnw %d %d %d %d %d %s\n"
+
+// pex n\n                                              - expulsion
+#define RESPONSE_PEX "pex %d\n"
+
+// pbc n M\n                                            - broadcast
+#define RESPONSE_PBC "pbc %d %s\n"
+
+// pic X Y L n q1 q2 q3 q4 q5 q6\n                      - start of
+//                                                        an incantation
+#define RESPONSE_PIC "pic %d %d %d %d %d %d %d %d %d %d\n"
+
+// pie X Y R\n                                          - end of an incantation
+#define RESPONSE_PIE "pie %d %d %d\n"
+
+// enw e n X Y\n                                        - an egg was laid
+//                                                        by a player
+#define RESPONSE_ENW "enw %d %d %d %d\n"
+
+// eht n\n                                              - egg hatching
+#define RESPONSE_EHT "eht %d\n"
+
+// ebo #n X Y O L N\n                                   - player connection
+//                                                        from an egg
+#define RESPONSE_EBO "ebo %d %d %d %d %d %s\n"
+
+// edi e\n                                              - death of
+//                                                        an hatched egg
+#define RESPONSE_EDI "edi %d\n"
+
+// pdr n i\n                                            - resource dropping
+#define RESPONSE_PDR "pdr %d %d\n"
+
+// pgt n i\n                                            - resource collecting
+#define RESPONSE_PGT "pgt %d %d\n"
+
+// pdi n\n                                              - death of a player
+#define RESPONSE_PDI "pdi %d\n"
+
+// sgt T\n                                  - sgt\n     - time unit request
+#define RESPONSE_SGT "sgt %d\n"
+
+// seg N\n                                              - end of game
+#define RESPONSE_SEG "seg %d\n"
+
+////////////////////////////////////////////////////////////////////////////////
+
 
 /**
 * @brief Instantiates a response and its data.
@@ -94,6 +118,14 @@ typedef struct response_s
 * @return response_t* A pointer to the newly allocated response.
 */
 response_t *response_create(const char *format, ...);
+
+/**
+* @brief Deep copy a given response.
+*
+* @param other The response to deep copy.
+* @return response_t* A pointer to the newly allocated response.
+*/
+response_t *response_clone(response_t *other);
 
 /**
 * @brief Releases memory previously allocated to a response.

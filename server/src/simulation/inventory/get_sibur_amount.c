@@ -8,7 +8,7 @@
 #include "simulation/inventory.h"
 #include "simulation/resources.h"
 
-unsigned int inventory_get_sibur_info(inventory_t *inventory)
+unsigned int inventory_get_sibur_amount(inventory_t *inventory)
 {
     const item_slot_t *slot = inventory_get_item_info(inventory,
                                                     RESOURCE_SIBUR);

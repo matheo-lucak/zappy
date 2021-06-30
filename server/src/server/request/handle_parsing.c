@@ -12,7 +12,7 @@
 #include "server/request/request.h"
 #include "server/response/response.h"
 
-static void server_handle_single_request_parsing(server_t *s, client_t *c)
+static void server_handle_single_request_parsing(client_t *c)
 {
     char *input = NULL;
     bool was_split = false;
@@ -41,6 +41,6 @@ void server_handle_request_parsing(server_t *s)
 
     list_foreach(node, s->clients) {
         c = NODE_PTR(node, client_t);
-        server_handle_single_request_parsing(s, c);
+        server_handle_single_request_parsing(c);
     }
 }

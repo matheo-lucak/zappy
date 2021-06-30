@@ -65,12 +65,10 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), server/request/handlers/default.c)					\
 					$(addprefix $(SRC_PATH), server/request/handlers/gui_map_content.c)			\
 					$(addprefix $(SRC_PATH), server/request/handlers/gui_map_size.c)			\
-					$(addprefix $(SRC_PATH), server/request/handlers/gui_player_inventory.c)	\
-					$(addprefix $(SRC_PATH), server/request/handlers/gui_player_level.c)		\
 					$(addprefix $(SRC_PATH), server/request/handlers/gui_player_position.c)		\
+					$(addprefix $(SRC_PATH), server/request/handlers/gui_player_stats.c)		\
 					$(addprefix $(SRC_PATH), server/request/handlers/gui_team_names.c)			\
 					$(addprefix $(SRC_PATH), server/request/handlers/gui_tile_content.c)		\
-					$(addprefix $(SRC_PATH), server/request/handlers/gui_time_unit_modif.c)		\
 					$(addprefix $(SRC_PATH), server/request/handlers/gui_time_unit_request.c)	\
 					$(addprefix $(SRC_PATH), server/request/info/get_info.c)					\
 					$(addprefix $(SRC_PATH), server/request/info/info.c)						\
@@ -80,10 +78,13 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), server/request/handle_parsing.c)					\
 					$(addprefix $(SRC_PATH), server/request/handle.c)							\
 					$(addprefix $(SRC_PATH), server/request/parse.c)							\
+					$(addprefix $(SRC_PATH), server/response/clone.c)							\
 					$(addprefix $(SRC_PATH), server/response/create.c)							\
 					$(addprefix $(SRC_PATH), server/response/destroy.c)							\
+					$(addprefix $(SRC_PATH), server/add_notification.c)							\
 					$(addprefix $(SRC_PATH), server/clear_client.c)								\
 					$(addprefix $(SRC_PATH), server/find_client_from_drone.c)					\
+					$(addprefix $(SRC_PATH), server/find_client_from_id.c)						\
 					$(addprefix $(SRC_PATH), server/launch.c)									\
 					$(addprefix $(SRC_PATH), server/remove_client.c)							\
 					$(addprefix $(SRC_PATH), server/run.c)										\
@@ -119,14 +120,14 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/inventory/add_item.c)					\
 					$(addprefix $(SRC_PATH), simulation/inventory/create.c)						\
 					$(addprefix $(SRC_PATH), simulation/inventory/destroy.c)					\
-					$(addprefix $(SRC_PATH), simulation/inventory/get_deraumere_info.c)			\
-					$(addprefix $(SRC_PATH), simulation/inventory/get_food_info.c)				\
+					$(addprefix $(SRC_PATH), simulation/inventory/get_deraumere_amount.c)		\
+					$(addprefix $(SRC_PATH), simulation/inventory/get_food_amount.c)			\
 					$(addprefix $(SRC_PATH), simulation/inventory/get_item_info.c)				\
-					$(addprefix $(SRC_PATH), simulation/inventory/get_linemate_info.c)			\
-					$(addprefix $(SRC_PATH), simulation/inventory/get_mendiane_info.c)			\
-					$(addprefix $(SRC_PATH), simulation/inventory/get_phiras_info.c)			\
-					$(addprefix $(SRC_PATH), simulation/inventory/get_sibur_info.c)				\
-					$(addprefix $(SRC_PATH), simulation/inventory/get_thystame_info.c)			\
+					$(addprefix $(SRC_PATH), simulation/inventory/get_linemate_amount.c)		\
+					$(addprefix $(SRC_PATH), simulation/inventory/get_mendiane_amount.c)		\
+					$(addprefix $(SRC_PATH), simulation/inventory/get_phiras_amount.c)			\
+					$(addprefix $(SRC_PATH), simulation/inventory/get_sibur_amount.c)			\
+					$(addprefix $(SRC_PATH), simulation/inventory/get_thystame_amount.c)		\
 					$(addprefix $(SRC_PATH), simulation/inventory/remove_item.c)				\
 					$(addprefix $(SRC_PATH), simulation/map/add_drone.c)						\
 					$(addprefix $(SRC_PATH), simulation/map/clear.c)							\
@@ -152,6 +153,13 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/tile/count_item.c)						\
 					$(addprefix $(SRC_PATH), simulation/tile/create.c)							\
 					$(addprefix $(SRC_PATH), simulation/tile/destroy.c)							\
+					$(addprefix $(SRC_PATH), simulation/tile/get_deraumere_amount.c)			\
+					$(addprefix $(SRC_PATH), simulation/tile/get_food_amount.c)					\
+					$(addprefix $(SRC_PATH), simulation/tile/get_linemate_amount.c)				\
+					$(addprefix $(SRC_PATH), simulation/tile/get_mendiane_amount.c)				\
+					$(addprefix $(SRC_PATH), simulation/tile/get_phiras_amount.c)				\
+					$(addprefix $(SRC_PATH), simulation/tile/get_sibur_amount.c)				\
+					$(addprefix $(SRC_PATH), simulation/tile/get_thystame_amount.c)				\
 					$(addprefix $(SRC_PATH), simulation/tile/has_drones.c)						\
 					$(addprefix $(SRC_PATH), simulation/tile/has_items.c)						\
 					$(addprefix $(SRC_PATH), simulation/tile/is_empty.c)						\
@@ -160,6 +168,7 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/vector/add.c)							\
 					$(addprefix $(SRC_PATH), simulation/vector/distance.c)						\
 					$(addprefix $(SRC_PATH), simulation/vector/sub.c)							\
+					$(addprefix $(SRC_PATH), simulation/entity_id.c)							\
 					$(addprefix $(SRC_PATH), simulation/find_team_from_drone.c)					\
 					$(addprefix $(SRC_PATH), simulation/handle.c)								\
 					$(addprefix $(SRC_PATH), simulation/remove_drone.c)							\

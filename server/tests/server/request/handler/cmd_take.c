@@ -14,9 +14,9 @@ Test(request_handler_cmd_take, simple_take)
     client_t *c = client_create();
     char *input = strdup("Take deraumere");
     request_t *r = request_parse_from_input(input, CLIENT_DRONE);
-    arguments_t args = arguments_default_values();
+    arguments_t *args = arguments_create();
     server_t s;
-    int status = server_start(&args, &s);
+    int status = server_start(args, &s);
     const item_slot_t *slot;
 
     client_to_drone(c, drone_create(VEC2U(0, 0), false));
@@ -29,6 +29,7 @@ Test(request_handler_cmd_take, simple_take)
     cr_assert(slot->type == RESOURCE_DERAUMERE);
     cr_assert(slot->quantity == 1);
     server_stop(&s);
+    arguments_destroy(args);
 }
 
 Test(request_handler_cmd_take, several_same_take)
@@ -36,9 +37,9 @@ Test(request_handler_cmd_take, several_same_take)
     client_t *c = client_create();
     char *input = strdup("Take deraumere");
     request_t *r = request_parse_from_input(input, CLIENT_DRONE);
-    arguments_t args = arguments_default_values();
+    arguments_t *args = arguments_create();
     server_t s;
-    int status = server_start(&args, &s);
+    int status = server_start(args, &s);
     const item_slot_t *slot;
 
     client_to_drone(c, drone_create(VEC2U(0, 0), false));
@@ -53,4 +54,5 @@ Test(request_handler_cmd_take, several_same_take)
     cr_assert(slot->type == RESOURCE_DERAUMERE);
     cr_assert(slot->quantity == 2);
     server_stop(&s);
+    arguments_destroy(args);
 }

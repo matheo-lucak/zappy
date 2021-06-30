@@ -11,9 +11,9 @@
 
 Test(request_handler_cmd_set, simple_set)
 {
-    arguments_t args = arguments_default_values();
+    arguments_t *args = arguments_create();
     server_t s;
-    int status = server_start(&args, &s);
+    int status = server_start(args, &s);
     client_t *c = client_create();
     char *input = strdup("Set deraumere");
     request_t *r = request_parse_from_input(input, CLIENT_DRONE);
@@ -29,4 +29,5 @@ Test(request_handler_cmd_set, simple_set)
     cr_assert(generic_list_find(tile->items,
                         RESOURCE_DERAUMERE, resource_type_t));
     server_stop(&s);
+    arguments_destroy(args);
 }

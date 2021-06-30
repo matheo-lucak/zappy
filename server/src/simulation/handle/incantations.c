@@ -10,12 +10,24 @@
 #include "simulation/incantation.h"
 #include "server/response/response.h"
 
+static void server_notification_end_incantation(server_t *s,
+                                                incantation_t *i,
+                                                bool success)
+{
+    server_add_notification(s, response_create(RESPONSE_PIE,
+        i->pos.x,
+        i->pos.y,
+        success
+    ));
+}
+
 static void simulation_handle_single_incantation(server_t *s,
                                             incantation_t *inc)
 {
     client_t *client = server_find_client_from_drone(s, inc->owner);
 
     if (!client || !incantation_check_requirements(inc)) {
+        server_notification_end_incantation(s, inc, false);
         list_foreach(it, inc->tile->drones) {
             client = server_find_client_from_drone(s, NODE_PTR(it, drone_t));
             if (client)
@@ -25,6 +37,7 @@ static void simulation_handle_single_incantation(server_t *s,
     }
     client_unblock(client);
     incantation_elevate(inc);
+    server_notification_end_incantation(s, inc, true);
     list_foreach(it, inc->tile->drones) {
         client = server_find_client_from_drone(s, NODE_PTR(it, drone_t));
         if (client) {
