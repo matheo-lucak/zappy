@@ -7,8 +7,7 @@ from argparse import ArgumentParser
 
 CURRENT_DIR: str = SYSTEM_PATH[0]
 
-EXECUTABLE_CONTENT: str = \
-f"""#!/usr/bin/env python3
+EXECUTABLE_CONTENT: str = f"""#!/usr/bin/env python3
 # -*- coding: Utf-8 -*
 
 from runpy import run_path
@@ -21,6 +20,7 @@ if __name__ == "__main__":
 
 DEFAULT_PATH: str = "./zappy_ai"
 
+
 def main() -> None:
     parser: ArgumentParser = ArgumentParser()
     parser.add_argument("file", nargs="?", default=DEFAULT_PATH, help=f"Output file; default={DEFAULT_PATH}")
@@ -30,8 +30,9 @@ def main() -> None:
 
     with open(filepath, "w") as f:
         f.write(EXECUTABLE_CONTENT)
-    
+
     chmod(filepath, 0o755)
+
 
 if __name__ == "__main__":
     main()
