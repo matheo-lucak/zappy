@@ -16,6 +16,7 @@ public:
 enum type
 {
     RESPONSE_ERROR,
+    RESPONSE_MAGIC_GUI, // "MAGIC_GUI_OK\n"
     RESPONSE_MSZ, // "msz %d %d\n"
     RESPONSE_BCT, // "bct %d %d %d %d %d %d %d %d %d\n"
     RESPONSE_TNA, // "tna %s\n"

@@ -87,10 +87,6 @@ void Map::Awake() noexcept
 
     m_net_manager = &obj->getScript<NetworkManager>();
     m_net_manager->addRequest(std::move(Request::RQ_CONNECT));
-    m_net_manager->addRequest(std::move(Request::RQ_MAP_SIZE));
-    m_net_manager->addRequest(std::move(Request::RQ_MAP_CONTENT));
-    m_net_manager->addRequest(std::move(Request::RQ_TEAM_NAMES));
-    m_net_manager->addRequest(std::move(Request::RQ_TIME_UNIT_REQUEST));
 
     auto &button_pb = ecs::GameObject::FindPrefabByName("Button");
 

@@ -14,6 +14,14 @@
 #include "resources/Inventory.hpp"
 #include "Tile.hpp"
 
+void r_magic_gui_handler(Map &map, Response &response)
+{
+    map.m_net_manager->addRequest(std::move(Request::RQ_MAP_SIZE));
+    map.m_net_manager->addRequest(std::move(Request::RQ_MAP_CONTENT));
+    map.m_net_manager->addRequest(std::move(Request::RQ_TEAM_NAMES));
+    map.m_net_manager->addRequest(std::move(Request::RQ_TIME_UNIT_REQUEST));
+}
+
 // map size
 void r_msz_handler(Map &map, Response &response)
 {
@@ -338,6 +346,7 @@ void r_seg_handler(Map &map, Response &response)
 void response_handler(Map &map, Response &response)
 {
     switch (response.m_type) {
+        case (Response::RESPONSE_MAGIC_GUI) : r_magic_gui_handler(map, response); return;
         case (Response::RESPONSE_MSZ) : r_msz_handler(map, response); return;
         case (Response::RESPONSE_BCT) : r_bct_handler(map, response); return;
         case (Response::RESPONSE_TNA) : r_tna_handler(map, response); return;

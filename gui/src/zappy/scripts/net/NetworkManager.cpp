@@ -56,6 +56,7 @@ void NetworkManager::Update() noexcept
 
     // Read from server
     if (m_selector.isReady(m_socket)) {
+        std::cout << "Reading from server ..."<< std::endl;
         char buffer[READ_SIZE + 1];
         size_t nb_bytes = 0;
         sf::TcpSocket::Status status;
@@ -68,10 +69,11 @@ void NetworkManager::Update() noexcept
         }
         buffer[nb_bytes] = '\0';
         m_buffer.append((char *)buffer);
+        std::cout << "Buffer updated: \"" << m_buffer << "\""<< std::endl;
     }
 
     // Parse requests
-    std::string delim = ",";
+    std::string delim = "\n";
     std::string chunk;
     size_t pos = 0;
 
@@ -95,7 +97,8 @@ void NetworkManager::Update() noexcept
     // Send responses
     while (!m_pending_requests.empty()) {
         const Request &r = m_pending_requests.front();
-
+        
+        std::cout << "Sending request: \"" << r.data << "\"" << std::endl;
         if (r.data.size() > 0 ) {
             m_socket.send(r.data.c_str(), r.data.size());
         }
