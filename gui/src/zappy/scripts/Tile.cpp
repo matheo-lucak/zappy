@@ -39,7 +39,8 @@ void Tile::Awake() noexcept
 
     m_tileInventory_obj = &tileInventory_obj;
     m_mineral = gameObject.FindChildByName("Mineral");
-}
+    m_food = gameObject.FindChildByName("Food");
+;}
 
 void Tile::Start() noexcept
 {
@@ -49,6 +50,13 @@ void Tile::Start() noexcept
     tileIventory_transform.setPosition({position.x - 0.75f, position.y + 2.0f, position.z});
 }
 
+//check if exist
+// check print mineral
+// setenable
+
 void Tile::Update() noexcept
 {
+    if (m_mineral || m_food)
+        return;
+    m_food.se
 }

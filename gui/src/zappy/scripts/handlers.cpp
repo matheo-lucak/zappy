@@ -64,8 +64,13 @@ void r_ppo_handler(Map &map, Response &response)
     size_t pos_x = std::stoi(*(++it));
     size_t pos_y = std::stoi(*(++it));
     Drone::Direction drct = static_cast<Drone::Direction>(std::stoi(*(++it)));
+
     ecs::GameObject *drone = map.getDrone(player_id);
-    dron
+    auto &drone_script = drone->getScript<Drone>();
+
+    drone_script.x = pos_x;
+    drone_script.y = pos_y;
+    drone_script.dir = drct;
 }
 
 // player’s stats
@@ -84,6 +89,11 @@ void r_pst_handler(Map &map, Response &response)
     size_t mendiane4_qt = std::stoi(*(++it));
     size_t phiras5_qt = std::stoi(*(++it));
     size_t trystame6_qt = std::stoi(*(++it));
+
+    ecs::GameObject *drone = map.getDrone(player_id);
+    auto &drone_script = drone->getScript<Drone>();
+
+    //for () {}
 }
 
 // connection of a new player
@@ -180,6 +190,7 @@ void r_eht_handler(Map &map, Response &response)
         return;
     }
     size_t egg_id = std::stoi(*(response.m_args.begin()));
+
     map.newDroneFromEgg(egg_id);
 }
 
@@ -207,6 +218,7 @@ void r_edi_handler(Map &map, Response &response)
         return;
     }
     size_t player_id = std::stoi(*(response.m_args.begin()));
+
     map.killDrone(player_id);
 }
 
@@ -220,7 +232,9 @@ void r_pdr_handler(Map &map, Response &response)
     std::list<std::string>::iterator it = response.m_args.begin();
     size_t player_id = std::stoi(*it);
     Resource resource_id = static_cast<Resource>(std::stoi(*(++it)));
+
     ecs::GameObject *drone = map.getDrone(player_id);
+
     map.dropResource(resource_id, drone);
 }
 
@@ -234,7 +248,9 @@ void r_pgt_handler(Map &map, Response &response)
     std::list<std::string>::iterator it = response.m_args.begin();
     size_t player_id = std::stoi(*it);
     Resource resource_id = static_cast<Resource>(std::stoi(*(++it)));
+
     ecs::GameObject *drone = map.getDrone(player_id);
+
     map.collectResource(resource_id, drone);
 }
 
@@ -246,6 +262,7 @@ void r_pdi_handler(Map &map, Response &response)
         return;
     }
     size_t player_id = std::stoi(*(response.m_args.begin()));
+
     map.killDrone(player_id);
 }
 
@@ -257,6 +274,7 @@ void r_sgt_handler(Map &map, Response &response)
         return;
     }
     int time_unit = std::stoi(*(response.m_args.begin()));
+
     map.m_freq = time_unit;
 }
 

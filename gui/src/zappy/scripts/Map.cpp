@@ -87,6 +87,9 @@ void Map::Awake() noexcept
 
 void Map::Start() noexcept
 {
+    auto &text_tile_position_obj = gameObject.FindChildByName("TilePosition")->getComponent<ecs::Text>();
+
+    text_tile_position_obj.text = "Tile on focus: (0, 0)";
 }
 
 void Map::handleCameraMovements(void)
@@ -179,6 +182,14 @@ void Map::handle_find_render_tile()
                 if (coords.x - 15 <= mouse_position.x && coords.x + 15 >= mouse_position.x
                     && coords.y - 15 <= mouse_position.y && coords.y + 15 >= mouse_position.y) {
                     m_render_tile = utils::Vector2f{x, z};
+
+                    auto &text_tile_position_obj = gameObject.FindChildByName("TilePosition")->getComponent<ecs::Text>();
+
+                    text_tile_position_obj.text = std::string("Tile on focus: (") +
+                                                  std::to_string(static_cast<int>(m_render_tile.x)) +
+                                                  std::string(", ") +
+                                                  std::to_string(static_cast<int>(m_render_tile.y)) +
+                                                  std::string(")");
                     break;
                 }
             }

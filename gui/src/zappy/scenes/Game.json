@@ -185,6 +185,29 @@
                                 }
                             ]
                         }
+                    },
+                    {
+                        "object": {
+                            "name": "TilePosition",
+                            "components": [
+                                {
+                                    "type": "Transform",
+                                    "position": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0
+                                    },
+                                    "scale": 1
+                                },
+                                {
+                                    "type": "Text",
+                                    "text": "position",
+                                    "color": "Black",
+                                    "size": 40,
+                                    "position": { "x": 10, "y": 70 }
+                                }
+                            ]
+                        }
                     }
                 ],
                 "scripts": [
