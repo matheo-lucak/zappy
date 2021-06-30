@@ -1,0 +1,43 @@
+# File produced by Open Asset Import Library (http://www.assimp.sf.net)
+# (assimp v5.0.639693989)
+
+newmtl mat_pc007_pink_face_001
+Kd 1 1 1
+Ks 0.40000001 0.40000001 0.40000001
+Ke 0 0 0
+Ns 249.01961
+illum 2
+map_Kd player2_tex3.png
+
+newmtl mat_pc007_pink_body_001
+Kd 1 1 1
+Ks 0.40000001 0.40000001 0.40000001
+Ke 0 0 0
+Ns 249.01961
+illum 2
+map_Kd player2_tex1.png
+
+newmtl mat_pc007_pink_face_001
+Kd 1 1 1
+Ks 0.40000001 0.40000001 0.40000001
+Ke 0 0 0
+Ns 249.01961
+illum 2
+map_Kd player2_tex3.png
+
+newmtl mat_pc007_pink_knot_001
+Kd 1 1 1
+Ks 0.40000001 0.40000001 0.40000001
+Ke 0 0 0
+Ns 249.01961
+illum 2
+map_Kd player2_tex2.png
+
+newmtl mat_pc007_pink_body_001
+Kd 1 1 1
+Ks 0.40000001 0.40000001 0.40000001
+Ke 0 0 0
+Ns 249.01961
+illum 2
+map_Kd player2_tex1.png
+

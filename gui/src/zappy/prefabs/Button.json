@@ -1,0 +1,31 @@
+{
+    "name": "Button",
+    "tag": "Button",
+    "components": [
+        {
+            "type": "Transform",
+            "position": { "x": 960, "y": 540, "z": 0 },
+            "scale": { "x": 200, "y": 60, "z": 0 }
+        },
+        {
+            "type": "Image",
+            "path": "../src/assets/images/TextBTN.png",
+            "scale": 0.00235
+        },
+        {
+            "type": "Text",
+            "text": "Play",
+            "color": "DarkBlue",
+            "size": 0.6,
+            "position": { "x": 65, "y": 15 }
+        },
+        {
+            "type": "Button",
+            "size": 1,
+            "origin": 0,
+            "hover":   { "r": 220, "g": 220, "b": 220, "a": 255 },
+            "pressed": { "r": 180, "g": 180, "b": 180, "a": 255 },
+            "hold":    { "r": 200, "g": 200, "b": 200, "a": 255 }
+        }
+    ]
+}
