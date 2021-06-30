@@ -105,7 +105,7 @@ typedef struct response_s
 #define RESPONSE_SGT "sgt %d\n"
 
 // seg N\n                                              - end of game
-#define RESPONSE_SEG "seg %d\n"
+#define RESPONSE_SEG "seg %s\n"
 
 ////////////////////////////////////////////////////////////////////////////////
 
