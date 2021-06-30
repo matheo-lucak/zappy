@@ -21,30 +21,43 @@ static void server_notification_end_incantation(server_t *s,
     ));
 }
 
+static void simulation_handle_inc_fail(server_t *s, client_t *c,
+                                            incantation_t *inc)
+{
+    server_notification_end_incantation(s, inc, false);
+    list_foreach(it, inc->tile->drones) {
+        c = server_find_client_from_drone(s, NODE_PTR(it, drone_t));
+        if (c)
+            client_add_response(c, response_create(RESPONSE_KO));
+    }
+}
+
+static void simulation_handle_inc_success(server_t *s, client_t *c,
+                                                incantation_t *inc)
+{
+    client_unblock(c);
+    incantation_elevate(inc);
+    server_notification_end_incantation(s, inc, true);
+    list_foreach(it, inc->tile->drones) {
+        c = server_find_client_from_drone(s, NODE_PTR(it, drone_t));
+        if (c) {
+            client_add_response(c,
+                response_create(RESPONSE_ELEVATION, inc->elevation_lvl + 1));
+        }
+    }
+}
+
 static void simulation_handle_single_incantation(server_t *s,
                                             incantation_t *inc)
 {
     client_t *client = server_find_client_from_drone(s, inc->owner);
 
     if (!client || !incantation_check_requirements(inc)) {
-        server_notification_end_incantation(s, inc, false);
-        list_foreach(it, inc->tile->drones) {
-            client = server_find_client_from_drone(s, NODE_PTR(it, drone_t));
-            if (client)
-                client_add_response(client, response_create(RESPONSE_KO));
-        }
+        simulation_handle_inc_fail(s, client, inc);
         return;
     }
-    client_unblock(client);
-    incantation_elevate(inc);
-    server_notification_end_incantation(s, inc, true);
-    list_foreach(it, inc->tile->drones) {
-        client = server_find_client_from_drone(s, NODE_PTR(it, drone_t));
-        if (client) {
-            client_add_response(client,
-                response_create(RESPONSE_ELEVATION, inc->elevation_lvl + 1));
-        }
-    }
+    simulation_handle_inc_success(s, client, inc);
+    simulation_check_end_of_game(s);
 }
 
 void simulation_handle_incantation(server_t *s)
