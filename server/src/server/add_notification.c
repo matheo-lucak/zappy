@@ -18,4 +18,5 @@ void server_add_notification(server_t *s, response_t *r)
             client_add_response(c, response_clone(r));
         }
     }
+    response_destroy(r);
 }

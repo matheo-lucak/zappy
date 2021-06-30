@@ -9,6 +9,24 @@
 #include "simulation/incantation.h"
 #include "server/response/response.h"
 
+static void server_notification_start_incantation(server_t *s,
+                                                    client_t *c,
+                                                    incantation_t *i)
+{
+    server_add_notification(s, response_create(RESPONSE_PIC,
+        i->pos.x,
+        i->pos.y,
+        i->elevation_lvl,
+        c->drone->id,
+        i->requirements[RESOURCE_LINEMATE],
+        i->requirements[RESOURCE_DERAUMERE],
+        i->requirements[RESOURCE_SIBUR],
+        i->requirements[RESOURCE_MENDIANE],
+        i->requirements[RESOURCE_PHIRAS],
+        i->requirements[RESOURCE_THYSTAME]
+    ));
+}
+
 void request_handler_cmd_incantation(server_t *s,
                                     client_t *c,
                                     __attribute__((unused))request_t *r)
@@ -27,5 +45,6 @@ void request_handler_cmd_incantation(server_t *s,
         if (client)
             client_add_response(client, response_create(RESPONSE_INCANTATION));
     }
+    server_notification_start_incantation(s, c, inc);
     ptr_list_push_back(s->sim.incantations, inc);
 }

@@ -77,30 +77,26 @@ typedef struct response_s
 // pie X Y R\n                                          - end of an incantation
 #define RESPONSE_PIE "pie %d %d %d\n"
 
-// pfk n\n                                              - egg laying
-//                                                        by the player
-#define RESPONSE_PFK "pfk %d\n"
-
 // enw e n X Y\n                                        - an egg was laid
 //                                                        by a player
 #define RESPONSE_ENW "enw %d %d %d %d\n"
 
-// eht e\n                                              - egg hatching
+// eht n\n                                              - egg hatching
 #define RESPONSE_EHT "eht %d\n"
 
-// ebo e\n                                              - player connection
-//                                                        for an egg
-#define RESPONSE_EBO "ebo %e\n"
+// ebo #n X Y O L N\n                                   - player connection
+//                                                        from an egg
+#define RESPONSE_EBO "ebo %d %d %d %d %d %s\n"
 
 // edi e\n                                              - death of
 //                                                        an hatched egg
-#define RESPONSE_EDI "edi %e\n"
+#define RESPONSE_EDI "edi %d\n"
 
 // pdr n i\n                                            - resource dropping
 #define RESPONSE_PDR "pdr %d %d\n"
 
 // pgt n i\n                                            - resource collecting
-#define RESPONSE_PGT "pgt %n %i\n"
+#define RESPONSE_PGT "pgt %d %i\n"
 
 // pdi n\n                                              - death of a player
 #define RESPONSE_PDI "pdi %d\n"

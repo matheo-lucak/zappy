@@ -10,6 +10,16 @@
 #include "server/response/response.h"
 #include "server/request/request.h"
 
+static void server_notification_set(server_t *s,
+                                    client_t *c,
+                                    resource_type_t t)
+{
+    server_add_notification(s, response_create(RESPONSE_PDR,
+        c->drone->id,
+        t
+    ));
+}
+
 void request_handler_cmd_set(server_t *s, client_t *c, request_t *r)
 {
     bool is_ok = false;
@@ -30,4 +40,5 @@ void request_handler_cmd_set(server_t *s, client_t *c, request_t *r)
         is_ok = tile_add_item(tile, type);
     }
     client_add_response(c, response_create(is_ok ? RESPONSE_OK : RESPONSE_KO));
+    server_notification_set(s, c, type);
 }

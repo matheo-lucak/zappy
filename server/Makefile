@@ -168,6 +168,7 @@ SRC_PROJECT		=	$(addprefix $(SRC_PATH), arg_parser/arg_checker/positive_int.c)		
 					$(addprefix $(SRC_PATH), simulation/vector/add.c)							\
 					$(addprefix $(SRC_PATH), simulation/vector/distance.c)						\
 					$(addprefix $(SRC_PATH), simulation/vector/sub.c)							\
+					$(addprefix $(SRC_PATH), simulation/entity_id.c)							\
 					$(addprefix $(SRC_PATH), simulation/find_team_from_drone.c)					\
 					$(addprefix $(SRC_PATH), simulation/handle.c)								\
 					$(addprefix $(SRC_PATH), simulation/remove_drone.c)							\

@@ -27,6 +27,7 @@ typedef struct drone_s
     direction_t  facing_direction;
     inventory_t *       inventory;
     int             elevation_lvl;
+    unsigned                   id;
 } drone_t;
 
 /**

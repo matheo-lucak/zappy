@@ -6,6 +6,7 @@
 */
 
 #include "simulation/team.h"
+#include "simulation/simulation.h"
 
 drone_t *team_new_active_drone(team_t *team, vector2u_t pos)
 {
@@ -19,6 +20,7 @@ drone_t *team_new_active_drone(team_t *team, vector2u_t pos)
             drone_destroy(drone);
             return NULL;
         }
+        drone->id = get_next_entity_id();
     }
     team->free_slots_nb -= 1;
     return drone;
