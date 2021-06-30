@@ -1,9 +1,6 @@
 {
     "name": "Player",
     "tag": "Player",
-    "scripts": [
-        "Player"
-    ],
     "components": [
         {
             "type": "Transform",
@@ -11,7 +8,11 @@
         },
         {
             "type": "BoxCollider",
-            "position": { "x": 0, "y": 0, "z": 0 },
+            "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
             "size": 1
         }
     ]

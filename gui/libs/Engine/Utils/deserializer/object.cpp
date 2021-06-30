@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-400-BDX-4-1-indiestudio-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** gameobject
 */
@@ -16,12 +16,12 @@
 
 using json = nlohmann::json;
 
-namespace indie::deserializer::component
+namespace zappy::deserializer::component
 {
     void parseComponent(ecs::GameObject &object, const json &j);
 } // namespace component
 
-namespace indie::deserializer::object
+namespace zappy::deserializer::object
 {
     std::unique_ptr<ecs::GameObject> parseObject(json &obj, const std::string &relativePath, const std::vector<std::unique_ptr<ecs::GameObject>> &prefabList);
 
@@ -29,7 +29,7 @@ namespace indie::deserializer::object
                                         const std::vector<std::unique_ptr<ecs::GameObject>> &prefabList)
     {
         if (obj.size() != 1) {
-            throw std::runtime_error("Inalid object nomination '" + obj.dump() + "'");
+            throw std::runtime_error("Invalid object nomination '" + obj.dump() + "'");
         }
         auto &[type, objVal] = *obj.items().begin();
         if (type == "prefab") {

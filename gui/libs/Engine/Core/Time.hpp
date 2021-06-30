@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-400-BDX-4-1-indiestudio-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** Time
 */
@@ -9,7 +9,7 @@
 
 #include <chrono>
 
-namespace indie
+namespace zappy
 {
     class Application;
 
@@ -33,5 +33,5 @@ namespace indie
 
             friend class Application;
     };
-} // namespace indie
+} // namespace zappy
 

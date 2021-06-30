@@ -1,6 +1,5 @@
 {
     "scenes": [
-        "scenes/Menu.json",
         "scenes/Game.json"
     ]
 }

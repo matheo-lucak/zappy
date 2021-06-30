@@ -1,13 +1,13 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-400-BDX-4-1-indiestudio-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** Scene
 */
 
 #include "Scene.hpp"
 
-using namespace indie;
+using namespace zappy;
 
 Scene::Scene() noexcept
 {

@@ -1,13 +1,13 @@
 /*
 ** EPITECH PROJECT, 2021
-** IndieStudio
+** Zappy
 ** File description:
 ** ArgumentParsingError
 */
 
 #include "ArgumentParsingError.hpp"
 
-namespace indie
+namespace zappy
 {
     ArgumentParsingError::ArgumentParsingError(std::string_view message) noexcept
     {

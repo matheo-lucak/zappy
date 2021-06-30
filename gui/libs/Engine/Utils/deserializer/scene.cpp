@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-400-BDX-4-1-indiestudio-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** scene
 */
@@ -16,13 +16,13 @@
 
 using json = nlohmann::json;
 
-namespace indie::deserializer::object
+namespace zappy::deserializer::object
 {
     std::unique_ptr<ecs::GameObject> parseObjectNomination(json &obj, const std::string &relativePath,
                                         const std::vector<std::unique_ptr<ecs::GameObject>> &prefabList);
 } // namespace object
 
-namespace indie::deserializer::scene
+namespace zappy::deserializer::scene
 {
     static void parsePrefabArray(json &value, Scene &scene, const std::string &relativePath)
     {

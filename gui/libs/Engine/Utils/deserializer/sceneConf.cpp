@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-400-BDX-4-1-indiestudio-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** sceneConf
 */
@@ -13,7 +13,7 @@
 
 using json = nlohmann::json;
 
-namespace indie::deserializer::sceneConf
+namespace zappy::deserializer::sceneConf
 {
     std::vector<std::string> deserialize(std::string_view path)
     {

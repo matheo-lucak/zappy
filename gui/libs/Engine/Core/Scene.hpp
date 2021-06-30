@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-400-BDX-4-1-indiestudio-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** Scene
 */
@@ -17,7 +17,7 @@
 #include "ECS/GameObject.hpp"
 #include "Graphics/IDrawable.hpp"
 
-namespace indie
+namespace zappy
 {
     class Scene {
         public:
@@ -37,4 +37,4 @@ namespace indie
             std::vector<std::pair<std::reference_wrapper<ecs::GameObject>, std::reference_wrapper<Graphics::IDrawable3D>>> drawable3d;
             std::vector<std::reference_wrapper<ecs::GameObject>> deleting;
     };
-} // namespace indie
+} // namespace zappy

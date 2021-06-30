@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** IndieStudio
+** Zappy
 ** File description:
 ** GameObject
 */
@@ -45,10 +45,10 @@ namespace ecs
         ComponentType &addComponent(Args&&... args)
         {
             static_assert(std::is_base_of<IComponent, ComponentType>(), "Given type doesn't inherit from ecs::IComponent.");
-            INDIE_CORE_ASSERT(hasComponent<ComponentType>(), "Component already present");
+            ZAPPY_CORE_ASSERT(hasComponent<ComponentType>(), "Component already present");
             m_componentsType.emplace_back(typeid(ComponentType));
             auto &compptr = m_components.emplace_back(std::make_unique<ComponentType>(std::forward<Args>(args)...));
-            indie::SceneManagerInternal::OnComponentAdded<ComponentType>(*this, *reinterpret_cast<ComponentType *>(compptr.get()));
+            zappy::SceneManagerInternal::OnComponentAdded<ComponentType>(*this, *reinterpret_cast<ComponentType *>(compptr.get()));
             return *reinterpret_cast<ComponentType *>(compptr.get());
         }
         void addScript(std::unique_ptr<ecs::Script> script);
@@ -58,7 +58,7 @@ namespace ecs
         {
             ssize_t idx = findComponent(std::type_index{typeid(ComponentType)});
             if (idx == -1) {
-                INDIE_CORE_ASSERT(true, "Component not found");
+                ZAPPY_CORE_ASSERT(true, "Component not found");
             }
             return **reinterpret_cast<std::unique_ptr<ComponentType> *>(&m_components[idx]);
         }
@@ -67,7 +67,7 @@ namespace ecs
         {
             ssize_t idx = findComponent(std::type_index{typeid(ComponentType)});
             if (idx == -1) {
-                INDIE_CORE_ASSERT(true, "Component not found");
+                ZAPPY_CORE_ASSERT(true, "Component not found");
             }
             return **reinterpret_cast<std::unique_ptr<ComponentType> const *>(&m_components[idx]);
         }
@@ -96,9 +96,9 @@ namespace ecs
         {
             ssize_t idx = findComponent(std::type_index{typeid(ComponentType)});
             if (idx == -1) {
-                INDIE_CORE_ASSERT(true, "Component not found");
+                ZAPPY_CORE_ASSERT(true, "Component not found");
             }
-            indie::SceneManagerInternal::OnComponentRemoved(*this, m_componentsType[idx]);
+            zappy::SceneManagerInternal::OnComponentRemoved(*this, m_componentsType[idx]);
             m_components.erase(m_components.begin() + idx);
             m_componentsType.erase(m_componentsType.begin() + idx);
         }
@@ -142,8 +142,8 @@ namespace ecs
         void activate() noexcept;
 
         static std::size_t uniqueIdCounter;
-        friend indie::SceneManagerInternal;
-        friend indie::Application;
+        friend zappy::SceneManagerInternal;
+        friend zappy::Application;
         friend std::ostream& operator<<(std::ostream& stream, const GameObject& gameObject);
     };
 

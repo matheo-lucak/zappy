@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** IndieStudio
+** Zappy
 ** File description:
 ** ArgumentHelpException
 */
@@ -10,7 +10,7 @@
 #include <string_view>
 #include <exception>
 
-namespace indie
+namespace zappy
 {
     class ArgumentHelpException : public std::exception
     {

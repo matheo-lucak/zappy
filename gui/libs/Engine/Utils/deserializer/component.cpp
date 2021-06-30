@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-400-BDX-4-1-indiestudio-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** component
 */
@@ -275,7 +275,7 @@ namespace nlohmann {
     };
 }
 
-namespace indie::deserializer::component
+namespace zappy::deserializer::component
 {
     void parseComponent(ecs::GameObject &object, const json &j)
     {

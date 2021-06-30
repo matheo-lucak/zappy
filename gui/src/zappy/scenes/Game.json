@@ -1,74 +1,235 @@
 {
     "prefabs": [
-        "../prefabs/Bomb.json",
-        "../prefabs/Box.json",
-        "../prefabs/Explosion.json",
-        "../prefabs/Ground.json",
-        "../prefabs/Wall.json",
-        "../prefabs/Player.json",
-        "../prefabs/BombPowerUp.json",
-        "../prefabs/SpeedPowerUp.json",
-        "../prefabs/FirePowerUp.json",
-        "../prefabs/ExtraLifePowerUp.json",
-        "../prefabs/ResultScreen.json"
+        "../prefabs/Button.json",
+        "../prefabs/Tile.json",
+        "../prefabs/TileInventory.json"
     ],
     "objects": [
         {
             "object": {
-                "name": "Start",
+                "name": "Map",
+                "tag": "Map",
+                "components": [
+                    {
+                        "type": "Transform",
+                        "position": 0
+                    },
+                    {
+                        "type": "BoxCollider",
+                        "size": {
+                            "x": 10,
+                            "y": 2,
+                            "z": 10
+                        },
+                        "static": false
+                    }
+                ],
+                "childs": [
+                    {
+                        "object": {
+                            "name": "TileFoodAmount",
+                            "components": [
+                                {
+                                    "type": "Transform",
+                                    "position": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0
+                                    },
+                                    "scale": 1
+                                },
+                                {
+                                    "type": "Text",
+                                    "text": "food",
+                                    "color": "LightBlue",
+                                    "size": 40,
+                                    "position": { "x": 10, "y": 0 }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "object": {
+                            "name": "TileLinemateAmount",
+                            "components": [
+                                {
+                                    "type": "Transform",
+                                    "position": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0
+                                    },
+                                    "scale": 1
+                                },
+                                {
+                                    "type": "Text",
+                                    "text": "linemate",
+                                    "color": "Red",
+                                    "size": 40,
+                                    "position": { "x": 160, "y": 0 }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "object": {
+                            "name": "TileDeraumereAmount",
+                            "components": [
+                                {
+                                    "type": "Transform",
+                                    "position": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0
+                                    },
+                                    "scale": 1
+                                },
+                                {
+                                    "type": "Text",
+                                    "text": "deraumere",
+                                    "color": "DarkBlue",
+                                    "size": 40,
+                                    "position": { "x": 310, "y": 0 }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "object": {
+                            "name": "TileMendianeAmount",
+                            "components": [
+                                {
+                                    "type": "Transform",
+                                    "position": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0
+                                    },
+                                    "scale": 1
+                                },
+                                {
+                                    "type": "Text",
+                                    "text": "mendiane",
+                                    "color": "Cyan",
+                                    "size": 40,
+                                    "position": { "x": 460, "y": 0 }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "object": {
+                            "name": "TileSiburAmount",
+                            "components": [
+                                {
+                                    "type": "Transform",
+                                    "position": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0
+                                    },
+                                    "scale": 1
+                                },
+                                {
+                                    "type": "Text",
+                                    "text": "sibur",
+                                    "color": "Purple",
+                                    "size": 40,
+                                    "position": { "x": 610, "y": 0 }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "object": {
+                            "name": "TilePhirasAmount",
+                            "components": [
+                                {
+                                    "type": "Transform",
+                                    "position": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0
+                                    },
+                                    "scale": 1
+                                },
+                                {
+                                    "type": "Text",
+                                    "text": "phiras",
+                                    "color": "Yellow",
+                                    "size": 40,
+                                    "position": { "x": 760, "y": 0 }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "object": {
+                            "name": "TileThystameAmount",
+                            "components": [
+                                {
+                                    "type": "Transform",
+                                    "position": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0
+                                    },
+                                    "scale": 1
+                                },
+                                {
+                                    "type": "Text",
+                                    "text": "thystame",
+                                    "color": "Orange",
+                                    "size": 40,
+                                    "position": { "x": 910, "y": 0 }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "object": {
+                            "name": "TilePosition",
+                            "components": [
+                                {
+                                    "type": "Transform",
+                                    "position": {
+                                        "x": 0,
+                                        "y": 0,
+                                        "z": 0
+                                    },
+                                    "scale": 1
+                                },
+                                {
+                                    "type": "Text",
+                                    "text": "position",
+                                    "color": "Black",
+                                    "size": 40,
+                                    "position": { "x": 10, "y": 70 }
+                                }
+                            ]
+                        }
+                    }
+                ],
                 "scripts": [
-                    "CreatePlayers"
+                    "Map"
                 ]
             }
         },
         {
-            "comment": {
-                "name": "Player",
-                "tag": "Player",
+            "object": {
+                "name": "NetworkManager",
+                "tag": "NetworkManager",
                 "components": [
                     {
                         "type": "Transform",
-                        "position": {"x": 5, "y": -3, "z": 5}
+                        "position": 0
                     }
                 ],
-                "childs": [
-                    { "object": {
-                        "name": "cube",
-                        "components": [
-                            {
-                                "type": "BoxCollider",
-                                "size": 1,
-                                "static": false
-                            }
-                        ]
-                    } },
-                    { "object": {
-                        "name": "cubeWires"
-                    } }
-                ],
                 "scripts": [
-                    "Player"
+                    "NetworkManager"
                 ]
             }
         },
-        { "object": {
-            "name": "Map",
-            "tag": "Map",
-            "components": [
-                {
-                    "type": "Transform",
-                    "position": 0
-                },
-                {
-                    "type": "BoxCollider",
-                    "size": {"x": 31, "y": 2, "z": 31},
-                    "static": false
-                }
-            ],
-            "scripts": [
-                "Map"
-            ]
-        } },
         {
             "object": {
                 "name": "Sounds",
@@ -80,7 +241,7 @@
                         "type": "MusicPlayer",
                         "path": "../src/assets/musics/inGame.mp3",
                         "looping": true,
-                        "volume": 1.0,
+                        "volume": 0.004,
                         "play": true
                     }
                 ],
@@ -91,7 +252,11 @@
                             "components": [
                                 {
                                     "type": "Transform",
-                                    "position": { "x": 1920, "y": 1080, "z": 0 }
+                                    "position": {
+                                        "x": 1920,
+                                        "y": 1080,
+                                        "z": 0
+                                    }
                                 },
                                 {
                                     "type": "Image",
@@ -109,7 +274,11 @@
                             "components": [
                                 {
                                     "type": "Transform",
-                                    "position": { "x": 1920, "y": 1080, "z": 0 }
+                                    "position": {
+                                        "x": 1920,
+                                        "y": 1080,
+                                        "z": 0
+                                    }
                                 },
                                 {
                                     "type": "Image",
@@ -127,7 +296,11 @@
                             "components": [
                                 {
                                     "type": "Transform",
-                                    "position": { "x": 1920, "y": 1080, "z": 0 }
+                                    "position": {
+                                        "x": 1920,
+                                        "y": 1080,
+                                        "z": 0
+                                    }
                                 },
                                 {
                                     "type": "Image",
@@ -145,7 +318,11 @@
                             "components": [
                                 {
                                     "type": "Transform",
-                                    "position": { "x": 1920, "y": 1080, "z": 0 }
+                                    "position": {
+                                        "x": 1920,
+                                        "y": 1080,
+                                        "z": 0
+                                    }
                                 },
                                 {
                                     "type": "Image",

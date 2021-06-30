@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-400-BDX-4-1-indiestudio-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** SceneManager
 */
@@ -9,7 +9,7 @@
 
 #include <string_view>
 
-namespace indie::SceneManager
+namespace zappy::SceneManager
 {
     void LoadBuildScenes(std::string_view path);
 
@@ -19,4 +19,4 @@ namespace indie::SceneManager
     void QuitApplication() noexcept;
 
     void ToggleMusicMute(bool value) noexcept;
-} // namespace indie::SceneManager
+} // namespace zappy::SceneManager

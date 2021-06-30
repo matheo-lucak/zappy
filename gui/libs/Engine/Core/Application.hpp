@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-400-BDX-4-1-indiestudio-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** Application
 */
@@ -19,9 +19,9 @@ namespace ecs
 {
     class GameObject;
     class BoxCollider;
-} // namespace ecs
+} // namepspace ecs
 
-namespace indie
+namespace zappy
 {
     struct ApplicationCmdLineArgs
     {
@@ -54,20 +54,17 @@ namespace indie
     class Application
     {
     public:
-        static indie::Application *application;
         unsigned int port;
         std::string machine;
 
     public:
-        Application(indie::ApplicationCmdLineArgs args, std::string_view name, std::string_view sceneConfPath, int width, int height, int fps = 60);
+        Application(zappy::ApplicationCmdLineArgs args, std::string_view name, std::string_view sceneConfPath, int width, int height, int fps = 60);
         virtual ~Application() noexcept;
-
-        indie::Application *get() const noexcept;
 
     private:
         Graphics::Window m_window;
 
-        void parse_args(indie::ApplicationCmdLineArgs args);
+        void parse_args(zappy::ApplicationCmdLineArgs args);
         void run();
         void UpdateLoop();
         void UpdateColliders();
@@ -75,7 +72,9 @@ namespace indie
                                  ecs::GameObject &obj2, ecs::BoxCollider &collider2);
         friend int ::main(int ac, char **av);
     };
-} // namespace indie
+} // namespace zappy
+
+extern zappy::Application *application;
 
 /**
  * @brief Create an Application object, MUST be provided by the User
@@ -83,4 +82,4 @@ namespace indie
  * @param args Command line arguments given at the start of the bin
  * @return std::unique_ptr<Application>
  */
-std::unique_ptr<indie::Application> CreateApplication(indie::ApplicationCmdLineArgs args);
+std::unique_ptr<zappy::Application> CreateApplication(zappy::ApplicationCmdLineArgs args);

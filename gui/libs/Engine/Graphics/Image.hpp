@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** IndieStudio [WSL: Ubuntu]
+** Zappy
 ** File description:
 ** Image
 */

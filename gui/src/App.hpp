@@ -1,19 +1,20 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-400-BDX-4-1-indiestudio-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** App
 */
 
 #pragma once
 
-#include "Core.hpp"
 #include <string_view>
 
-class App : public indie::Application
+#include "Core.hpp"
+
+class App : public zappy::Application
 {
     public:
-        App(indie::ApplicationCmdLineArgs args);
+        App(zappy::ApplicationCmdLineArgs args);
         ~App() noexcept override;
 
         static constexpr std::string_view BUILD_SCENES_PATH = "../src/zappy/BuildScenes.json";

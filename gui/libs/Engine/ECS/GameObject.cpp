@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** IndieStudio
+** Zappy
 ** File description:
 ** GameObject
 */
@@ -26,7 +26,7 @@ namespace ecs
         for (std::size_t i = 1; i < other.m_components.size(); ++i) {
             m_componentsType.emplace_back(other.m_componentsType[i]);
             m_components.emplace_back(other.m_components[i]->copy(*this));
-            indie::SceneManagerInternal::OnComponentAdded(*this, *m_components[i], other.m_componentsType[i]);
+            zappy::SceneManagerInternal::OnComponentAdded(*this, *m_components[i], other.m_componentsType[i]);
         }
         for (const auto &script : other.m_scripts) {
             m_scripts.emplace_back(script->copy(*this));
@@ -59,21 +59,21 @@ namespace ecs
         if (isActive == false) {
             m_isActive = false;
             for (auto &type : m_componentsType) {
-                indie::SceneManagerInternal::OnComponentRemoved(*this, type);
+                zappy::SceneManagerInternal::OnComponentRemoved(*this, type);
             }
             for (auto &child : m_children) {
                 child->setActive(false);
             }
             return;
         }
-        indie::SceneManagerInternal::CommissionObject(*this);
+        zappy::SceneManagerInternal::CommissionObject(*this);
     }
 
     void GameObject::activate() noexcept
     {
         m_isActive = true;
         for (size_t i = 0; i < m_components.size(); ++i) {
-            indie::SceneManagerInternal::OnComponentAdded(*this, *m_components[i], m_componentsType[i]);
+            zappy::SceneManagerInternal::OnComponentAdded(*this, *m_components[i], m_componentsType[i]);
         }
         for (auto &script : m_scripts) {
             script->Awake();
@@ -109,29 +109,29 @@ namespace ecs
 
     GameObject &GameObject::Instantiate(std::unique_ptr<GameObject> object)
     {
-        return indie::SceneManagerInternal::InstantiateObject(std::move(object));
+        return zappy::SceneManagerInternal::InstantiateObject(std::move(object));
     }
 
     GameObject &GameObject::Instantiate(const GameObject &object)
     {
-        return indie::SceneManagerInternal::InstantiateObject(std::make_unique<GameObject>(object));
+        return zappy::SceneManagerInternal::InstantiateObject(std::make_unique<GameObject>(object));
     }
 
     GameObject &GameObject::Instantiate(const GameObject &object, const utils::Vector3f &position)
     {
-        return indie::SceneManagerInternal::InstantiateObject(std::make_unique<GameObject>(object), position);
+        return zappy::SceneManagerInternal::InstantiateObject(std::make_unique<GameObject>(object), position);
     }
 
     GameObject &GameObject::Instantiate(const GameObject &object, const utils::Vector3f &position, const utils::Vector3f &rotation)
     {
-        return indie::SceneManagerInternal::InstantiateObject(std::make_unique<GameObject>(object), position, rotation);
+        return zappy::SceneManagerInternal::InstantiateObject(std::make_unique<GameObject>(object), position, rotation);
     }
 
     GameObject &GameObject::InstantiateChild(std::unique_ptr<GameObject> object)
     {
         auto &obj = *m_children.emplace_back(std::move(object));
         for (std::size_t i = 0; i < obj.m_components.size(); ++i) {
-            indie::SceneManagerInternal::OnComponentAdded(obj, *obj.m_components[i], obj.m_componentsType[i]);
+            zappy::SceneManagerInternal::OnComponentAdded(obj, *obj.m_components[i], obj.m_componentsType[i]);
         }
         return obj;
     }
@@ -143,27 +143,27 @@ namespace ecs
 
     void GameObject::Destroy(GameObject &object)
     {
-        indie::SceneManagerInternal::AskDestroyObject(object);
+        zappy::SceneManagerInternal::AskDestroyObject(object);
     }
 
     GameObject *GameObject::FindGameObjectByName(const std::string &name)
     {
-        return indie::SceneManagerInternal::FindGameObjectByName(name);
+        return zappy::SceneManagerInternal::FindGameObjectByName(name);
     }
 
     GameObject *GameObject::FindChildByName(const std::string &name)
     {
-        return indie::SceneManagerInternal::FindGameObjectByNameInList(name, m_children);
+        return zappy::SceneManagerInternal::FindGameObjectByNameInList(name, m_children);
     }
 
     GameObject &GameObject::FindPrefabByName(const std::string &name)
     {
-        return indie::SceneManagerInternal::FindPrefabByName(name);
+        return zappy::SceneManagerInternal::FindPrefabByName(name);
     }
 
     std::list<ecs::GameObject *> GameObject::FindGameObjectsByTag(const std::string &tag)
     {
-        return indie::SceneManagerInternal::FindGameObjectsByTag(tag);
+        return zappy::SceneManagerInternal::FindGameObjectsByTag(tag);
     }
 
     bool GameObject::operator==(const GameObject &other) const noexcept

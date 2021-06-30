@@ -1,0 +1,31 @@
+{
+    "name": "TileInventory",
+    "tag": "TileInventory",
+    "components": [
+        {
+            "type": "Transform",
+            "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "rotation": 0,
+            "scale": 0.5
+        },
+        {
+            "type": "Model",
+            "path": "../src/assets/models/tiles/items/wooden_crate.glb",
+            "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 0.5
+        },
+        {
+            "type": "BoxCollider",
+            "static": true,
+            "size": 1
+        }
+    ]
+}

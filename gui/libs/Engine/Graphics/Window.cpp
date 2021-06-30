@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** IndieStudio
+** Zappy
 ** File description:
 ** Window
 */
@@ -20,7 +20,7 @@ namespace Graphics
             throw ResourceInitialization("Graphics: Unexpected error encountered during window initialization.");
         setFPS(fps);
         ::SetExitKey(KEY_NULL);
-        ::SetCameraMode(Camera::camera.m_camera, CAMERA_FREE);
+        ::SetCameraMode(Camera::camera.m_camera, ::CAMERA_FREE);
         toggleFullscreen(true);
     }
 

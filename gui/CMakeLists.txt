@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.11)
 
-project(IndieStudio VERSION 0.1
+project(Zappy VERSION 0.1
                     LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -9,6 +9,7 @@ set(CMAKE_CXX_FLAGS "-Wall -O0 -g")
 
 include(cmake/Findraylib.cmake)
 add_subdirectory(deps)
+find_package(SFML 2.5.1 COMPONENTS network REQUIRED)
 
 #### Engine Static Library ####
 
@@ -85,19 +86,22 @@ target_include_directories(Engine PUBLIC
 #### Zappy GUI ####
 
 add_executable( zappy_gui src/App.cpp
-                          src/zappy/scripts/Bomb.cpp
-                          src/zappy/scripts/CameraCtrl.cpp
-                          src/zappy/scripts/CreatePlayers.cpp
-                          src/zappy/scripts/Explosion.cpp
-                          src/zappy/scripts/Initializer.cpp
+                          src/zappy/scripts/net/NetworkManager.cpp
+                          src/zappy/scripts/net/Request.cpp
+                          src/zappy/scripts/net/Response.cpp
+                          src/zappy/scripts/resources/Inventory.cpp
+                          src/zappy/scripts/Drone.cpp
+                          src/zappy/scripts/Egg.cpp
+                          src/zappy/scripts/handlers.cpp
+                          src/zappy/scripts/Incantation.cpp
                           src/zappy/scripts/Map.cpp
-                          src/zappy/scripts/Player.cpp
-                          src/zappy/scripts/ResultScreen.cpp
                           src/zappy/scripts/SoundHandler.cpp
+                          src/zappy/scripts/Tile.cpp
                           )
 
 target_link_libraries(zappy_gui raylib)
 target_link_libraries(zappy_gui Engine)
+target_link_libraries(zappy_gui sfml-network)
 
 target_include_directories(zappy_gui PUBLIC src)
 target_include_directories(zappy_gui PUBLIC src/zappy/scripts)

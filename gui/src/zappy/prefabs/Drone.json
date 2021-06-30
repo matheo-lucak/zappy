@@ -1,0 +1,34 @@
+{
+    "name": "Drone",
+    "tag": "Drone",
+    "scripts": [
+        "Drone"
+    ],
+    "components": [
+        {
+            "type": "Transform",
+            "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "rotation": 0,
+            "scale": 2
+        },
+        {
+            "type": "Model",
+            "path": "../src/assets/models/drone/striker.gl",
+            "position": {
+                "x": -0.83,
+                "y": 0,
+                "z": 0
+            },
+            "scale": 0.5
+        },
+        {
+            "type": "BoxCollider",
+            "static": false,
+            "size": 1
+        }
+    ]
+}

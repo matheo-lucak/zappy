@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-400-BDX-4-1-indiestudio-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** Camera
 */
@@ -33,11 +33,12 @@ namespace Graphics
             void lock(bool value) noexcept;
             bool isLocked() const noexcept;
 
-        protected:
-        private:
+        public:
             ::Camera3D m_camera;
+
+        private:
             bool m_locked;
 
             Camera() noexcept;
     };
-} // namespace Graphics
+} // namespace Graphicso

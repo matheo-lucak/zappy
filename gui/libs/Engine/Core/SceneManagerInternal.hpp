@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** B-YEP-400-BDX-4-1-indiestudio-guillaume.bogard-coquard
+** Zappy
 ** File description:
 ** SceneManagerInternal
 */
@@ -29,12 +29,12 @@ namespace ecs
     class Animator;
 } // namespace ecs
 
-namespace indie
+namespace zappy
 {
     class Application;
-} // namespace indie
+} // namespace zappy
 
-namespace indie
+namespace zappy
 {
     class Scene;
 
@@ -53,7 +53,7 @@ namespace indie
 
             static void ToggleMusicMute(bool value) noexcept;
 
-            static std::unique_ptr<indie::Scene> m_scene;
+            static std::unique_ptr<zappy::Scene> m_scene;
             static int m_activeSceneBuildIdx;
             static std::vector<std::string> m_paths;
             static bool m_quit;
@@ -117,4 +117,4 @@ namespace indie
     void SceneManagerInternal::OnComponentRemoved<Graphics::IDrawable2D>(ecs::GameObject &object);
     template<>
     void SceneManagerInternal::OnComponentRemoved<Graphics::IDrawable3D>(ecs::GameObject &object);
-} // namespace indie
+} // namespace zappy

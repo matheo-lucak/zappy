@@ -1,13 +1,13 @@
 /*
 ** EPITECH PROJECT, 2021
-** IndieStudio
+** Zappy
 ** File description:
 ** ArgumentHelpException
 */
 
 #include "ArgumentHelpException.hpp"
 
-namespace indie
+namespace zappy
 {
     ArgumentHelpException::ArgumentHelpException(std::string_view message) noexcept
     {
