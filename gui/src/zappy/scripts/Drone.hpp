@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <string>
+
 #include "ECS/Script.hpp"
 #include "resources/Inventory.hpp"
 
