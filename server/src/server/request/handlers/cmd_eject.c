@@ -10,22 +10,6 @@
 #include "server/response/response.h"
 #include "simulation/drone.h"
 
-static int client_drone_finder(client_t *client, drone_t *drone)
-{
-    return (void *)client->drone != (void *)drone;
-}
-
-static client_t *get_client_from_drone(server_t *s, drone_t *drone)
-{
-    const node_t *node = ptr_list_find_cmp(s->clients,
-                                            drone,
-                                            &client_drone_finder);
-
-    if (!node)
-        return NULL;
-    return NODE_PTR(node, client_t);
-}
-
 static void notify_ejection(server_t *s, drone_t *d)
 {
     server_add_notification(s,
@@ -34,17 +18,18 @@ static void notify_ejection(server_t *s, drone_t *d)
 
 static void eject_drone_from_tile(server_t *s, client_t *e_c, drone_t *d)
 {
-    client_t *eject_c = NULL;
+    client_t *ejected_c = NULL;
     local_direction_t eject_dir = LCL_HERE;
 
     drone_eject(d, s->sim.map, e_c->drone->facing_direction);
-    eject_c = get_client_from_drone(s, d);
-    if (eject_c) {
+    ejected_c = server_find_client_from_drone(s, d);
+    if (ejected_c) {
         eject_dir = direction_get_eject_direction(
             d->facing_direction,
             e_c->drone->facing_direction
         );
-        client_add_response(e_c, response_create(RESPONSE_EJECT, eject_dir));
+        client_add_response(ejected_c,
+            response_create(RESPONSE_EJECT, eject_dir));
         notify_ejection(s, d);
     }
 }
