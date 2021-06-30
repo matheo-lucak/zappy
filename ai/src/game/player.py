@@ -314,7 +314,9 @@ class Player:
             return
         request.response = IncantationResponse("ko")
 
-    def __incantation_implementation(self, behind_incantation: bool, result_callback: Optional[Callable[[bool, bool], None]]) -> None:
+    def __incantation_implementation(
+        self, behind_incantation: bool, result_callback: Optional[Callable[[bool, bool], None]]
+    ) -> None:
         def incantation_handler(response: IncantationResponse) -> None:
             if response.result is None:
                 print("Elevation underway")

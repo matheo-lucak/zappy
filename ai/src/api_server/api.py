@@ -22,6 +22,8 @@ class MultiResponseNotHandledError(ResponseError):
 SpontaneousResponseHandler = Callable[[List[SpontaneousResponse]], None]
 FetchCallback = Callable[[], None]
 
+RequestPlaceholderVar = TypeVar("RequestPlaceholderVar")
+
 
 class FramerateAverage:
     def __init__(self) -> None:
@@ -107,11 +109,13 @@ class APIServer:
             return True
         return False
 
-    def remove_request_placeholder(self, request_type: Type[RequestPlaceholder[R]]) -> Optional[RequestPlaceholder[R]]:
+    def remove_request_placeholder(self, request_type: Type[RequestPlaceholderVar]) -> Optional[RequestPlaceholderVar]:
+        if not issubclass(request_type, RequestPlaceholder):
+            return None
         for request_list in [self.__pending_requests, self.__requests]:
             for i, request in enumerate(request_list):
-                if type(request) is request_type:
-                    return cast(RequestPlaceholder[R], self.__pending_requests.pop(i))
+                if isinstance(request, RequestPlaceholder) and type(request) == request_type:
+                    return cast(RequestPlaceholderVar, self.__pending_requests.pop(i))
         return None
 
     def flush_spontaneous_responses(self) -> List[SpontaneousResponse]:
