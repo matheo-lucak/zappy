@@ -65,6 +65,7 @@ Response::Response(std::string s)
     while ((pos = s.find(delimiter)) != std::string::npos) {
         token = s.substr(0, pos);
         if (first_token) {
+            first_token = false;
             m_type = match_type(token); 
             if (m_type == Response::type::RESPONSE_ERROR) {
                 std::cerr << "Response unkown: \"" << token << "\"" << std::endl;
@@ -75,12 +76,14 @@ Response::Response(std::string s)
         std::cout << token << std::endl;
         s.erase(0, pos + delimiter.length());
     }
-    if (first_token) {
-        m_type = match_type(s); 
-        if (m_type == Response::type::RESPONSE_ERROR) {
-            std::cerr << "Response unkown: \"" << s << "\"" << std::endl;
+    if (s.size() > 0) {
+        if (first_token) {
+            m_type = match_type(s); 
+            if (m_type == Response::type::RESPONSE_ERROR) {
+                std::cerr << "Response unkown: \"" << s << "\"" << std::endl;
+            }
+        } else {
+            m_args.push_back(s);
         }
-    } else {
-        m_args.push_back(s);
     }
 }
