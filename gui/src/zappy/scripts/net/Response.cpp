@@ -12,6 +12,8 @@
 
 static Response::type match_type(const std::string &name)
 {
+    if (name == "MAGIC_GUI_OK")
+        return Response::type::RESPONSE_MAGIC_GUI;
     if (name == "msz")
         return Response::type::RESPONSE_MSZ;
     if (name == "bct")
@@ -55,16 +57,13 @@ static Response::type match_type(const std::string &name)
 
 Response::Response(std::string s)
 {
-    constexpr char delimiter[] = " \t";
-    const std::size_t delim_len = strlen(delimiter);
-    bool first_token = true;
-    size_t pos_start = 0;
-    size_t pos_end = 0;
+    std::string delimiter = " ";
+    size_t pos = 0;
     std::string token;
+    bool first_token = true;
 
-    while ((pos_end = s.find(delimiter, pos_start)) != std::string::npos) {
-        token = s.substr(pos_start, pos_end - pos_start);
-
+    while ((pos = s.find(delimiter)) != std::string::npos) {
+        token = s.substr(0, pos);
         if (first_token) {
             m_type = match_type(token); 
             if (m_type == Response::type::RESPONSE_ERROR) {
@@ -73,10 +72,15 @@ Response::Response(std::string s)
         } else {
             m_args.push_back(token);
         }
-
-        pos_start = pos_end + delim_len;
-        first_token = false;
-        m_args.push_back(token);
+        std::cout << token << std::endl;
+        s.erase(0, pos + delimiter.length());
     }
-    m_args.push_back(s.substr(pos_start));
+    if (first_token) {
+        m_type = match_type(s); 
+        if (m_type == Response::type::RESPONSE_ERROR) {
+            std::cerr << "Response unkown: \"" << s << "\"" << std::endl;
+        }
+    } else {
+        m_args.push_back(s);
+    }
 }

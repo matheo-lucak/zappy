@@ -58,5 +58,4 @@ void Tile::Update() noexcept
 {
     if (m_mineral || m_food)
         return;
-    m_food.se
 }
