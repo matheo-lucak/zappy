@@ -9,6 +9,7 @@ set(CMAKE_CXX_FLAGS "-Wall -O0 -g")
 
 include(cmake/Findraylib.cmake)
 add_subdirectory(deps)
+find_package(SFML 2.5.1 COMPONENTS network REQUIRED)
 
 #### Engine Static Library ####
 
@@ -71,6 +72,7 @@ add_library(Engine  STATIC
 
 target_link_libraries(Engine raylib)
 target_link_libraries(Engine nlohmann-json)
+target_link_libraries(Engine sfml-network)
 target_include_directories(Engine PUBLIC
     libs/Engine
     libs/Engine/Core/Exceptions
@@ -98,6 +100,7 @@ add_executable( zappy_gui src/App.cpp
 
 target_link_libraries(zappy_gui raylib)
 target_link_libraries(zappy_gui Engine)
+target_link_libraries(zappy_gui sfml-network)
 
 target_include_directories(zappy_gui PUBLIC src)
 target_include_directories(zappy_gui PUBLIC src/zappy/scripts)
