@@ -17,7 +17,7 @@
         },
         {
             "type": "Model",
-            "path": "../src/assets/models/egg/egg.obj",
+            "path": "../src/assets/models/egg/egg.glb",
             "position": {
                 "x": -0.83,
                 "y": 0,

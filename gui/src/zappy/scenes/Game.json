@@ -1,9 +1,10 @@
 {
     "prefabs": [
-        "../prefabs/Mineral.json",
-        "../prefabs/Food.json",
         "../prefabs/Button.json",
         "../prefabs/Drone.json",
+        "../prefabs/Egg.json",
+        "../prefabs/Food.json",
+        "../prefabs/Mineral.json",
         "../prefabs/Tile.json",
         "../prefabs/TileInventory.json"
     ],

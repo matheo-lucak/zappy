@@ -21,7 +21,7 @@ namespace Graphics
         setFPS(fps);
         ::SetExitKey(KEY_NULL);
         ::SetCameraMode(Camera::camera.m_camera, ::CAMERA_FREE);
-        toggleFullscreen(true);
+        //toggleFullscreen(true);
     }
 
     Window::~Window() noexcept

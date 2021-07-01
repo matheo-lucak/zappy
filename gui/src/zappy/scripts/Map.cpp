@@ -230,7 +230,6 @@ void Map::handleMapUpdate() noexcept
 
 void Map::askForMapUpdate() noexcept
 {
-    static int tick_until_map_full_update = 0;
     static auto last_time = std::chrono::steady_clock::now();
     auto current_time = std::chrono::steady_clock::now();
 
@@ -239,13 +238,7 @@ void Map::askForMapUpdate() noexcept
     if (elapsed_time.count() >= static_cast<double>(2.0f / m_freq)) {
         last_time = current_time;
 
-        if (tick_until_map_full_update >= 5) {
-            m_net_manager->addRequest(std::move(Request(Request::RQ_MAP_CONTENT)));
-            tick_until_map_full_update = 0;
-        } else {
-            tick_until_map_full_update++;
-        }
-        std::cout << "Map Update" << std::endl;
+        std::cout << "All drone update" << std::endl;
         std::list<ecs::GameObject *> drones = ecs::GameObject::FindGameObjectsByTag("Drone");
 
         for (auto drone : drones) {
