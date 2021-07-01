@@ -75,7 +75,6 @@ Response::Response(std::string s)
         } else {
             m_args.push_back(token);
         }
-        std::cout << token << std::endl;
         s.erase(0, pos + delimiter.length());
     }
     if (s.size() > 0) {

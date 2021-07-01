@@ -56,6 +56,7 @@ void server_remove_client(server_t *s, client_t *client);
 
 client_t *server_find_client_from_drone(server_t *s, drone_t *drone);
 client_t *server_find_client_from_id(server_t *s, unsigned id);
+drone_t *server_find_drone_from_id(server_t *s, unsigned id);
 
 void server_add_notification(server_t *s, response_t *r);
 
