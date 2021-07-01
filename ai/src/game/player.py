@@ -91,8 +91,9 @@ class Player:
     def wait_for_nb_ticks(self, ticks: int) -> None:
         if ticks < 0:
             return
-        
+
         count: int = 0
+
         def inventory_handler(response: InventoryResponse) -> None:
             nonlocal count
             self.__inventory.update(response)
