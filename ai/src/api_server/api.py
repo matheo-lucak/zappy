@@ -52,6 +52,9 @@ class APIServer:
         self.__spontaneous_response_handler: Optional[SpontaneousResponseHandler] = None
 
     def __del__(self) -> None:
+        self.close()
+
+    def close(self) -> None:
         self.__socket.close()
         print(f"Disconnected from {self.__machine}:{self.__port}")
 
@@ -119,9 +122,10 @@ class APIServer:
         except ValueError:
             pass
 
-    def fetch(self) -> None:
-        for callback in self.__fetch_callbacks:
-            callback()
+    def fetch(self, use_fetch_callbacks: bool = True) -> None:
+        if use_fetch_callbacks:
+            for callback in self.__fetch_callbacks:
+                callback()
 
         self.__send_all_requests()
 
