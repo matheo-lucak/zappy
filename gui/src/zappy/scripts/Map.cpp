@@ -272,15 +272,8 @@ void Map::newDroneFromEgg(size_t id)
     if (!egg)
         return;
     auto &egg_script = egg->getScript<Egg>();
-    ecs::GameObject drone_bp = ecs::GameObject::FindPrefabByName("Drone");
-    ecs::GameObject &new_drone = gameObject.InstantiateChild(drone_bp);
-    auto &drone_script = new_drone.getScript<Drone>();
-
-    drone_script.id = egg_script.id;
-    drone_script.x = egg_script.x;
-    drone_script.y = egg_script.y;
+    newDrone(id, egg_script.x, egg_script.y, Drone::Drone::DOWN);
     ecs::GameObject::Destroy(*egg);
-    droneUpdate(&new_drone);
     std::cout << "New drone from Egg " << id << " at (" << egg_script.x << ", " << egg_script.y << ")." << std::endl;
 }
 
@@ -316,10 +309,10 @@ void Map::droneUpdate(ecs::GameObject *drone)
     drone->transform().setPosition(getTilePos(d.x, d.y));
     switch (d.dir) {
     case Drone::Direction::LEFT:
-        drone->getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, 90.0f, 0.0f});
+        drone->getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, -90.0f, 0.0f});
         break;
     case Drone::Direction::RIGHT:
-        drone->getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, -90.0f, 0.0f});
+        drone->getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, 90.0f, 0.0f});
         break;
     case Drone::Direction::UP:
         drone->getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, 180.0f, 0.0f});

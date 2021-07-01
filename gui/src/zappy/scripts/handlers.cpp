@@ -99,6 +99,9 @@ void r_ppo_handler(Map &map, Response &response)
     Drone::Direction drct = static_cast<Drone::Direction>(std::stoi(*(++it)));
 
     ecs::GameObject *drone = map.getDrone(player_id);
+
+    if (!drone)
+        return;
     auto &drone_script = drone->getScript<Drone>();
 
     drone_script.x = pos_x;
