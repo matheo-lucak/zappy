@@ -19,9 +19,9 @@ Request::Request(const char *format, ...) :
 
     va_list ap;
     va_list ap_copy;
-    va_copy(ap_copy, ap);
 
     va_start(ap, format);
+    va_copy(ap_copy, ap);
     if (!format) {
         is_valid = false;
         goto end;
@@ -31,7 +31,7 @@ Request::Request(const char *format, ...) :
         is_valid = false;
         goto end;
     }
-    buffer = (char *)malloc(needed + 1);
+    buffer = (char *)malloc(needed + 2);
 
     if (!buffer) {
         is_valid = false;

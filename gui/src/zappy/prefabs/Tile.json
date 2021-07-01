@@ -24,11 +24,6 @@
                 "z": 0
             },
             "scale": 0.5
-        },
-        {
-            "type": "BoxCollider",
-            "static": true,
-            "size": 1
         }
     ]
 }

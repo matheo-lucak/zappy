@@ -15,8 +15,6 @@ Tile::Tile(ecs::GameObject &gameObject) noexcept :
     ecs::Script{gameObject},
     m_inventory{}
 {
-    //m_mineral->setActive(false);
-    //m_food->setActive(false);
 }
 
 std::unique_ptr<ecs::Script> Tile::copy(ecs::GameObject &copyOn) const noexcept
@@ -40,8 +38,8 @@ void Tile::Awake() noexcept
     auto &tileInventory_obj = gameObject.InstantiateChild(tileInventory_bp);
 
     m_tileInventory_obj = &tileInventory_obj;
-    m_mineral = gameObject.FindChildByName("Mineral");
-    m_food = gameObject.FindChildByName("Food");
+    m_mineral = &gameObject.InstantiateChild(ecs::GameObject::FindPrefabByName("Mineral"));
+    m_food = &gameObject.InstantiateChild(ecs::GameObject::FindPrefabByName("Food"));
 }
 
 void Tile::Start() noexcept
@@ -54,15 +52,16 @@ void Tile::Start() noexcept
 
 void Tile::Update() noexcept
 {
-    if (m_mineral || m_food)
+    if (!m_mineral || !m_food)
         return;
-    if (m_inventory.get_item_quantity(FOOD) != 0)
-        m_food->setActive(true);
-    if (m_inventory.get_item_quantity(LINEMATE) != 0 ||
-        m_inventory.get_item_quantity(DERAUMERE) != 0 ||
-        m_inventory.get_item_quantity(MENDIANE) != 0 ||
-        m_inventory.get_item_quantity(SIBUR) != 0 ||
-        m_inventory.get_item_quantity(PHIRAS) != 0 ||
-        m_inventory.get_item_quantity(THYSTAME) != 0)
-        m_mineral->setActive(true);
+    m_mineral->transform().setPosition(gameObject.transform().getPosition());
+    m_food->transform().setPosition(gameObject.transform().getPosition());
+    m_food->setActive(m_inventory.get_item_quantity(FOOD) > 0);
+    m_mineral->setActive(
+        m_inventory.get_item_quantity(LINEMATE) > 0 ||
+        m_inventory.get_item_quantity(DERAUMERE) > 0 ||
+        m_inventory.get_item_quantity(MENDIANE) > 0 ||
+        m_inventory.get_item_quantity(SIBUR) > 0 ||
+        m_inventory.get_item_quantity(PHIRAS) > 0 ||
+        m_inventory.get_item_quantity(THYSTAME) > 0);
 }

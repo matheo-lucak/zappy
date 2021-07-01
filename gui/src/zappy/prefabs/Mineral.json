@@ -1,0 +1,26 @@
+{
+    "name": "Mineral",
+    "tag": "Mineral",
+    "components": [
+        {
+            "type": "Transform",
+            "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "rotation": 0,
+            "scale": 1
+        },
+        {
+            "type": "Model",
+            "path": "../src/assets/models/tiles/items/crystals.glb",
+            "position": {
+                "x": 0,
+                "y": 2,
+                "z": 0
+            },
+            "scale": 1
+        }
+    ]
+}

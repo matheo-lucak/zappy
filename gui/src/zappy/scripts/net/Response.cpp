@@ -12,6 +12,8 @@
 
 static Response::type match_type(const std::string &name)
 {
+    if (name == "WELCOME")
+        return Response::type::RESPONSE_WELCOME;
     if (name == "MAGIC_GUI_OK")
         return Response::type::RESPONSE_MAGIC_GUI;
     if (name == "msz")

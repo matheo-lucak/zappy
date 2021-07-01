@@ -41,6 +41,8 @@ typedef struct response_s
 // RESPONSE FROM SERVER ///////////////////// REQUEST /// DESCRIPTION //////////
 ////////////////////////////////////////////////////////////////////////////////
 
+#define RESPONSE_GUI_MAGIC  "MAGIC_GUI_OK\n"
+
 // msz X Y\n                                - msz\n     - map size
 #define RESPONSE_MSZ "msz %d %d\n"
 

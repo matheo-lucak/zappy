@@ -13,22 +13,17 @@
                 "z": 0
             },
             "rotation": 0,
-            "scale": 2
+            "scale": 1
         },
         {
             "type": "Model",
-            "path": "../src/assets/models/drone/striker.gl",
+            "path": "../src/assets/models/drone/creeper.glb",
             "position": {
-                "x": -0.83,
-                "y": 0,
+                "x": -0.9,
+                "y": 2,
                 "z": 0
             },
-            "scale": 0.5
-        },
-        {
-            "type": "BoxCollider",
-            "static": false,
-            "size": 1
+            "scale": 0.3
         }
     ]
 }

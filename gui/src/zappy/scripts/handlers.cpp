@@ -14,8 +14,16 @@
 #include "resources/Inventory.hpp"
 #include "Tile.hpp"
 
+void r_welcome_handler(Map &map, Response &response)
+{
+    std::cout << "Welcomed. Asking for handshake." << std::endl;
+    map.m_net_manager->addRequest(std::move(Request::RQ_CONNECT));
+}
+
+
 void r_magic_gui_handler(Map &map, Response &response)
 {
+    std::cout << "Server handshake good. Asking for more data." << std::endl;
     map.m_net_manager->addRequest(std::move(Request::RQ_MAP_SIZE));
     map.m_net_manager->addRequest(std::move(Request::RQ_MAP_CONTENT));
     map.m_net_manager->addRequest(std::move(Request::RQ_TEAM_NAMES));
@@ -96,6 +104,21 @@ void r_ppo_handler(Map &map, Response &response)
     drone_script.x = pos_x;
     drone_script.y = pos_y;
     drone_script.dir = drct;
+    switch (drct) {
+    case Drone::Direction::LEFT:
+        drone->getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, 90.0f, 0.0f});
+        break;
+    case Drone::Direction::RIGHT:
+        drone->getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, -90.0f, 0.0f});
+        break;
+    case Drone::Direction::UP:
+        drone->getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, 180.0f, 0.0f});
+        break;
+    case Drone::Direction::DOWN:
+    default:
+        drone->getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, 0.0f, 0.0f});
+        break;
+    }
 }
 
 // player’s stats
@@ -143,7 +166,7 @@ void r_pnw_handler(Map &map, Response &response)
     size_t incantation_lvl = std::stoi(*(++it));
     std::string team_name = *(++it);
 
-    map.newDrone(player_id, pos_x, pos_y);
+    map.newDrone(player_id, pos_x, pos_y, drct);
 
     ecs::GameObject *drone = map.getDrone(player_id);
     auto &drone_script = drone->getScript<Drone>();
@@ -346,7 +369,8 @@ void r_seg_handler(Map &map, Response &response)
 void response_handler(Map &map, Response &response)
 {
     switch (response.m_type) {
-        case (Response::RESPONSE_MAGIC_GUI) : r_magic_gui_handler(map, response); return;
+        case (Response::RESPONSE_WELCOME)   : r_welcome_handler(map, response);     return;
+        case (Response::RESPONSE_MAGIC_GUI) : r_magic_gui_handler(map, response);   return;
         case (Response::RESPONSE_MSZ) : r_msz_handler(map, response); return;
         case (Response::RESPONSE_BCT) : r_bct_handler(map, response); return;
         case (Response::RESPONSE_TNA) : r_tna_handler(map, response); return;

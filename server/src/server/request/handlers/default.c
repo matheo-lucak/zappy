@@ -15,6 +15,7 @@
 static void request_handler_default_gui(client_t *c)
 {
     client_to_spectator(c);
+    client_add_response(c, response_create(RESPONSE_GUI_MAGIC));
 }
 
 static drone_t *client_take_drone_control(server_t *s,

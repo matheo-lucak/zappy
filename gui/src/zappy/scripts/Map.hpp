@@ -35,7 +35,7 @@ public:
     void askForMapUpdate() noexcept;
     void handleMapUpdate() noexcept;
 
-    void newDrone(size_t id, int x, int y);
+    void newDrone(size_t id, int x, int y, Drone::Direction d);
     void newDroneFromEgg(size_t id);
     void killDrone(size_t id);
     void newEgg(size_t id, int x, int y);
@@ -45,6 +45,8 @@ public:
 
     ecs::GameObject *getDrone(size_t id);
     ecs::GameObject *getEgg(size_t id);
+
+    utils::Vector3f getTilePos(int x, int y);
 
 private:
     void handleCameraMovements(void);

@@ -69,7 +69,6 @@ void NetworkManager::Update() noexcept
         }
         buffer[nb_bytes] = '\0';
         m_buffer.append((char *)buffer);
-        std::cout << "Buffer updated: \"" << m_buffer << "\""<< std::endl;
     }
 
     // Parse requests

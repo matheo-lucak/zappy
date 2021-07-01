@@ -5,6 +5,7 @@
 ** Map
 */
 
+#include <chrono>
 #include <iostream>
 #include <optional>
 #include <time.h>
@@ -86,7 +87,6 @@ void Map::Awake() noexcept
     }
 
     m_net_manager = &obj->getScript<NetworkManager>();
-    m_net_manager->addRequest(std::move(Request::RQ_CONNECT));
 
     auto &button_pb = ecs::GameObject::FindPrefabByName("Button");
 
@@ -230,36 +230,28 @@ void Map::handleMapUpdate() noexcept
 
 void Map::askForMapUpdate() noexcept
 {
-    static bool first_tick = true;
-    static struct timespec last_time;
-    struct timespec current_time;
-    long delta_time_us;
-    long time_for_tick_us;
+    static auto last_time = std::chrono::steady_clock::now();
+    auto current_time = std::chrono::steady_clock::now();
 
-    if (first_tick) {
-        timespec_get(&last_time, TIME_UTC);
-        first_tick = false;
-        return;
-    }
-    timespec_get(&current_time, TIME_UTC);
-    delta_time_us = (current_time.tv_nsec - last_time.tv_nsec) / 1000;
-    time_for_tick_us = (long)(1000000 / m_freq) - delta_time_us;
-    time_for_tick_us = time_for_tick_us >= 0 ? time_for_tick_us : 0;
-    if (time_for_tick_us <= 0) {
+    std::chrono::duration<double> elapsed_time = current_time - last_time;
+
+    if (elapsed_time.count() >= static_cast<double>(10.0f / m_freq)) {
         last_time = current_time;
+        
         std::cout << "Map Update" << std::endl;
-        std::list<ecs::GameObject *> drones = ecs::GameObject::FindGameObjectsByTag("Drone");
-
-        for (auto drone : drones) {
-            if (!drone)
-                continue;
-            auto &drone_script = drone->getScript<Drone>();
-            m_net_manager->addRequest(std::move(Request(Request::RQ_PLAYER_POSITION, drone_script.id)));
-        }
+        //std::list<ecs::GameObject *> drones = ecs::GameObject::FindGameObjectsByTag("Drone");
+//
+        //for (auto drone : drones) {
+        //    if (!drone)
+        //        continue;
+        //    auto &drone_script = drone->getScript<Drone>();
+        //    std::cout << "Drone " << drone_script.id <<" Update" << std::endl;
+        //    m_net_manager->addRequest(std::move(Request(Request::RQ_PLAYER_POSITION, drone_script.id)));
+        //}
     }
 }
 
-void Map::newDrone(size_t id, int x, int y)
+void Map::newDrone(size_t id, int x, int y, Drone::Direction d)
 {
     ecs::GameObject drone_bp = ecs::GameObject::FindPrefabByName("Drone");
     ecs::GameObject &new_drone = gameObject.InstantiateChild(drone_bp);
@@ -268,6 +260,24 @@ void Map::newDrone(size_t id, int x, int y)
     drone_script.id = id;
     drone_script.x = x;
     drone_script.y = y;
+    new_drone.setActive(true);
+    new_drone.transform().setPosition(getTilePos(x, y));
+    switch (d) {
+    case Drone::Direction::LEFT:
+        new_drone.getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, 90.0f, 0.0f});
+        break;
+    case Drone::Direction::RIGHT:
+        new_drone.getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, -90.0f, 0.0f});
+        break;
+    case Drone::Direction::UP:
+        new_drone.getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, 180.0f, 0.0f});
+        break;
+    case Drone::Direction::DOWN:
+    default:
+        new_drone.getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, 0.0f, 0.0f});
+        break;
+    }
+    std::cout << "New drone " << id << " at (" << x << ", " << y << ")." << std::endl;
 }
 
 void Map::newDroneFromEgg(size_t id)
@@ -285,6 +295,8 @@ void Map::newDroneFromEgg(size_t id)
     drone_script.x = egg_script.x;
     drone_script.y = egg_script.y;
     ecs::GameObject::Destroy(*egg);
+    new_drone.transform().setPosition(getTilePos(egg_script.x, egg_script.y));
+    std::cout << "New drone from Egg " << id << " at (" << egg_script.x << ", " << egg_script.y << ")." << std::endl;
 }
 
 void Map::killDrone(size_t id)
@@ -293,6 +305,7 @@ void Map::killDrone(size_t id)
 
     if (drone) {
         ecs::GameObject::Destroy(*drone);
+        std::cout << "Drone " << id << " killed" << std::endl;
     }
 }
 
@@ -305,8 +318,9 @@ void Map::newEgg(size_t id, int x, int y)
     egg_script.id = id;
     egg_script.x = x;
     egg_script.y = y;
+    new_egg.transform().setPosition(getTilePos(x, y));
+    std::cout << "New Egg " << id << " at (" << x << ", " << y << ")." << std::endl;
 }
-
 
 void Map::collectResource(Resource rs_id, ecs::GameObject *drone)
 {
@@ -366,4 +380,14 @@ ecs::GameObject *Map::getEgg(size_t id)
         }
     }
     return nullptr;
+}
+
+utils::Vector3f Map::getTilePos(int x, int y)
+{
+    utils::Vector3f coords;
+
+    if (!m_grid.isValidCoords(utils::Vector3u(x, 0, y)))
+        return coords;
+    utils::Grid3Cell &cell = m_grid.at(utils::Vector3u(x, 0, y));
+    return cell.getPosition();
 }
