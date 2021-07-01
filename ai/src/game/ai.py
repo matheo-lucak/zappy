@@ -14,7 +14,6 @@ from .message import Message
 from .resource import MetaResource, BaseResource, Food
 from .elevation import Elevation, Requirements
 from ..errors import ZappyError
-from ..utils import Clock
 
 INCANTATION_START = "I NEED SOME HELP!!!"
 INCANTATION_PLAYER_COMING = "I'm coming !"
@@ -130,20 +129,13 @@ class AI:
         self.__wait()
 
     def __go_to_superior_level_with_other_players(self, requirements: Requirements) -> None:
-        message_to_wait_before_start: int = 10
-        message_received: int = 0
-        clock: Clock = Clock()
-
         def custom_message_listener(message: Message) -> None:
-            nonlocal message_received
             self.__default_message_listener(message)
             if message.team != self.__team or message.level != self.__player.level:
                 return
 
             if message.body == INCANTATION_START:
                 raise IncantationStart(message)
-
-            message_received += 1
 
         def have_required_number(stone: BaseResource) -> bool:
             return self.__player.inventory.get(type(stone)) >= stone.amount
@@ -156,8 +148,6 @@ class AI:
                 self.__player.broadcast(INCANTATION_FAILED)
 
         self.__player.set_message_listener(custom_message_listener)
-        # while message_received < message_to_wait_before_start and not clock.elapsed_time(1000):
-        #     self.__player.update()
 
         all_resources: List[SoughtResource] = list()
         while not all_required_stone_is_gotten():
@@ -219,6 +209,7 @@ class AI:
             self.__wait()
             self.__seek_food()
             seeking_food = False
+            self.__player.set_message_listener(incantation_listener)
 
         def go_to_incantation_place() -> None:
             while not in_place:
@@ -228,8 +219,8 @@ class AI:
 
         try:
             self.__player.set_message_listener(incantation_listener)
+            self.__player.use_fetch_callback(False)
             incantation_listener(first_message)
-
             self.__player.wait_for_all_requests_to_be_done()
             while not incantation_started:
                 go_to_incantation_place()
@@ -252,6 +243,7 @@ class AI:
                 self.__seek_food()
         finally:
             self.__player.auto_inventory_checking(True)
+            self.__player.use_fetch_callback(True)
             self.__player.look()
             self.__wait()
 
@@ -379,7 +371,7 @@ class AI:
         turn: Optional[Callable[..., None]] = random_choice([self.__player.turn_left, self.__player.turn_right, None])
         if turn is not None:
             turn()
-        self.__player.move_forward(randint(2, 5))
+        self.__player.move_forward(randint(2, 10))
         self.__player.look()
         self.__wait()
         if self.__call_all_players(requirements) is False:

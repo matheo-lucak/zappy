@@ -75,23 +75,27 @@ class Player:
         self.__egg_laying_handler: Optional[EggLayingHandler] = egg_laying_handler
         self.__egg_laying_generator: List[EggLayingGenerator] = list()
 
+        self.__use_fetch_callback: bool = True
+
     def update(self) -> None:
         self.__api.set_spontaneous_response_handler(self.__handle_spontaneous_responses)
         if self.__auto_inventory_checking is True and not self.checking_inventory:
             self.check_inventory(print_result=False)
-        self.__api.fetch()
+        self.__api.fetch(use_fetch_callbacks=self.__use_fetch_callback)
         self.__handle_eggs()
 
     def wait_for_all_requests_to_be_done(self) -> None:
         while self.__api.has_request_to_handle():
-            self.__api.fetch()
-            self.__handle_eggs()
+            self.__api.fetch(use_fetch_callbacks=False)
+
+    def use_fetch_callback(self, status: bool) -> None:
+        self.__use_fetch_callback = bool(status)
 
     def look(self) -> None:
         def look_handler(response: LookResponse) -> None:
             self.__vision.update(response)
             print("Vision up-to-date")
-            Logger.print(1, "->", self.__vision, file=stdout)
+            Logger.print(2, "->", self.__vision, file=stdout)
             self.__action.looking -= 1
 
         self.__action.looking += 1
@@ -109,7 +113,7 @@ class Player:
             self.__inventory.update(response)
             if print_result:
                 print("Inventory up-to-date")
-                Logger.print(1, "->", self.__inventory, file=stdout)
+                Logger.print(2, "->", self.__inventory, file=stdout)
             self.__action.checking_inventory -= 1
 
         self.__action.checking_inventory += 1

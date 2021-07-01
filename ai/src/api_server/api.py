@@ -119,9 +119,10 @@ class APIServer:
         except ValueError:
             pass
 
-    def fetch(self) -> None:
-        for callback in self.__fetch_callbacks:
-            callback()
+    def fetch(self, use_fetch_callbacks: bool = True) -> None:
+        if use_fetch_callbacks:
+            for callback in self.__fetch_callbacks:
+                callback()
 
         self.__send_all_requests()
 
