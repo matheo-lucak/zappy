@@ -14,13 +14,13 @@
         },
         {
             "type": "Model",
-            "path": "../src/assets/models/tiles/items/crystals.glb",
+            "path": "../src/assets/models/tiles/items/turtles.glb",
             "position": {
-                "x": 0,
+                "x": -0.5,
                 "y": 2,
-                "z": 0
+                "z": 1
             },
-            "scale": 1
+            "scale": 0.1
         }
     ]
 }
