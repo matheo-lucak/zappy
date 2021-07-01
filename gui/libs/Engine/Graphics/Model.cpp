@@ -81,6 +81,7 @@ namespace Graphics
     {
         ::Vector3 converted_rotation_axis = (::Vector3){DEG2RAD * rotation_axis.x, DEG2RAD * rotation_axis.y, DEG2RAD * rotation_axis.z};
 
+        this->rotation_axis = rotation_axis;
         m_model.transform = MatrixRotateXYZ(converted_rotation_axis);
     }
 

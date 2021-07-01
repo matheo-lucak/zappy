@@ -48,12 +48,16 @@ void ecs::Model::draw() const noexcept
 {
     auto pos = m_model->position;
     auto scale = m_model->scaling;
+    auto roation_axis = m_model->rotation_angle;
     auto m = const_cast<Graphics::Model *>(m_model.get());
+
     m->position += m_tr->getPosition();
     m->scaling *= m_tr->getScale();
+    m->setRotation(m_tr->getRotation());
     m_model->draw();
     m->position = pos;
     m->scaling = scale;
+    m->setRotation(roation_axis);
 }
 
 utils::Vector3f &ecs::Model::position() noexcept
@@ -83,9 +87,8 @@ utils::Color &ecs::Model::color() noexcept
 
 void ecs::Model::setRotation(utils::Vector3f rotation_axis)
 {
-    m_model->setRotation(rotation_axis);
+    m_tr->setRotation(rotation_axis);
 }
-
 
 std::unique_ptr<ecs::IComponent> ecs::Model::copy(ecs::GameObject &copyOn) const noexcept
 {
