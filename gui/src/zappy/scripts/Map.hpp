@@ -40,6 +40,8 @@ public:
     void killDrone(size_t id);
     void newEgg(size_t id, int x, int y);
 
+    void droneUpdate(ecs::GameObject *drone);
+
     void collectResource(Resource rs_id, ecs::GameObject *drone);
     void dropResource(Resource rs_id, ecs::GameObject *drone);
 

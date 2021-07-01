@@ -239,15 +239,15 @@ void Map::askForMapUpdate() noexcept
         last_time = current_time;
         
         std::cout << "Map Update" << std::endl;
-        //std::list<ecs::GameObject *> drones = ecs::GameObject::FindGameObjectsByTag("Drone");
-//
-        //for (auto drone : drones) {
-        //    if (!drone)
-        //        continue;
-        //    auto &drone_script = drone->getScript<Drone>();
-        //    std::cout << "Drone " << drone_script.id <<" Update" << std::endl;
-        //    m_net_manager->addRequest(std::move(Request(Request::RQ_PLAYER_POSITION, drone_script.id)));
-        //}
+        std::list<ecs::GameObject *> drones = ecs::GameObject::FindGameObjectsByTag("Drone");
+
+        for (auto drone : drones) {
+            if (!drone)
+                continue;
+            auto &drone_script = drone->getScript<Drone>();
+            std::cout << "Drone " << drone_script.id <<" Update" << std::endl;
+            m_net_manager->addRequest(std::move(Request(Request::RQ_PLAYER_POSITION, drone_script.id)));
+        }
     }
 }
 
@@ -261,22 +261,7 @@ void Map::newDrone(size_t id, int x, int y, Drone::Direction d)
     drone_script.x = x;
     drone_script.y = y;
     new_drone.setActive(true);
-    new_drone.transform().setPosition(getTilePos(x, y));
-    switch (d) {
-    case Drone::Direction::LEFT:
-        new_drone.getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, 90.0f, 0.0f});
-        break;
-    case Drone::Direction::RIGHT:
-        new_drone.getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, -90.0f, 0.0f});
-        break;
-    case Drone::Direction::UP:
-        new_drone.getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, 180.0f, 0.0f});
-        break;
-    case Drone::Direction::DOWN:
-    default:
-        new_drone.getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, 0.0f, 0.0f});
-        break;
-    }
+    droneUpdate(&new_drone);
     std::cout << "New drone " << id << " at (" << x << ", " << y << ")." << std::endl;
 }
 
@@ -295,7 +280,7 @@ void Map::newDroneFromEgg(size_t id)
     drone_script.x = egg_script.x;
     drone_script.y = egg_script.y;
     ecs::GameObject::Destroy(*egg);
-    new_drone.transform().setPosition(getTilePos(egg_script.x, egg_script.y));
+    droneUpdate(&new_drone);
     std::cout << "New drone from Egg " << id << " at (" << egg_script.x << ", " << egg_script.y << ")." << std::endl;
 }
 
@@ -320,6 +305,31 @@ void Map::newEgg(size_t id, int x, int y)
     egg_script.y = y;
     new_egg.transform().setPosition(getTilePos(x, y));
     std::cout << "New Egg " << id << " at (" << x << ", " << y << ")." << std::endl;
+}
+
+void Map::droneUpdate(ecs::GameObject *drone)
+{
+    if (!drone)
+        return;
+    auto &d = drone->getScript<Drone>();
+
+    drone->transform().setPosition(getTilePos(d.x, d.y));
+    switch (d.dir) {
+    case Drone::Direction::LEFT:
+        drone->getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, 90.0f, 0.0f});
+        break;
+    case Drone::Direction::RIGHT:
+        drone->getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, -90.0f, 0.0f});
+        break;
+    case Drone::Direction::UP:
+        drone->getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, 180.0f, 0.0f});
+        break;
+    case Drone::Direction::DOWN:
+    default:
+        drone->getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, 0.0f, 0.0f});
+        break;
+    }
+
 }
 
 void Map::collectResource(Resource rs_id, ecs::GameObject *drone)

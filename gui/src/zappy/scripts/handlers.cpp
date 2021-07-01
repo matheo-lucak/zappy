@@ -104,21 +104,7 @@ void r_ppo_handler(Map &map, Response &response)
     drone_script.x = pos_x;
     drone_script.y = pos_y;
     drone_script.dir = drct;
-    switch (drct) {
-    case Drone::Direction::LEFT:
-        drone->getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, 90.0f, 0.0f});
-        break;
-    case Drone::Direction::RIGHT:
-        drone->getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, -90.0f, 0.0f});
-        break;
-    case Drone::Direction::UP:
-        drone->getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, 180.0f, 0.0f});
-        break;
-    case Drone::Direction::DOWN:
-    default:
-        drone->getComponent<ecs::Model>().setRotation(utils::Vector3f{ 0.0f, 0.0f, 0.0f});
-        break;
-    }
+    map.droneUpdate(drone);
 }
 
 // player’s stats
