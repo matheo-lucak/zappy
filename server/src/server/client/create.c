@@ -18,7 +18,7 @@ client_t *client_create(void)
     if (!client)
         return NULL;
     client->type = CLIENT_UNKNOWN;
-    client->alive = true;
+    client->status = CLIENT_ALIVE;
     client->blocked = false;
     client->socket = tcp_socket_create();
     client->input_stock = NULL;

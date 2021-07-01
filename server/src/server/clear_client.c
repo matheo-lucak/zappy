@@ -15,7 +15,7 @@ void server_clear_clients(server_t *s)
     for (it = list_iter_begin(s->clients); it;) {
         client = NODE_PTR(it, client_t);
         node_iter_next(&it);
-        if (!client->alive) {
+        if (client->status != CLIENT_ALIVE) {
             server_remove_client(s, client);
         }
     }

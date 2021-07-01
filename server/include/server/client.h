@@ -22,6 +22,13 @@ typedef enum client_type_e
     CLIENT_SPECTATOR    = 0b00000100
 } client_type_t;
 
+typedef enum client_status_e
+{
+    CLIENT_ALIVE,
+    CLIENT_DEAD,
+    CLIENT_KICK,
+} client_status_t;
+
 ////////////////////////////////////////////////////////////////////////////////
 /// \brief This represents a connected player.
 /// The client can either be described as 'unknown', 'drone' or 'spectator'.
@@ -42,15 +49,15 @@ typedef enum client_type_e
 ////////////////////////////////////////////////////////////////////////////////
 typedef struct client_s
 {
-    unsigned       id;
-    client_type_t  type;
-    bool           alive;
-    bool           blocked;
-    tcp_socket_t * socket;
-    char *         input_stock;
-    drone_t *      drone;
-    ptr_list_t *   pending_requests;
-    ptr_list_t *   pending_responses;
+    unsigned        id;
+    client_type_t   type;
+    client_status_t status;
+    bool            blocked;
+    tcp_socket_t *  socket;
+    char *          input_stock;
+    drone_t *       drone;
+    ptr_list_t *    pending_requests;
+    ptr_list_t *    pending_responses;
 } client_t;
 
 typedef struct request_s  request_t;

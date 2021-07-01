@@ -20,7 +20,7 @@ static void network_handle_one_input_per_client(server_t *s, client_t *c)
         return;
     status = network_get_input_stock(c);
     if (status == SOCKET_ERROR || status == SOCKET_DISCONNECTED)
-        c->alive = false;
+        c->status = CLIENT_DEAD;
 }
 
 void network_handle_clients_in(server_t *s)

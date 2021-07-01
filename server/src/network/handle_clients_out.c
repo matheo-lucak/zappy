@@ -16,7 +16,7 @@
 
 static bool network_handle_out_is_client_ready(server_t *s, client_t *c)
 {
-    if (!c->alive)
+    if (c->status == CLIENT_DEAD)
         return false;
     if (!socket_selector_is_socket_ready(s->n.selector, SOCKET(c->socket)))
         return false;
@@ -41,7 +41,7 @@ static bool network_handle_one_response_per_client(server_t *s)
         r = NODE_PTR(list_begin(c->pending_responses), response_t);
         status = tcp_socket_send(c->socket, r->data, strlen(r->data));
         if (status == SOCKET_ERROR || status == SOCKET_DISCONNECTED)
-            c->alive = false;
+            c->status = CLIENT_DEAD;
         list_pop_front(c->pending_responses);
         if (!list_empty(c->pending_responses))
             left_to_send = true;
