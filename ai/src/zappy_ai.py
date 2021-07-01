@@ -84,13 +84,17 @@ class ZappyAI:
             unused_slots = response.value
             ticks_count += response.ticks
 
+        def run_child() -> None:
+            self.__server.close()
+            return ZappyAI.start(self.__machine, self.__port, self.__team, True)
+
         while ticks_count < egg_hatching_time_in_ticks + 10:
             if not self.__player.elevating and not self.__server.has_request_to_handle(ConnectNbrRequest):
                 self.__server.send(ConnectNbrRequest(connect_nbr_handler))
             yield
         if unused_slots > 0:
             print("<---- An egg hatched ---->")
-            p: Process = Process(target=ZappyAI.start, args=(self.__machine, self.__port, self.__team, True))
+            p: Process = Process(target=run_child)
             p.start()
 
 

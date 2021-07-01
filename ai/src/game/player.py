@@ -88,6 +88,21 @@ class Player:
         while self.__api.has_request_to_handle():
             self.__api.fetch(use_fetch_callbacks=False)
 
+    def wait_for_nb_ticks(self, ticks: int) -> None:
+        if ticks < 0:
+            return
+        
+        count: int = 0
+        def inventory_handler(response: InventoryResponse) -> None:
+            nonlocal count
+            self.__inventory.update(response)
+            count += ticks
+
+        while count < ticks:
+            if not self.__api.has_request_to_handle(IncantationRequest):
+                self.__api.send(InventoryRequest(inventory_handler))
+            self.__api.fetch(use_fetch_callbacks=self.__use_fetch_callback)
+
     def use_fetch_callback(self, status: bool) -> None:
         self.__use_fetch_callback = bool(status)
 

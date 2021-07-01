@@ -13,6 +13,7 @@ from .position import Position
 from .message import Message
 from .resource import MetaResource, BaseResource, Food
 from .elevation import Elevation, Requirements
+from ..api_server.request import BroadcastRequest
 from ..errors import ZappyError
 
 INCANTATION_START = "I NEED SOME HELP!!!"
@@ -172,14 +173,17 @@ class AI:
         player_uuid: UUID = first_message.uuid
 
         def incantation_listener(message: Message) -> None:
-            nonlocal in_place, incantation_started, paused
+            nonlocal in_place, incantation_started, paused, player_uuid
 
             self.__default_message_listener(message)
             if message.team != self.__team or message.level != self.__player.level:
                 return
 
             if message.uuid != player_uuid:
-                return
+                if not paused:
+                    return
+                if message.body == INCANTATION_START:
+                    player_uuid = message.uuid
 
             if message.body == INCANTATION_START and not in_place and not seeking_food and not self.__player.moving:
                 paused = False
@@ -427,6 +431,7 @@ class AI:
                 player_here = 1
                 self.__seek_food()
                 continue
+            self.__player.wait_for_nb_ticks(BroadcastRequest.get_process_time() + 10)
             self.__player.look()
             self.__wait()
             tile = self.__player.vision.get(0, 0)

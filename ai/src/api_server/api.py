@@ -52,6 +52,9 @@ class APIServer:
         self.__spontaneous_response_handler: Optional[SpontaneousResponseHandler] = None
 
     def __del__(self) -> None:
+        self.close()
+
+    def close(self) -> None:
         self.__socket.close()
         print(f"Disconnected from {self.__machine}:{self.__port}")
 
